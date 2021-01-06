@@ -34,7 +34,20 @@ const AssetPage = ({ asset, list, price }) => {
 };
 
 // This gets called on every request
-export async function getServerSideProps({ params }) {
+export async function getStaticPaths() {
+  const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
+  const list = await res.json();
+
+  const paths = list.map((asset) => ({
+    params: { id: asset.symbol, asset: asset.symbol },
+  }));
+
+  return {
+    paths,
+    fallback: true,
+  };
+}
+export async function getStaticProps({ params }) {
   const { asset } = params;
 
   const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
@@ -57,7 +70,7 @@ export async function getServerSideProps({ params }) {
 
   // console.log(list);
 
-  return { props: { asset, list, price } };
+  return { props: { asset, list, price }, revalidate: 30 };
 }
 
 export default AssetPage;
