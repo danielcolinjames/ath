@@ -16,7 +16,7 @@ const AssetPage = ({ asset, list, price }) => {
         USD
       </h2>
       {/* <p>{JSON.stringify(price)}</p> */}
-      {console.log(price)}
+      {/* {console.log(price)} */}
       <p style={{ paddingTop: 20 }}>Check other assets: </p>
       <ul>
         {list.map((asset) => (
@@ -33,7 +33,6 @@ const AssetPage = ({ asset, list, price }) => {
   );
 };
 
-// This gets called on every request
 export async function getStaticPaths() {
   const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
   const list = await res.json();
@@ -47,6 +46,7 @@ export async function getStaticPaths() {
     fallback: true,
   };
 }
+
 export async function getStaticProps({ params }) {
   const { asset } = params;
 
