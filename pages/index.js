@@ -40,22 +40,6 @@ const HomePage = ({ list, market }) => {
           </li>
         ))}
       </ul>
-      <p className="mt-20">Look at all-time highs of other assets:</p>
-      <ul className="text-gray-400">
-        {market.map((asset) => (
-          <li className="list-disc ml-8 pt-2">
-            <Link href={`/${asset.symbol}`}>
-              <a>
-                {asset.symbol.toUpperCase()} ({asset.name}):{" "}
-                {asset.ath.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}{" "}
-                USD
-              </a>
-            </Link>
-          </li>
-        ))}
-      </ul>
       <button
         className="mt-20 bg-gray-200 p-2 rounded-lg"
         onClick={() => setShowList(!showList)}
