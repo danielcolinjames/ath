@@ -57,7 +57,7 @@ export async function getStaticProps() {
     "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=10"
   );
   const market = await marketRes.json();
-  console.log(market);
+  // console.log(market);
   return { props: { list, market }, revalidate: 86400 };
 }
 
