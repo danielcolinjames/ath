@@ -82,7 +82,7 @@ export async function getStaticPaths() {
   // }));
 
   const marketRes = await fetch(
-    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=100"
+    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=25"
   );
   const market = await marketRes.json();
 
