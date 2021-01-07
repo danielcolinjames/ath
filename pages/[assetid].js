@@ -51,16 +51,17 @@ const AssetPage = ({ asset, assetid, list, price }) => {
 };
 
 export async function getStaticPaths() {
-  const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
-  const list = await res.json();
+  // const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
+  // const list = await res.json();
 
-  const paths = list.map((asset) => ({
-    params: { assetid: asset.symbol },
-  }));
+  // const paths = list.map((asset) => ({
+  //   params: { assetid: asset.symbol },
+  // }));
 
   return {
-    paths,
-    fallback: true,
+    // paths,
+    paths: [],
+    fallback: "blocking",
   };
 }
 
