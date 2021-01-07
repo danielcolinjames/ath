@@ -2,7 +2,7 @@ import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 
-const AssetPage = ({ asset, assetid, list, price }) => {
+const AssetPage = ({ asset, assetid, list, price, market }) => {
   const [showList, setShowList] = useState(false);
 
   return (
@@ -14,7 +14,7 @@ const AssetPage = ({ asset, assetid, list, price }) => {
       </Head>
       <div>
         <h1 className="text-4xl">
-          {assetid.toUpperCase()} ({asset.name}) – All Time High
+          {asset.name} ({assetid.toUpperCase()}) – All-Time High Price
         </h1>
         <p>{`${assetid.toUpperCase()}'s all-time high price in USD is:`}</p>
         <h2 className="font-bold text-4xl text-green-400 rounded-lg bg-gray-900 inline-block p-3 mt-4 mb-4 mr-4">
@@ -24,19 +24,42 @@ const AssetPage = ({ asset, assetid, list, price }) => {
           {/* {console.log(price)} */}
           USD
         </h2>
+        <p className="text-gray-400">
+          This price was reached on{" "}
+          <span className="text-gray-500">{price[0].ath_date} UTC</span>
+        </p>
       </div>
       {/* <p>{JSON.stringify(price)}</p> */}
       {/* {console.log(price)} */}
+
+      <p className="mt-20">Look at all-time highs of other assets:</p>
+      <ul className="text-gray-400">
+        {market.map((asset) => (
+          <li className="list-disc ml-8 pt-2">
+            <Link href={`/${asset.symbol}`}>
+              <a>
+                {asset.symbol.toUpperCase()} ({asset.name}):{" "}
+                {asset.ath.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                })}{" "}
+                USD
+              </a>
+            </Link>
+          </li>
+        ))}
+      </ul>
       <button
         className="mt-20 bg-gray-200 p-2 rounded-lg"
         onClick={() => setShowList(!showList)}
       >
-        {showList ? "Hide" : "Show"} list of other assets{" "}
+        {showList ? "Hide" : "Show"} more assets{" "}
       </button>
       {showList && (
         <ul className="text-gray-400">
           {list.map((asset) => (
             <li className="list-disc ml-8 pt-2">
+              {/* <img src={} */}
+              {console.log(list)}
               <Link href={`/${asset.symbol}`}>
                 <a>
                   {asset.symbol.toUpperCase()} ({asset.name})
@@ -58,9 +81,18 @@ export async function getStaticPaths() {
   //   params: { assetid: asset.symbol },
   // }));
 
+  const marketRes = await fetch(
+    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=100"
+  );
+  const market = await marketRes.json();
+
+  const paths = market.map((asset) => ({
+    params: { assetid: asset.symbol },
+  }));
+
   return {
-    // paths,
-    paths: [],
+    paths,
+    // paths: [],
     fallback: "blocking",
   };
 }
@@ -77,6 +109,11 @@ export async function getStaticProps({ params }) {
 
   const assetCoingeckoId = asset.id;
 
+  const marketRes = await fetch(
+    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=100"
+  );
+  const market = await marketRes.json();
+
   // const res2 = await fetch(
   //   `https://api.coingecko.com/api/v3/coins/${assetCoingeckoId}`
   // );
@@ -88,8 +125,8 @@ export async function getStaticProps({ params }) {
   // console.log(list);
 
   return {
-    props: { asset, assetid, list, price },
-    revalidate: 30,
+    props: { asset, assetid, list, price, market },
+    revalidate: 60,
   };
 }
 
