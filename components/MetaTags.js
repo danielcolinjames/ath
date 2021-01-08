@@ -7,7 +7,7 @@ const MetaTags = ({
   url,
   pageTitle,
 }) => {
-  const metaTitle = title ? `${title} — All-Time High` : "ATH.ooo";
+  const metaTitle = title ? `${title} | ATH.ooo` : "ATH.ooo";
   // allow the option to set the <title> tag of a page separately from the one that shows up for its meta tags
   const titleTag = pageTitle ? pageTitle : metaTitle;
   const metaDescription = description

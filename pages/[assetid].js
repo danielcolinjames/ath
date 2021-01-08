@@ -1,16 +1,37 @@
 import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
+import MetaTags from "../components/MetaTags";
 
 const AssetPage = ({ asset, assetid, list, price, market }) => {
   const [showList, setShowList] = useState(false);
+  // console.log(price);
+  const title = `All Time High — ${assetid.toUpperCase()} (${asset.name})`;
+
+  const url = new URL("https://og.ath.ooo");
+  url.pathname = `${encodeURIComponent(
+    `All-Time High: ${asset.name} (${assetid.toUpperCase()})`
+  )}.png`;
+  url.searchParams.append("theme", "dark");
+  url.searchParams.append("md", true);
+  url.searchParams.append("fontSize", "42px");
+  url.searchParams.append("images", price[0].image);
 
   return (
     <div className="p-5">
+      <MetaTags
+        title={title}
+        description={`The all-time high price of ${
+          asset.name
+        } (${assetid.toUpperCase()}) was ${price[0].ath.toLocaleString(
+          undefined,
+          { minimumFractionDigits: 2 }
+        )} USD, as of ${price[0].last_updated}`}
+        openGraphImageAbsoluteUrl={url}
+        url={`https://ath.ooo/${assetid}`}
+      />
       <Head>
-        <title>
-          All Time High — {assetid.toUpperCase()} ({asset.name})
-        </title>
+        <title></title>
       </Head>
       <div>
         <h1 className="text-4xl">
