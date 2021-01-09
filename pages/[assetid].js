@@ -20,16 +20,20 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
   url.searchParams.append("images", price[0].image);
 
   const athTimestamp = moment.utc(price[0].ath_date);
-  console.log(price[0].ath_date);
-  console.log(athTimestamp);
-  console.log(athTimestamp.fromNow());
+  // console.log(price[0].ath_date);
+  // console.log(athTimestamp);
+  // console.log(athTimestamp.fromNow());
+
+  // console.log(price[0]);
+
+  const lastUpdated = moment.utc(price[0].last_updated);
 
   return (
     <>
-      <div className="bg-black w-full h-8" />
+      <div className="bg-black w-full h-4" />
       <div className="py-4 flex justify-center content-center w-full">
         <Link href="/">
-          <a className="p-0 m-0">
+          <a className="p-0 m-0 -mb-2">
             <Image
               className="image-override"
               src="/athwordmark.png"
@@ -42,7 +46,7 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
       </div>
       <div className="bg-black w-full h-px" />
 
-      <div className="p-5 mx-auto max-w-xl">
+      <div className="p-5 mx-auto max-w-2xl">
         <MetaTags
           title={title}
           description={`The all-time high price of ${
@@ -50,7 +54,11 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
           } (${assetid.toUpperCase()}) was ${price[0].ath.toLocaleString(
             undefined,
             { minimumFractionDigits: 2 }
-          )} USD, as of ${price[0].last_updated}`}
+          )} USD, set ${athTimestamp.fromNow()} on ${moment(
+            athTimestamp
+          ).format("MMMM Do, YYYY")} at ${moment(athTimestamp).format(
+            "h:mm:ss A UTC"
+          )}`}
           openGraphImageAbsoluteUrl={url}
           url={`https://ath.ooo/${assetid}`}
         />
@@ -65,19 +73,21 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
             All time high price in USD
           </h2>
           <div className="inline-block">
-            <div className="h-5 bg-ath-100 w-full -mb-11 md:-mb-12 mt-5" />
+            <div className="h-2 md:h-3 bg-ath-100 w-full -mb-6 md:-mb-7 mt-5" />
             <h3 className="text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4">
               {price[0].ath.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
               })}
             </h3>
           </div>
-          <p className="font-sans font-light text-xl text-gray-400">
+          <p className="font-sans font-light text-2xl text-gray-400">
             Set {athTimestamp.fromNow()}
           </p>
-          <p className="font-sans font-light text-sm text-gray-400">
-            on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
-            {moment(athTimestamp).format("h:mm:ss A UTC")}
+          <p className="font-sans font-light text-xs text-gray-400">
+            on {moment(athTimestamp).format("MMMM Do, YYYY")}
+          </p>
+          <p className="font-sans font-light text-xs text-gray-400">
+            at {moment(athTimestamp).format("h:mm:ss A UTC")}
           </p>
         </div>
         {/* <p>{JSON.stringify(price)}</p> */}

@@ -6,8 +6,8 @@ import moment from "moment";
 
 const HomePage = ({ list, market }) => {
   const [showList, setShowList] = useState(false);
-  console.log(market);
-  console.log(list);
+  // console.log(market);
+  // console.log(list);
 
   return (
     <>
@@ -26,13 +26,13 @@ const HomePage = ({ list, market }) => {
         </Link>
       </div>
       <div className="bg-black w-full h-px" />
-      <div className="p-5 mx-auto max-w-xl">
+      <div className="p-5 mx-auto max-w-2xl">
         <Head>
           <title>All Time High</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <ul className="flex flex-col max-w-lg">
-          <h1 className="text-3xl font-sans font-black">
+          <h1 className="text-xl md:text-3xl font-sans font-black mb-3">
             All time high prices in USD
           </h1>
           {market.map((asset) => {
@@ -63,36 +63,45 @@ const HomePage = ({ list, market }) => {
               //   </div>
               // </li>
               <>
-                <div className="pt-12">
-                  <Link href={asset.symbol}>
-                    <a>
-                      <div className="flex flex-row py-2">
-                        <Image src={asset.image} height={28} width={28} />
-                        <h2 className="font-sans ml-2 font-bold text-xl">
-                          {asset.name} ({asset.symbol.toUpperCase()})
-                        </h2>
-                      </div>
-                    </a>
-                  </Link>
-                  <Link href={asset.symbol}>
-                    <a>
-                      <div className="inline-block">
-                        <div className="h-3 bg-ath-100 w-full -mb-8 md:-mb-8 mt-2" />
-                        <h3 className="text-4xl md:text-5xl text-black font-sans font-black inline-block mt-4 mb-4">
-                          {asset.ath.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                          })}
-                        </h3>
-                      </div>
-                    </a>
-                  </Link>
-                  <p className="font-sans font-light text-xl text-gray-400">
+                <div className="pt-2">
+                  <div className="flex flex-row justify-between">
+                    <span className="w-2/3">
+                      <Link href={asset.symbol}>
+                        <a>
+                          <div className="flex flex-row items-center py-2 pr-3">
+                            <img
+                              src={asset.image}
+                              className="max-h-6"
+                              // height={28}
+                              // width={28}
+                            />
+                            <h2 className="font-sans ml-2 font-bold text-md">
+                              {asset.name} ({asset.symbol.toUpperCase()})
+                            </h2>
+                          </div>
+                        </a>
+                      </Link>
+                    </span>
+                    <Link href={asset.symbol}>
+                      <a>
+                        <div className="inline-block pt-2">
+                          <div className="h-1 md:h-1 bg-ath-100 w-full -mb-6 md:-mb-5" />
+                          <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-4 mb-1">
+                            {asset.ath.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                            })}
+                          </h3>
+                        </div>
+                      </a>
+                    </Link>
+                  </div>
+                  <p className="font-sans font-light text-md text-gray-400">
                     Set {athTimestamp.fromNow()}
                   </p>
-                  <p className="font-sans font-light text-sm text-gray-400">
+                  {/* <p className="font-sans font-light text-sm text-gray-400">
                     on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
                     {moment(athTimestamp).format("h:mm:ss A UTC")}
-                  </p>
+                  </p> */}
                 </div>
                 <div className="mt-5 h-px w-full bg-gray-300" />
               </>
