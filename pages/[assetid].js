@@ -169,7 +169,17 @@ export async function getStaticProps({ params }) {
     return x.symbol.toLowerCase() === assetid.toLowerCase();
   });
 
-  const assetCoingeckoId = asset.id;
+  const matchingAssets = list.filter((x) => {
+    return x.symbol.toLowerCase() === assetid.toLowerCase();
+  });
+
+  console.log(matchingAssets);
+
+  let assetCoingeckoId = "";
+  if (matchingAssets.length === 1) {
+    assetCoingeckoId = asset.id;
+  } else {
+  }
 
   const marketRes = await fetch(
     "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=100"

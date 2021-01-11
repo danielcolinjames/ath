@@ -11,7 +11,7 @@ const HomePage = ({ list, market }) => {
 
   return (
     <>
-      <div className="bg-black w-full h-8" />
+      <div className="bg-black w-full h-4" />
       <div className="py-4 flex justify-center content-center w-full">
         <Link href="/">
           <a className="p-0 m-0">
@@ -28,10 +28,10 @@ const HomePage = ({ list, market }) => {
       <div className="bg-black w-full h-px" />
       <div className="p-5 mx-auto max-w-2xl">
         <Head>
-          <title>All Time High</title>
+          <title>ATH.ooo — All Time Highs</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <ul className="flex flex-col max-w-lg">
+        <ul className="flex flex-col max-w-lg mx-auto">
           <h1 className="text-xl md:text-3xl font-sans font-black mb-3">
             All time high prices in USD
           </h1>
