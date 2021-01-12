@@ -16,7 +16,7 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
   )}.png`;
   url.searchParams.append("theme", "dark");
   url.searchParams.append("md", true);
-  url.searchParams.append("fontSize", "42px");
+  url.searchParams.append("fontSize", "64px");
   url.searchParams.append("images", price[0].image);
 
   const athTimestamp = moment.utc(price[0].ath_date);

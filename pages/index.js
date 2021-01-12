@@ -3,11 +3,19 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import moment from "moment";
+import MetaTags from "../components/MetaTags";
 
 const HomePage = ({ list, market }) => {
   const [showList, setShowList] = useState(false);
-  // console.log(market);
-  // console.log(list);
+
+  const url = new URL("https://og.ath.ooo");
+  url.pathname = `${encodeURIComponent(
+    `ATH.ooo – All Time Highs of Crypto Assets.png`
+  )}`;
+  url.searchParams.append("theme", "dark");
+  url.searchParams.append("md", true);
+  url.searchParams.append("fontSize", "64px");
+  url.searchParams.append("images", "https://ath.ooo/athwordmarkwhite.png");
 
   return (
     <>
@@ -27,10 +35,12 @@ const HomePage = ({ list, market }) => {
       </div>
       <div className="bg-black w-full h-px" />
       <div className="p-5 mx-auto max-w-2xl">
-        <Head>
-          <title>ATH.ooo — All Time Highs</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+        <MetaTags
+          title={"ATH.ooo — All Time Highs"}
+          description={`See the all time highs of crypto assets`}
+          openGraphImageAbsoluteUrl={url}
+          url={`https://ath.ooo/`}
+        />
         <ul className="flex flex-col max-w-lg mx-auto">
           <h1 className="text-xl md:text-3xl font-sans font-black mb-3">
             All time high prices in USD
@@ -38,30 +48,6 @@ const HomePage = ({ list, market }) => {
           {market.map((asset) => {
             const athTimestamp = moment.utc(asset.ath_date);
             return (
-              // <li className="pt-2 pl-2" key={asset.symbol}>
-              //   <div className="flex flex-row justify-start">
-              //     <span>
-              //       <span className="text-gray-400">{asset.market_cap_rank}. </span>
-              //       <Link href={`/${asset.symbol}`}>
-              //         <a>
-              //           {asset.name}{" "}
-              //           <span className="text-gray-400">
-              //             ({asset.symbol.toUpperCase()})
-              //           </span>
-              //         </a>
-              //       </Link>
-              //     </span>
-              //     <span className="pl-2 text-gray-400">
-              //       —{" "}
-              //       <strong className="text-green-600">
-              //         {asset.ath.toLocaleString(undefined, {
-              //           minimumFractionDigits: 2,
-              //         })}
-              //       </strong>{" "}
-              //       USD
-              //     </span>
-              //   </div>
-              // </li>
               <>
                 <div className="pt-2">
                   <div className="flex flex-row justify-between">
@@ -69,12 +55,7 @@ const HomePage = ({ list, market }) => {
                       <Link href={asset.symbol}>
                         <a>
                           <div className="flex flex-row items-center py-2 pr-3">
-                            <img
-                              src={asset.image}
-                              className="max-h-6"
-                              // height={28}
-                              // width={28}
-                            />
+                            <img src={asset.image} className="max-h-6" />
                             <h2 className="font-sans ml-2 font-bold text-md">
                               {asset.name} ({asset.symbol.toUpperCase()})
                             </h2>
