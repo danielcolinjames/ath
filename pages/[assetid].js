@@ -16,8 +16,11 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
   )}.png`;
   url.searchParams.append("theme", "dark");
   url.searchParams.append("md", true);
-  url.searchParams.append("fontSize", "64px");
+  url.searchParams.append("fontSize", "94px");
   url.searchParams.append("images", price[0].image);
+  url.searchParams.append("cornerLogo", "true");
+  url.searchParams.append("centered", "false");
+  url.searchParams.append("heights", 200);
 
   const athTimestamp = moment.utc(price[0].ath_date);
   // console.log(price[0].ath_date);

@@ -16,6 +16,8 @@ const HomePage = ({ list, market }) => {
   url.searchParams.append("md", true);
   url.searchParams.append("fontSize", "64px");
   url.searchParams.append("images", "https://ath.ooo/athwordmarkwhite.png");
+  url.searchParams.append("cornerLogo", "false");
+  url.searchParams.append("centered", "true");
 
   return (
     <>
