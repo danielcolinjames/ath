@@ -94,8 +94,8 @@ const AssetPage = ({
               at {moment(athTimestamp).format("h:mm:ss A UTC")}
             </p>
           </div>
-          <div className="bg-gray-100 p-3 rounded-sm inline-block mt-4">
-            <p className="font-sans font-light text-sm text-gray-400">
+          <div className="bg-white p-3 inline-block mt-4 border border-dotted border-gray-100">
+            <p className="font-sans font-light text-sm text-gray-300">
               Data accurate as of {lastUpdated.fromNow()}
             </p>
             <div className="h-px bg-gray-200 mt-2" />
@@ -104,56 +104,71 @@ const AssetPage = ({
               <a
                 target="_blank"
                 href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
-                className="font-sans font-light text-xs text-gray-400 leading-none px-2"
+                className="font-sans font-light text-xs text-gray-300 leading-none px-2"
               >
                 Powered by CoinGecko data
               </a>
             </div>
           </div>
-          {!singleAssetMatch && (
-            <>
-              <p className="font-sans font-light text-lg text-gray-400 pt-10">
-                Other assets with the ticker symbol {assetid.toUpperCase()}:
-              </p>
-              {assetInfo.map((asset, index) => {
-                if (index !== 0)
-                  return (
-                    <div className="pt-5">
-                      <div className="flex flex-row py-2">
-                        <Image
-                          src={assetInfo[index].image}
-                          height={28}
-                          width={28}
-                        />
-                        <h1 className="font-sans ml-2 font-bold text-xl">
-                          {assetInfo[index].name} ({assetid.toUpperCase()})
-                        </h1>
+          <div className="bg-gray-100 mt-10 p-5">
+            {!singleAssetMatch && (
+              <>
+                <p className="font-sans font-light text-lg text-gray-400">
+                  The ticker symbol {assetid.toUpperCase()} also represents
+                  other assets
+                </p>
+                {assetInfo.map((asset, index) => {
+                  if (index !== 0)
+                    return (
+                      <div className="pt-8">
+                        <div className="flex flex-row py-2">
+                          <Image
+                            src={assetInfo[index].image}
+                            height={28}
+                            width={28}
+                          />
+                          <h1 className="font-sans ml-2 font-bold text-xl">
+                            {assetInfo[index].name} ({assetid.toUpperCase()})
+                          </h1>
+                        </div>
+                        <h2 className="text-md font-sans font-black">
+                          All time high price in USD
+                        </h2>
+                        <div className="inline-block">
+                          <div className="h-1 md:h-2 bg-ath-100 w-full -mb-4 md:-mb-5 mt-2" />
+                          <h3 className="text-2xl md:text-4xl text-black font-sans font-black inline-block mt-4 mb-4">
+                            {assetInfo[index].ath.toLocaleString(undefined, {
+                              minimumFractionDigits: 2,
+                            })}
+                          </h3>
+                        </div>
+                        <p className="font-sans font-light text-lg text-gray-400">
+                          Set {athTimestamp.fromNow()}
+                        </p>
+                        <p className="font-sans font-light text-xs text-gray-400">
+                          on {moment(athTimestamp).format("MMMM Do, YYYY")}
+                        </p>
+                        <p className="font-sans font-light text-xs text-gray-400">
+                          at {moment(athTimestamp).format("h:mm:ss A UTC")}
+                        </p>
+                        <div className="bg-white p-3 inline-block mt-4 border border-dotted border-gray-100">
+                          <div className="flex flex-row items-center justify-start">
+                            <Image src="/cglogo.svg" height={15} width={15} />
+                            <a
+                              target="_blank"
+                              href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
+                              className="font-sans font-light text-xs text-gray-300 leading-none px-2"
+                            >
+                              Data accurate as of {lastUpdated.fromNow()}
+                            </a>
+                          </div>
+                        </div>
                       </div>
-                      <h2 className="text-md font-sans font-black">
-                        All time high price in USD
-                      </h2>
-                      <div className="inline-block">
-                        <div className="h-1 md:h-2 bg-ath-100 w-full -mb-4 md:-mb-5 mt-2" />
-                        <h3 className="text-2xl md:text-4xl text-black font-sans font-black inline-block mt-4 mb-4">
-                          {assetInfo[index].ath.toLocaleString(undefined, {
-                            minimumFractionDigits: 2,
-                          })}
-                        </h3>
-                      </div>
-                      <p className="font-sans font-light text-lg text-gray-400">
-                        Set {athTimestamp.fromNow()}
-                      </p>
-                      <p className="font-sans font-light text-xs text-gray-400">
-                        on {moment(athTimestamp).format("MMMM Do, YYYY")}
-                      </p>
-                      <p className="font-sans font-light text-xs text-gray-400">
-                        at {moment(athTimestamp).format("h:mm:ss A UTC")}
-                      </p>
-                    </div>
-                  );
-              })}
-            </>
-          )}
+                    );
+                })}
+              </>
+            )}
+          </div>
         </div>
         <p className="font-sans font-bold mt-20 mb-2 text-gray-400">
           All time highs of other assets
@@ -204,13 +219,6 @@ const AssetPage = ({
 };
 
 export async function getStaticPaths() {
-  // const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
-  // const list = await res.json();
-
-  // const paths = list.map((asset) => ({
-  //   params: { assetid: asset.symbol },
-  // }));
-
   const marketRes = await fetch(
     "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=25"
   );
@@ -222,7 +230,6 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    // paths: [],
     fallback: "blocking",
   };
 }
@@ -261,9 +268,6 @@ export async function getStaticProps({ params }) {
   );
   const market = await marketRes.json();
 
-  // const res2 = await fetch(
-  //   `https://api.coingecko.com/api/v3/coins/${assetCoingeckoId}`
-  // );
   const assetsResponse = await fetch(
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${assetCoingeckoId}`
   );
