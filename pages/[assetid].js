@@ -5,10 +5,18 @@ import Image from "next/image";
 import MetaTags from "../components/MetaTags";
 import moment from "moment";
 
-const AssetPage = ({ asset, assetid, list, price, market }) => {
+const AssetPage = ({
+  asset,
+  assetid,
+  list,
+  assetInfo,
+  market,
+  singleAssetMatch,
+}) => {
+  console.log(assetInfo);
   const [showList, setShowList] = useState(false);
-  // console.log(price);
-  const title = `${asset.name} (${assetid.toUpperCase()}) All Time High`;
+  // console.log(assetInfo);
+  const title = `${assetInfo[0].name} (${assetid.toUpperCase()}) All Time High`;
 
   const url = new URL("https://og.ath.ooo");
   url.pathname = `${encodeURIComponent(
@@ -17,19 +25,19 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
   url.searchParams.append("theme", "dark");
   url.searchParams.append("md", true);
   url.searchParams.append("fontSize", "94px");
-  url.searchParams.append("images", price[0].image);
+  url.searchParams.append("images", assetInfo[0].image);
   url.searchParams.append("cornerLogo", "true");
   url.searchParams.append("centered", "false");
   url.searchParams.append("heights", 200);
 
-  const athTimestamp = moment.utc(price[0].ath_date);
-  // console.log(price[0].ath_date);
+  const athTimestamp = moment.utc(assetInfo[0].ath_date);
+  // console.log(assetInfo[0].ath_date);
   // console.log(athTimestamp);
   // console.log(athTimestamp.fromNow());
 
-  // console.log(price[0]);
+  // console.log(assetInfo[0]);
 
-  const lastUpdated = moment.utc(price[0].last_updated);
+  const lastUpdated = moment.utc(assetInfo[0].last_updated);
 
   return (
     <>
@@ -52,9 +60,9 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
       <div className="p-5 mx-auto max-w-2xl">
         <MetaTags
           title={title}
-          description={`The all-time high price of ${
+          description={`The all-time high assetInfo of ${
             asset.name
-          } (${assetid.toUpperCase()}) was ${price[0].ath.toLocaleString(
+          } (${assetid.toUpperCase()}) was ${assetInfo[0].ath.toLocaleString(
             undefined,
             { minimumFractionDigits: 2 }
           )} USD, set ${athTimestamp.fromNow()} on ${moment(
@@ -67,9 +75,9 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
         />
         <div>
           <div className="flex flex-row py-2">
-            <Image src={price[0].image} height={28} width={28} />
+            <Image src={assetInfo[0].image} height={28} width={28} />
             <h1 className="font-sans ml-2 font-bold text-xl">
-              {asset.name} ({assetid.toUpperCase()})
+              {assetInfo[0].name} ({assetid.toUpperCase()})
             </h1>
           </div>
           <h2 className="text-3xl font-sans font-black">
@@ -78,7 +86,7 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
           <div className="inline-block">
             <div className="h-2 md:h-3 bg-ath-100 w-full -mb-6 md:-mb-7 mt-5" />
             <h3 className="text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4">
-              {price[0].ath.toLocaleString(undefined, {
+              {assetInfo[0].ath.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
               })}
             </h3>
@@ -92,9 +100,53 @@ const AssetPage = ({ asset, assetid, list, price, market }) => {
           <p className="font-sans font-light text-xs text-gray-400">
             at {moment(athTimestamp).format("h:mm:ss A UTC")}
           </p>
+          {!singleAssetMatch && (
+            <>
+              <p className="font-sans font-light text-lg text-gray-400 pt-10">
+                Other assets with the ticker symbol {assetid.toUpperCase()}:
+              </p>
+              {assetInfo.map((asset, index) => {
+                if (index !== 0)
+                  return (
+                    <div className="pt-5">
+                      <div className="flex flex-row py-2">
+                        <Image
+                          src={assetInfo[index].image}
+                          height={28}
+                          width={28}
+                        />
+                        <h1 className="font-sans ml-2 font-bold text-xl">
+                          {assetInfo[index].name} ({assetid.toUpperCase()})
+                        </h1>
+                      </div>
+                      <h2 className="text-md font-sans font-black">
+                        All time high price in USD
+                      </h2>
+                      <div className="inline-block">
+                        <div className="h-1 md:h-2 bg-ath-100 w-full -mb-4 md:-mb-5 mt-2" />
+                        <h3 className="text-2xl md:text-4xl text-black font-sans font-black inline-block mt-4 mb-4">
+                          {assetInfo[index].ath.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                          })}
+                        </h3>
+                      </div>
+                      <p className="font-sans font-light text-lg text-gray-400">
+                        Set {athTimestamp.fromNow()}
+                      </p>
+                      <p className="font-sans font-light text-xs text-gray-400">
+                        on {moment(athTimestamp).format("MMMM Do, YYYY")}
+                      </p>
+                      <p className="font-sans font-light text-xs text-gray-400">
+                        at {moment(athTimestamp).format("h:mm:ss A UTC")}
+                      </p>
+                    </div>
+                  );
+              })}
+            </>
+          )}
         </div>
-        {/* <p>{JSON.stringify(price)}</p> */}
-        {/* {console.log(price)} */}
+        {/* <p>{JSON.stringify(assetInfo)}</p> */}
+        {/* {console.log(assetInfo)} */}
 
         <p className="mt-20">Look at all-time highs of other assets:</p>
         <ul className="text-gray-400">
@@ -176,12 +228,21 @@ export async function getStaticProps({ params }) {
     return x.symbol.toLowerCase() === assetid.toLowerCase();
   });
 
-  console.log(matchingAssets);
-
+  // console.log(matchingAssets
   let assetCoingeckoId = "";
-  if (matchingAssets.length === 1) {
+  // let matchingAssets = [];
+
+  const singleAssetMatch = matchingAssets.length === 1;
+
+  if (singleAssetMatch) {
     assetCoingeckoId = asset.id;
   } else {
+    // multiple found with same ticker symbol
+    const multipleAssetsArray = [];
+    matchingAssets.map((matchingAssetObject) => {
+      multipleAssetsArray.push(matchingAssetObject.id);
+    });
+    assetCoingeckoId = multipleAssetsArray.join(",");
   }
 
   const marketRes = await fetch(
@@ -192,15 +253,15 @@ export async function getStaticProps({ params }) {
   // const res2 = await fetch(
   //   `https://api.coingecko.com/api/v3/coins/${assetCoingeckoId}`
   // );
-  const res2 = await fetch(
+  const assetsResponse = await fetch(
     `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${assetCoingeckoId}`
   );
-  const price = await res2.json();
+  const assetInfo = await assetsResponse.json();
 
   // console.log(list);
 
   return {
-    props: { asset, assetid, list, price, market },
+    props: { asset, assetid, list, assetInfo, market, singleAssetMatch },
     revalidate: 60,
   };
 }
