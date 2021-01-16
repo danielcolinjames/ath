@@ -81,10 +81,6 @@ const HomePage = ({ list, market }) => {
                   <p className="font-sans font-light text-md text-gray-400">
                     Set {athTimestamp.fromNow()}
                   </p>
-                  {/* <p className="font-sans font-light text-sm text-gray-400">
-                    on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
-                    {moment(athTimestamp).format("h:mm:ss A UTC")}
-                  </p> */}
                 </div>
                 <div className="mt-5 h-px w-full bg-gray-300" />
               </>
@@ -101,8 +97,6 @@ const HomePage = ({ list, market }) => {
           <ul className="text-gray-400">
             {list.map((asset) => (
               <li className="list-disc ml-8 pt-2">
-                {/* <img src={} */}
-                {/* {console.log(list)} */}
                 <Link href={`/${asset.symbol}`}>
                   <a>
                     {asset.symbol.toUpperCase()} ({asset.name})
