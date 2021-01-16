@@ -14,6 +14,7 @@ const AssetPage = ({
   singleAssetMatch,
 }) => {
   const [showList, setShowList] = useState(false);
+  const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
   const title = `${assetInfo[0].name} (${assetid.toUpperCase()}) All Time High`;
 
   const url = new URL("https://og.ath.ooo");
@@ -34,7 +35,7 @@ const AssetPage = ({
   return (
     <>
       <div className="bg-black w-full h-4" />
-      <div className="py-4 flex justify-center content-center w-full">
+      <div className="py-4 flex justify-start items-center w-full max-w-2xl mx-auto px-5">
         <Link href="/">
           <a className="p-0 m-0 -mb-2">
             <Image
@@ -110,65 +111,113 @@ const AssetPage = ({
               </a>
             </div>
           </div>
-          <div className="bg-gray-100 mt-10 p-5">
-            {!singleAssetMatch && (
-              <>
-                <p className="font-sans font-light text-lg text-gray-400">
-                  The ticker symbol {assetid.toUpperCase()} also represents
-                  other assets
-                </p>
-                {assetInfo.map((asset, index) => {
-                  if (index !== 0)
-                    return (
-                      <div className="pt-8">
-                        <div className="flex flex-row py-2">
-                          <Image
-                            src={assetInfo[index].image}
-                            height={28}
-                            width={28}
-                          />
-                          <h1 className="font-sans ml-2 font-bold text-xl">
-                            {assetInfo[index].name} ({assetid.toUpperCase()})
-                          </h1>
-                        </div>
-                        <h2 className="text-md font-sans font-black">
-                          All time high price in USD
-                        </h2>
-                        <div className="inline-block">
-                          <div className="h-1 md:h-2 bg-ath-100 w-full -mb-4 md:-mb-5 mt-2" />
-                          <h3 className="text-2xl md:text-4xl text-black font-sans font-black inline-block mt-4 mb-4">
-                            {assetInfo[index].ath.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                            })}
-                          </h3>
-                        </div>
-                        <p className="font-sans font-light text-lg text-gray-400">
-                          Set {athTimestamp.fromNow()}
-                        </p>
-                        <p className="font-sans font-light text-xs text-gray-400">
-                          on {moment(athTimestamp).format("MMMM Do, YYYY")}
-                        </p>
-                        <p className="font-sans font-light text-xs text-gray-400">
-                          at {moment(athTimestamp).format("h:mm:ss A UTC")}
-                        </p>
-                        <div className="bg-white p-3 inline-block mt-4 border border-dotted border-gray-100">
-                          <div className="flex flex-row items-center justify-start">
-                            <Image src="/cglogo.svg" height={15} width={15} />
-                            <a
-                              target="_blank"
-                              href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
-                              className="font-sans font-light text-xs text-gray-300 leading-none px-2"
-                            >
-                              Data accurate as of {lastUpdated.fromNow()}
-                            </a>
+          {!singleAssetMatch && (
+            <div className="bg-gray-100 mt-10 p-5">
+              <div className="flex flex-row items-center justify-between">
+                <div className="flex flex-row items-center justify-start">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className="h-5 w-5 text-gray-400 mr-2"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <p className="font-sans font-light text-lg text-gray-400">
+                    The ticker symbol "
+                    <span className="font-bold">{assetid.toUpperCase()}</span>"
+                    also represents other assets
+                  </p>
+                </div>
+                <button
+                  className="bg-white px-2 py-1 mx-2 text-gray-400 text-xs font-sans flex flex-row items-center justify-center"
+                  onClick={() => {
+                    setShowSymbolSharerAssets(!showSymbolSharerAssets);
+                  }}
+                >
+                  {!showSymbolSharerAssets ? "Show" : "Hide"}
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    className={`h-3 w-3 ml-2 ${
+                      showSymbolSharerAssets
+                        ? "transform rotate-180 duration-300 transition-all"
+                        : ""
+                    }`}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+              </div>
+              {showSymbolSharerAssets && (
+                <>
+                  {assetInfo.map((asset, index) => {
+                    if (index !== 0)
+                      return (
+                        <div className="pt-4">
+                          <div className="h-px w-full bg-gray-200 mb-5" />
+                          <div className="flex flex-row py-2">
+                            <Image
+                              src={assetInfo[index].image}
+                              height={25}
+                              width={25}
+                            />
+                            <h1 className="font-sans ml-2 font-bold text-lg">
+                              {assetInfo[index].name} ({assetid.toUpperCase()})
+                            </h1>
+                          </div>
+                          <h2 className="text-md font-sans font-black">
+                            All time high price in USD
+                          </h2>
+                          <div className="inline-block">
+                            <div className="h-1 bg-ath-100 w-full -mb-4 mt-2" />
+                            <h3 className="text-2xl md:text-4xl text-black font-sans font-black inline-block mt-4 mb-4">
+                              {assetInfo[index].ath.toLocaleString(undefined, {
+                                minimumFractionDigits: 2,
+                              })}
+                            </h3>
+                          </div>
+                          <p className="font-sans font-light text-lg text-gray-400">
+                            Set {athTimestamp.fromNow()}
+                          </p>
+                          <p className="font-sans font-light text-xs text-gray-400">
+                            on {moment(athTimestamp).format("MMMM Do, YYYY")}
+                          </p>
+                          <p className="font-sans font-light text-xs text-gray-400">
+                            at {moment(athTimestamp).format("h:mm:ss A UTC")}
+                          </p>
+                          <div className="bg-white p-3 inline-block mt-4 border border-dotted border-gray-100">
+                            <div className="flex flex-row items-center justify-start">
+                              <Image src="/cglogo.svg" height={15} width={15} />
+                              <a
+                                target="_blank"
+                                href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
+                                className="font-sans font-light text-xs text-gray-300 leading-none px-2"
+                              >
+                                Data accurate as of {lastUpdated.fromNow()}
+                              </a>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                })}
-              </>
-            )}
-          </div>
+                      );
+                  })}
+                </>
+              )}
+            </div>
+          )}
         </div>
         <p className="font-sans font-bold mt-20 mb-2 text-gray-400">
           All time highs of other assets

@@ -22,7 +22,7 @@ const HomePage = ({ list, market }) => {
   return (
     <>
       <div className="bg-black w-full h-4" />
-      <div className="py-4 flex justify-center content-center w-full">
+      <div className="py-4 flex justify-left items-center w-full max-w-2xl mx-auto px-5">
         <Link href="/">
           <a className="p-0 m-0">
             <Image
@@ -43,7 +43,7 @@ const HomePage = ({ list, market }) => {
           openGraphImageAbsoluteUrl={url}
           url={`https://ath.ooo/`}
         />
-        <ul className="flex flex-col max-w-lg mx-auto">
+        <ul className="flex flex-col">
           <h1 className="text-xl md:text-3xl font-sans font-black mb-3">
             All time high prices in USD
           </h1>
