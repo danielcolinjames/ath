@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import moment from "moment";
 import MetaTags from "../components/MetaTags";
+import Layout from "../components/Layout";
 
 const HomePage = ({ list, market }) => {
   const [showList, setShowList] = useState(false);
@@ -20,7 +21,7 @@ const HomePage = ({ list, market }) => {
   url.searchParams.append("centered", "true");
 
   return (
-    <>
+    <Layout>
       <div className="bg-black w-full h-4" />
       <div className="py-4 flex justify-left items-center w-full max-w-2xl mx-auto px-5">
         <Link href="/">
@@ -107,7 +108,7 @@ const HomePage = ({ list, market }) => {
           </ul>
         )}
       </div>
-    </>
+    </Layout>
   );
 };
 

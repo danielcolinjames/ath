@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import MetaTags from "../components/MetaTags";
 import moment from "moment";
+import Layout from "../components/Layout";
 
 const AssetPage = ({
   asset,
@@ -33,27 +34,11 @@ const AssetPage = ({
   const lastUpdated = moment.utc(assetInfo[0].last_updated);
 
   return (
-    <>
-      <div className="bg-black w-full h-4" />
-      <div className="py-4 flex justify-start items-center w-full max-w-2xl mx-auto px-5">
-        <Link href="/">
-          <a className="p-0 m-0 -mb-2">
-            <Image
-              className="image-override"
-              src="/athwordmark.png"
-              width={128}
-              height={25}
-              alt="ATH.ooo logo"
-            />
-          </a>
-        </Link>
-      </div>
-      <div className="bg-black w-full h-px" />
-
+    <Layout>
       <div className="p-5 mx-auto max-w-2xl">
         <MetaTags
           title={title}
-          description={`The all-time high assetInfo of ${
+          description={`The all-time high price of ${
             asset.name
           } (${assetid.toUpperCase()}) was ${assetInfo[0].ath.toLocaleString(
             undefined,
@@ -225,7 +210,7 @@ const AssetPage = ({
         {market.map((asset) => (
           <div className="pt-2">
             <Link href={`/${asset.symbol}`}>
-              <a className="font-sans text-gray-400 flex flex-row items-center justify-between">
+              <a className="font-sans text-sm text-gray-400 flex flex-row items-center justify-between">
                 <span className="flex flex-row items-center justify-center">
                   <Image src={asset.image} height={15} width={15} />{" "}
                   <span className="pl-2">
@@ -263,7 +248,7 @@ const AssetPage = ({
           </ul>
         )}
       </div>
-    </>
+    </Layout>
   );
 };
 
