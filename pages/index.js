@@ -22,21 +22,6 @@ const HomePage = ({ list, market }) => {
 
   return (
     <Layout>
-      <div className="bg-black w-full h-4" />
-      <div className="py-4 flex justify-left items-center w-full max-w-2xl mx-auto px-5">
-        <Link href="/">
-          <a className="p-0 m-0">
-            <Image
-              className="image-override"
-              src="/athwordmark.png"
-              width={128}
-              height={25}
-              alt="ATH.ooo logo"
-            />
-          </a>
-        </Link>
-      </div>
-      <div className="bg-black w-full h-px" />
       <div className="p-5 mx-auto max-w-2xl">
         <MetaTags
           title={"ATH.ooo — All Time Highs"}
