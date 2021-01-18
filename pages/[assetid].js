@@ -204,13 +204,13 @@ const AssetPage = ({
             </div>
           )}
         </div>
-        <p className="font-sans font-bold mt-20 mb-2 text-gray-400">
+        <p className="font-sans text-base md:text-xl font-bold mt-20 mb-2 text-gray-400">
           All time highs of other assets
         </p>
         {market.map((asset) => (
           <div className="pt-2">
             <Link href={`/${asset.symbol}`}>
-              <a className="font-sans text-sm text-gray-400 flex flex-row items-center justify-between">
+              <a className="font-sans text-sm md:text-lg text-gray-400 flex flex-row items-center justify-between">
                 <span className="flex flex-row items-center justify-center">
                   <Image src={asset.image} height={15} width={15} />{" "}
                   <span className="pl-2">
