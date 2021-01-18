@@ -34,7 +34,7 @@ const AssetPage = ({
   const lastUpdated = moment.utc(assetInfo[0].last_updated);
 
   return (
-    <Layout>
+    <Layout assetList={list}>
       <div className="p-5 mx-auto max-w-2xl">
         <MetaTags
           title={title}

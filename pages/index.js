@@ -21,7 +21,7 @@ const HomePage = ({ list, market }) => {
   url.searchParams.append("centered", "true");
 
   return (
-    <Layout>
+    <Layout assetList={list}>
       <div className="p-5 mx-auto max-w-2xl">
         <MetaTags
           title={"ATH.ooo — All Time Highs"}

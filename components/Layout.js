@@ -1,11 +1,11 @@
 import NavBar from "./NavBar";
 
-const Layout = (props) => {
+const Layout = ({ children, assetList }) => {
   return (
     <>
-      <NavBar />
+      <NavBar assetList={assetList} />
       <div className="pt-20" />
-      {props.children}
+      {children}
     </>
   );
 };
