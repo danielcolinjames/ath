@@ -95,7 +95,45 @@ const AssetPage = ({
                 Powered by CoinGecko data
               </a>
             </div>
+            {/* Other info about [assetid] */}
           </div>
+          <div className="pt-10">
+            <div className="h-px bg-gray-200 w-full mb-4" />
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              {/* <p>{JSON.stringify(assetInfo[0])}</p> */}
+              <div>
+                <h2 className="text-lg font-sans font-bold text-gray-600">
+                  Current price in USD
+                </h2>
+                <div className="inline-block">
+                  <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-1 mb-4">
+                    {assetInfo[0].current_price.toLocaleString(undefined, {
+                      minimumFractionDigits: 2,
+                    })}
+                  </h3>
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg font-sans font-bold text-gray-600">
+                  Change since all time high
+                </h2>
+                <div className="inline-block">
+                  <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-1 mb-4">
+                    {assetInfo[0].ath_change_percentage.toLocaleString(
+                      undefined,
+                      {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }
+                    )}
+                    %
+                  </h3>
+                </div>
+              </div>
+            </div>
+            {console.log(assetInfo)}
+          </div>
+
           {!singleAssetMatch && (
             <div className="bg-gray-100 mt-10 p-5">
               <div className="flex flex-row items-center justify-between">
