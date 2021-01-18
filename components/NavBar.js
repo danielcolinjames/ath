@@ -66,14 +66,14 @@ const NavBar = ({ assetList }) => {
         <div className="flex flex-grow flex-wrap pl-6">
           <div className="w-full relative">
             <input
-              className="p-2 w-full max-w-md border border-solid border-gray-200 focus:border-ath-100 placeholder-opacity-50 focus:outline-none focus:ring ring-ath-100 ring-opacity-50 h-10 text-sm"
+              className="p-2 w-full max-w-md border border-solid border-gray-200 focus:border-ath-100 placeholder-opacity-50 focus:outline-none focus:ring ring-ath-100 ring-opacity-50 h-10 text-md"
               value={filterText}
-              autoFocus
               type="search"
               ref={input}
               onChange={handleFilterTextChange}
               onKeyPress={handleKeyPress}
-              placeholder={`Type a ticker symbol and hit enter to jump to it`}
+              placeholder={`Enter a ticker symbol`}
+              id="input"
             />
           </div>
           <div className="absolute max-w-md mt-10">
