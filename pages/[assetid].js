@@ -20,7 +20,7 @@ const AssetPage = ({
 
   const url = new URL("https://og.ath.ooo");
   url.pathname = `${encodeURIComponent(
-    `All-Time High: ${asset.name} (${assetid.toUpperCase()})`
+    `${asset.name} (${assetid.toUpperCase()})`
   )}.png`;
   url.searchParams.append("theme", "dark");
   url.searchParams.append("md", true);
