@@ -43,7 +43,12 @@ const HomePage = ({ list, market }) => {
                       <Link href={asset.symbol}>
                         <a>
                           <div className="flex flex-row items-center py-2 pr-3">
-                            <img src={asset.image} className="max-h-6" />
+                            <Image
+                              src={asset.image}
+                              className="max-h-6"
+                              height={20}
+                              width={20}
+                            />
                             <h2 className="font-sans ml-2 font-bold text-md">
                               {asset.name} ({asset.symbol.toUpperCase()})
                             </h2>
