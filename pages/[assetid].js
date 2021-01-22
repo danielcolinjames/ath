@@ -53,7 +53,12 @@ const AssetPage = ({
         />
         <div>
           <div className="flex flex-row py-2">
-            <Image src={assetInfo[0].image} height={28} width={28} />
+            <Image
+              src={assetInfo[0].image}
+              height={28}
+              width={28}
+              alt={`${assetInfo[0].name} logo`}
+            />
             <h1 className="font-sans ml-2 font-bold text-xl">
               {assetInfo[0].name} ({assetid.toUpperCase()})
             </h1>
@@ -86,7 +91,12 @@ const AssetPage = ({
             </p>
             <div className="h-px bg-gray-200 mt-2" />
             <div className="flex flex-row items-center justify-start pt-2">
-              <Image src="/cglogo.svg" height={20} width={20} />
+              <Image
+                src="/cglogo.svg"
+                height={20}
+                width={20}
+                alt={`CoinGecko logo`}
+              />
               <a
                 target="_blank"
                 href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
@@ -197,6 +207,7 @@ const AssetPage = ({
                               src={assetInfo[index].image}
                               height={25}
                               width={25}
+                              alt={`${assetInfo[index].name} logo`}
                             />
                             <h1 className="font-sans ml-2 font-bold text-lg">
                               {assetInfo[index].name} ({assetid.toUpperCase()})
@@ -224,7 +235,12 @@ const AssetPage = ({
                           </p>
                           <div className="bg-white p-3 inline-block mt-4 border border-dotted border-gray-100">
                             <div className="flex flex-row items-center justify-start">
-                              <Image src="/cglogo.svg" height={15} width={15} />
+                              <Image
+                                src="/cglogo.svg"
+                                height={15}
+                                width={15}
+                                alt={`CoinGecko logo`}
+                              />
                               <a
                                 target="_blank"
                                 href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
@@ -250,7 +266,12 @@ const AssetPage = ({
             <Link href={`/${asset.symbol}`}>
               <a className="font-sans text-sm md:text-lg text-gray-400 flex flex-row items-center justify-between">
                 <span className="flex flex-row items-center justify-center">
-                  <Image src={asset.image} height={15} width={15} />{" "}
+                  <Image
+                    src={asset.image}
+                    height={15}
+                    width={15}
+                    alt={`${asset.name} logo`}
+                  />{" "}
                   <span className="pl-2">
                     {asset.name} ({asset.symbol.toUpperCase()})
                   </span>

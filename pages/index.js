@@ -48,6 +48,7 @@ const HomePage = ({ list, market }) => {
                               className="max-h-6"
                               height={20}
                               width={20}
+                              alt={`${asset.name} logo`}
                             />
                             <h2 className="font-sans ml-2 font-bold text-md">
                               {asset.name} ({asset.symbol.toUpperCase()})
