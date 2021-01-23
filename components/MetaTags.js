@@ -6,6 +6,7 @@ const MetaTags = ({
   openGraphImageAbsoluteUrl,
   url,
   pageTitle,
+  noIndex,
 }) => {
   const metaTitle = title ? title : "ATH.ooo";
   // allow the option to set the <title> tag of a page separately from the one that shows up for its meta tags
@@ -32,6 +33,8 @@ const MetaTags = ({
           href="https://ath.ooo/logo192.png"
         />
         <link rel="manifest" href="https://ath.ooo/manifest.json" /> */}
+
+        {noIndex && <meta name="robots" content="noindex" />}
 
         {/* Primary Meta Tags */}
         <title>{titleTag}</title>

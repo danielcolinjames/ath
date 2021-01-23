@@ -1,4 +1,4 @@
-import Head from "next/head";
+import { Fragment } from "react";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,14 +33,14 @@ const HomePage = ({ list, market }) => {
           <h1 className="text-xl md:text-3xl font-sans font-black mb-3">
             All time high prices in USD
           </h1>
-          {market.map((asset) => {
+          {market.map((asset, i) => {
             const athTimestamp = moment.utc(asset.ath_date);
             return (
-              <>
+              <Fragment key={i}>
                 <div className="pt-2">
                   <div className="flex flex-row justify-between">
                     <span className="w-2/3">
-                      <Link href={asset.symbol}>
+                      <Link href={`/${asset.symbol}`}>
                         <a>
                           <div className="flex flex-row items-center py-2 pr-3">
                             <Image
@@ -57,7 +57,7 @@ const HomePage = ({ list, market }) => {
                         </a>
                       </Link>
                     </span>
-                    <Link href={asset.symbol}>
+                    <Link href={`/${asset.symbol}`}>
                       <a>
                         <div className="inline-block pt-2">
                           <div className="h-1 md:h-1 bg-ath-100 w-full -mb-6 md:-mb-5" />
@@ -75,7 +75,7 @@ const HomePage = ({ list, market }) => {
                   </p>
                 </div>
                 <div className="mt-5 h-px w-full bg-gray-300" />
-              </>
+              </Fragment>
             );
           })}
         </ul>

@@ -63,54 +63,55 @@ const NavBar = ({ assetList }) => {
           </a>
         </Link>
         {/* Search bar */}
-        <div className="flex flex-grow flex-wrap pl-6">
-          <div className="w-full relative">
-            <input
-              className="p-2 w-full max-w-md border border-solid border-gray-200 focus:border-ath-100 placeholder-opacity-50 focus:outline-none focus:ring ring-ath-100 ring-opacity-50 h-10 text-md"
-              value={filterText}
-              type="search"
-              ref={input}
-              onChange={handleFilterTextChange}
-              onKeyPress={handleKeyPress}
-              placeholder={`Enter a ticker symbol`}
-              id="input"
-            />
-          </div>
-          <div className="absolute max-w-md mt-10">
-            <div className="grid grid-cols-1">
-              {assetList?.map((asset, index) => {
-                if (filterText.length > 1 && asset.symbol === filterText) {
-                  resultCount++;
-                  return (
-                    <div
-                      className={`w-full bg-white border border-solid border-gray-200`}
-                      key={`result-${index}`}
-                    >
-                      <div className="flex flex-row items-center justify-start">
-                        <Link href={`/${asset.symbol}`}>
-                          <a
-                            onClick={() => {
-                              setFilterText("");
-                            }}
-                            className={`py-1 px-2 w-full ${
-                              resultCount === 1
-                                ? "bg-ath-100 bg-opacity-25 text-black"
-                                : ""
-                            }`}
-                            id={`result-${index}`}
-                          >
-                            {asset.name} ({asset.symbol.toUpperCase()})
-                          </a>
-                        </Link>
+        {assetList && (
+          <div className="flex flex-grow flex-wrap pl-6">
+            <div className="w-full relative">
+              <input
+                className="p-2 w-full max-w-md border border-solid border-gray-200 focus:border-ath-100 placeholder-opacity-50 focus:outline-none focus:ring ring-ath-100 ring-opacity-50 h-10 text-md"
+                value={filterText}
+                type="search"
+                ref={input}
+                onChange={handleFilterTextChange}
+                onKeyPress={handleKeyPress}
+                placeholder={`Enter a ticker symbol`}
+                id="input"
+              />
+            </div>
+            <div className="absolute max-w-md mt-10">
+              <div className="grid grid-cols-1">
+                {assetList?.map((asset, index) => {
+                  if (filterText.length > 1 && asset.symbol === filterText) {
+                    resultCount++;
+                    return (
+                      <div
+                        className={`w-full bg-white border border-solid border-gray-200`}
+                        key={`result-${index}`}
+                      >
+                        <div className="flex flex-row items-center justify-start">
+                          <Link href={`/${asset.symbol}`}>
+                            <a
+                              onClick={() => {
+                                setFilterText("");
+                              }}
+                              className={`py-1 px-2 w-full ${
+                                resultCount === 1
+                                  ? "bg-ath-100 bg-opacity-25 text-black"
+                                  : ""
+                              }`}
+                              id={`result-${index}`}
+                            >
+                              {asset.name} ({asset.symbol.toUpperCase()})
+                            </a>
+                          </Link>
+                        </div>
                       </div>
-                    </div>
-                  );
-                }
-              })}
+                    );
+                  }
+                })}
+              </div>
             </div>
           </div>
-          <div></div>
-        </div>
+        )}
       </div>
       <div className="bg-black w-full h-px" />
     </div>
