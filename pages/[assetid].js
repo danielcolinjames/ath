@@ -46,21 +46,21 @@ const AssetPage = (props) => {
     const athTimestamp = moment.utc(assetInfo[0].ath_date);
     const lastUpdated = moment.utc(assetInfo[0].last_updated);
 
+    const descriptionText = `The all-time high price of ${
+      assetInfo[0].name
+    } (${assetid.toUpperCase()}) was ${assetInfo[0].ath.toLocaleString(
+      undefined,
+      { minimumFractionDigits: 2 }
+    )} USD, set ${athTimestamp.fromNow()} on ${moment(athTimestamp).format(
+      "MMMM Do, YYYY"
+    )} at ${moment(athTimestamp).format("h:mm:ss A UTC")}`;
+
     return (
       <Layout assetList={list}>
         <div className="p-5 mx-auto max-w-2xl">
           <MetaTags
             title={title}
-            description={`The all-time high price of ${
-              asset.name
-            } (${assetid.toUpperCase()}) was ${assetInfo[0].ath.toLocaleString(
-              undefined,
-              { minimumFractionDigits: 2 }
-            )} USD, set ${athTimestamp.fromNow()} on ${moment(
-              athTimestamp
-            ).format("MMMM Do, YYYY")} at ${moment(athTimestamp).format(
-              "h:mm:ss A UTC"
-            )}`}
+            description={descriptionText}
             openGraphImageAbsoluteUrl={url}
             url={`https://ath.ooo/${assetid}`}
           />
@@ -77,11 +77,14 @@ const AssetPage = (props) => {
               </h1>
             </div>
             <h2 className="text-3xl font-sans font-black">
-              All time high price in USD
+              All time high price
             </h2>
             <div className="inline-block">
               <div className="h-2 md:h-3 bg-ath-100 w-full -mb-4 md:-mb-5 mt-5" />
-              <h3 className="text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4">
+              <h3 className="text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4 pl-4">
+                <span className="font-extralight text-xl absolute pt-2 -ml-4">
+                  $
+                </span>
                 {assetInfo[0].ath.toLocaleString(undefined, {
                   minimumFractionDigits: 2,
                 })}
@@ -92,17 +95,27 @@ const AssetPage = (props) => {
                 Set {athTimestamp.fromNow()}
               </p>
               <p className="font-sans font-light text-xs text-gray-400">
-                on {moment(athTimestamp).format("MMMM Do, YYYY")}
-              </p>
-              <p className="font-sans font-light text-xs text-gray-400">
-                at {moment(athTimestamp).format("h:mm:ss A UTC")}
+                on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
+                {moment(athTimestamp).format("h:mm:ss A UTC")}
               </p>
             </div>
-            <div className="bg-white p-3 inline-block mt-4 border border-dotted border-gray-100">
-              <p className="font-sans font-light text-sm text-gray-300">
+            <p className="pt-5 pb-5 text-md md:text-md font-sans text-gray-500">
+              {`The highest price ever paid for ${
+                assetInfo[0].name
+              } (${assetid.toUpperCase()}) was ${assetInfo[0].ath.toLocaleString(
+                undefined,
+                { minimumFractionDigits: 2 }
+              )} USD, set ${athTimestamp.fromNow()} on ${moment(
+                athTimestamp
+              ).format("MMMM Do, YYYY")} at ${moment(athTimestamp).format(
+                "h:mm A UTC."
+              )}`}
+            </p>
+            <div className="bg-gray-100 p-3 inline-block mt-4">
+              <p className="font-sans font-light text-sm text-gray-700">
                 Data accurate as of {lastUpdated.fromNow()}
               </p>
-              <div className="h-px bg-gray-200 mt-2" />
+              <div className="h-px bg-gray-300 mt-2" />
               <div className="flex flex-row items-center justify-start pt-2">
                 <Image
                   src="/cglogo.svg"
@@ -113,7 +126,7 @@ const AssetPage = (props) => {
                 <a
                   target="_blank"
                   href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
-                  className="font-sans font-light text-xs text-gray-300 leading-none px-2"
+                  className="font-sans font-light text-xs text-gray-600 leading-none px-2"
                 >
                   Powered by CoinGecko data
                 </a>
@@ -278,30 +291,35 @@ const AssetPage = (props) => {
             All time highs of other assets
           </p>
           {market.map((asset, index) => (
-            <div className="pt-2" key={`${asset.id}-${index}`}>
-              <Link href={`/${asset.symbol}`}>
-                <a className="font-sans text-sm md:text-lg text-gray-400 flex flex-row items-center justify-between">
-                  <span className="flex flex-row items-center justify-center">
-                    <Image
-                      src={asset.image}
-                      height={15}
-                      width={15}
-                      alt={`${asset.name} logo`}
-                    />{" "}
-                    <span className="pl-2">
-                      {asset.name} ({asset.symbol.toUpperCase()})
+            <Link href={`/${asset.symbol}`} key={`${asset.id}-${index}`}>
+              <a
+                className={`py-5 ${
+                  index !== 0 ? "border-t" : ""
+                } border-gray-200 font-sans text-lg md:text-lg text-gray-700 font-semibold flex flex-col md:flex-row items-start md:items-center md:justify-between`}
+              >
+                <span className="flex flex-row items-center justify-center">
+                  <Image
+                    src={asset.image}
+                    height={20}
+                    width={20}
+                    alt={`${asset.name} logo`}
+                  />{" "}
+                  <span className="pl-2 font-bold">
+                    {asset.symbol.toUpperCase()}
+                    <span className="pl-2 text-gray-400 font-medium">
+                      {asset.name}
                     </span>
                   </span>
-                  <span className="flex-grow mx-3 h-px bg-gray-200" />
-                  <span className="font-bold text-black">
-                    {asset.ath.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                    })}{" "}
-                    USD
-                  </span>
-                </a>
-              </Link>
-            </div>
+                </span>
+                {/* <span className="flex-grow mx-3 h-px bg-gray-200" /> */}
+                <span className="font-bold text-black">
+                  {asset.ath.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                  })}{" "}
+                  USD
+                </span>
+              </a>
+            </Link>
           ))}
           <button
             className="mt-20 bg-gray-200 p-2 rounded-lg"
