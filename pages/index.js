@@ -16,7 +16,10 @@ const HomePage = ({ list, market }) => {
   url.searchParams.append("theme", "dark");
   url.searchParams.append("md", true);
   url.searchParams.append("fontSize", "64px");
-  url.searchParams.append("images", "https://ath.ooo/athwordmarkwhite.png");
+  url.searchParams.append(
+    "images",
+    "https://ath.ooo/logo/wordmark_transparent_tight.png"
+  );
   url.searchParams.append("cornerLogo", "false");
   url.searchParams.append("centered", "true");
 
@@ -29,10 +32,17 @@ const HomePage = ({ list, market }) => {
           openGraphImageAbsoluteUrl={url}
           url={`https://ath.ooo/`}
         />
-        <ul className="flex flex-col">
+        <div className="pt-5 pb-10">
           <h1 className="text-xl md:text-3xl font-sans font-black mb-3">
-            All time high prices in USD
+            ATH.ooo — All-time high prices in USD
           </h1>
+          <p className="text-md md:text-md font-sans text-gray-500">
+            This website displays the highest ever recorded price in US Dollars
+            that someone has paid for any given crypto asset. This website it
+            powered by CoinGecko's API.
+          </p>
+        </div>
+        <ul className="flex flex-col">
           {market.map((asset, i) => {
             const athTimestamp = moment.utc(asset.ath_date);
             return (
