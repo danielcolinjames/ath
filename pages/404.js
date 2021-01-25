@@ -9,7 +9,7 @@ const NotFoundPage = ({ assetid, market, list }) => {
 
   const url = new URL("https://og.ath.ooo");
   url.pathname = `${encodeURIComponent(
-    `ATH.ooo – All Time Highs of Crypto Assets.png`
+    `ATH.ooo – All-Time Highs of Crypto Assets.png`
   )}`;
   url.searchParams.append("theme", "dark");
   url.searchParams.append("md", true);
@@ -23,7 +23,7 @@ const NotFoundPage = ({ assetid, market, list }) => {
       <div className="p-5 mx-auto max-w-2xl">
         <MetaTags
           title={"ATH.ooo — 404: Not Found"}
-          description={`See the all time highs of crypto assets`}
+          description={`See the all-time highs of crypto assets`}
           openGraphImageAbsoluteUrl={url}
           url={`https://ath.ooo/`}
           noIndex
@@ -42,7 +42,7 @@ const NotFoundPage = ({ assetid, market, list }) => {
           </p>
         </div>
         <p className="font-sans text-base md:text-xl font-bold mt-20 mb-2 text-gray-400">
-          All time highs of other assets
+          All-time highs of other assets
         </p>
         {market?.map((asset, index) => (
           <div className="pt-2" key={`${asset.id}-${index}`}>

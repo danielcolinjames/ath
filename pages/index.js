@@ -11,7 +11,7 @@ const HomePage = ({ list, market }) => {
 
   const url = new URL("https://og.ath.ooo");
   url.pathname = `${encodeURIComponent(
-    `ATH.ooo – All Time Highs of Crypto Assets.png`
+    `ATH.ooo – All-Time Highs of Crypto Assets.png`
   )}`;
   url.searchParams.append("theme", "dark");
   url.searchParams.append("md", true);
@@ -27,8 +27,8 @@ const HomePage = ({ list, market }) => {
     <Layout assetList={list}>
       <div className="p-5 mx-auto max-w-2xl">
         <MetaTags
-          title={"ATH.ooo — All Time Highs"}
-          description={`See the all time highs of crypto assets`}
+          title={"ATH.ooo — All-Time Highs"}
+          description={`See the all-time highs of crypto assets`}
           openGraphImageAbsoluteUrl={url}
           url={`https://ath.ooo/`}
         />

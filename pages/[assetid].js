@@ -29,7 +29,7 @@ const AssetPage = (props) => {
     const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
     const title = `${
       assetInfo[0].name
-    } (${assetid.toUpperCase()}) All Time High`;
+    } (${assetid.toUpperCase()}) All-Time High`;
 
     const url = new URL("https://og.ath.ooo");
     url.pathname = `${encodeURIComponent(
@@ -73,11 +73,14 @@ const AssetPage = (props) => {
                 alt={`${assetInfo[0].name} logo`}
               />
               <h1 className="font-sans ml-2 font-bold text-xl">
-                {assetInfo[0].name} ({assetid.toUpperCase()})
+                {assetid.toUpperCase()}{" "}
+                <span className="font-medium text-gray-500 pl-1">
+                  {assetInfo[0].name}
+                </span>
               </h1>
             </div>
             <h2 className="text-3xl font-sans font-black">
-              All time high price
+              All-time high price
             </h2>
             <div className="inline-block">
               <div className="h-2 md:h-3 bg-ath-100 w-full -mb-4 md:-mb-5 mt-5" />
@@ -151,7 +154,7 @@ const AssetPage = (props) => {
                 </div>
                 <div>
                   <h2 className="text-lg font-sans font-bold text-gray-600">
-                    Change since all time high
+                    Change since all-time high
                   </h2>
                   <div className="inline-block">
                     <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-1 mb-4">
@@ -240,7 +243,7 @@ const AssetPage = (props) => {
                               </h1>
                             </div>
                             <h2 className="text-md font-sans font-black">
-                              All time high price in USD
+                              All-time high price in USD
                             </h2>
                             <div className="inline-block">
                               <div className="h-1 bg-ath-100 w-full -mb-4 mt-2" />
@@ -288,7 +291,7 @@ const AssetPage = (props) => {
             )}
           </div>
           <p className="font-sans text-base md:text-xl font-bold mt-20 mb-2 text-gray-400">
-            All time highs of other assets
+            All-time highs of other assets
           </p>
           {market.map((asset, index) => (
             <Link href={`/${asset.symbol}`} key={`${asset.id}-${index}`}>
@@ -312,7 +315,7 @@ const AssetPage = (props) => {
                   </span>
                 </span>
                 {/* <span className="flex-grow mx-3 h-px bg-gray-200" /> */}
-                <span className="font-bold text-black">
+                <span className="font-bold text-black text-xl pt-2 md:pt-0 md:text-lg">
                   {asset.ath.toLocaleString(undefined, {
                     minimumFractionDigits: 2,
                   })}{" "}
