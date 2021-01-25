@@ -10,9 +10,7 @@ const HomePage = ({ list, market }) => {
   const [showList, setShowList] = useState(false);
 
   const url = new URL("https://og.ath.ooo");
-  url.pathname = `${encodeURIComponent(
-    `ATH.ooo – All-Time Highs of Crypto Assets.png`
-  )}`;
+  url.pathname = `${encodeURIComponent(`All-Time Highs of Crypto Assets.png`)}`;
   url.searchParams.append("theme", "dark");
   url.searchParams.append("md", true);
   url.searchParams.append("fontSize", "64px");
@@ -22,6 +20,7 @@ const HomePage = ({ list, market }) => {
   );
   url.searchParams.append("cornerLogo", "false");
   url.searchParams.append("centered", "true");
+  url.searchParams.append("hideHeader", "true");
 
   return (
     <Layout assetList={list}>
