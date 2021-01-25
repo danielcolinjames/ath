@@ -17,6 +17,17 @@ gtag('config', 'G-JRKNF4376S');`,
         ></script>
       </Head>
       <Component {...pageProps} />
+      <style jsx global>{`
+        ::-moz-selection {
+          color: black;
+          background: #00ffbf;
+        }
+
+        ::selection {
+          color: black;
+          background: #00ffbf;
+        }
+      `}</style>
     </>
   );
 }
