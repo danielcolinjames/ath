@@ -38,7 +38,7 @@ const HomePage = ({ list, market }) => {
           </h1>
           <p className="text-md md:text-md font-sans text-gray-500">
             This website displays the highest ever recorded price in US Dollars
-            that someone has paid for any given crypto asset. This website it
+            that someone has paid for any given crypto asset. This website is
             powered by CoinGecko's API.
           </p>
         </div>
