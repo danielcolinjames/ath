@@ -65,8 +65,8 @@ const NavBar = ({ assetList }) => {
               <Image
                 className="image-override"
                 src="/logo/wordmark_transparent_tight.png"
-                width={122.5}
-                height={33.9}
+                width={163.285714286}
+                height={38.857142857}
                 alt="ATH.ooo logo"
               />
             </div>

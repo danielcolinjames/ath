@@ -3,6 +3,7 @@ import Layout from "../components/Layout";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import AssetListItem from "../components/AssetListItem";
 
 const NotFoundPage = ({ assetid, market, list }) => {
   const [showList, setShowList] = useState(false);
@@ -45,30 +46,7 @@ const NotFoundPage = ({ assetid, market, list }) => {
           All-time highs of other assets
         </p>
         {market?.map((asset, index) => (
-          <div className="pt-2" key={`${asset.id}-${index}`}>
-            <Link href={`/${asset.symbol}`}>
-              <a className="font-sans text-sm md:text-lg text-gray-400 flex flex-row items-center justify-between">
-                <span className="flex flex-row items-center justify-center">
-                  <Image
-                    src={asset.image}
-                    height={15}
-                    width={15}
-                    alt={`${asset.name} logo`}
-                  />{" "}
-                  <span className="pl-2">
-                    {asset.name} ({asset.symbol.toUpperCase()})
-                  </span>
-                </span>
-                <span className="flex-grow mx-3 h-px bg-gray-200" />
-                <span className="font-bold text-black">
-                  {asset.ath.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                  })}{" "}
-                  USD
-                </span>
-              </a>
-            </Link>
-          </div>
+          <AssetListItem asset={asset} index={index} />
         ))}
         <button
           className="mt-20 bg-gray-200 p-2 rounded-lg"

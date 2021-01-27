@@ -5,6 +5,7 @@ import Image from "next/image";
 import moment from "moment";
 import MetaTags from "../components/MetaTags";
 import Layout from "../components/Layout";
+import AssetListItem from "../components/AssetListItem";
 
 const HomePage = ({ list, market }) => {
   const [showList, setShowList] = useState(false);
@@ -43,48 +44,53 @@ const HomePage = ({ list, market }) => {
         </div>
         <ul className="flex flex-col">
           {market.map((asset, i) => {
-            const athTimestamp = moment.utc(asset.ath_date);
             return (
-              <Fragment key={i}>
-                <div className="pt-2">
-                  <div className="flex flex-row justify-between">
-                    <span className="w-2/3">
-                      <Link href={`/${asset.symbol}`}>
-                        <a>
-                          <div className="flex flex-row items-center py-2 pr-3">
-                            <Image
-                              src={asset.image}
-                              className="max-h-6"
-                              height={20}
-                              width={20}
-                              alt={`${asset.name} logo`}
-                            />
-                            <h2 className="font-sans ml-2 font-bold text-md">
-                              {asset.name} ({asset.symbol.toUpperCase()})
-                            </h2>
-                          </div>
-                        </a>
-                      </Link>
-                    </span>
-                    <Link href={`/${asset.symbol}`}>
-                      <a>
-                        <div className="inline-block pt-2">
-                          <div className="h-1 md:h-1 bg-ath-100 w-full -mb-6 md:-mb-5" />
-                          <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-4 mb-1">
-                            {asset.ath.toLocaleString(undefined, {
-                              minimumFractionDigits: 2,
-                            })}
-                          </h3>
-                        </div>
-                      </a>
-                    </Link>
-                  </div>
-                  <p className="font-sans font-light text-md text-gray-400">
-                    Set {athTimestamp.fromNow()}
-                  </p>
-                </div>
-                <div className="mt-5 h-px w-full bg-gray-300" />
-              </Fragment>
+              <AssetListItem
+                asset={asset}
+                index={i}
+                showGreenLine
+                showTimeSince
+              />
+              // <Fragment key={i}>
+              //   <div className="pt-2">
+              //     <div className="flex flex-row justify-between">
+              //       <span className="w-2/3">
+              //         <Link href={`/${asset.symbol}`}>
+              //           <a>
+              //             <div className="flex flex-row items-center py-2 pr-3">
+              //               <Image
+              //                 src={asset.image}
+              //                 className="max-h-6"
+              //                 height={20}
+              //                 width={20}
+              //                 alt={`${asset.name} logo`}
+              //               />
+              //               <h2 className="font-sans ml-2 font-bold text-md">
+              //                 {asset.name} ({asset.symbol.toUpperCase()})
+              //               </h2>
+              //             </div>
+              //           </a>
+              //         </Link>
+              //       </span>
+              //       <Link href={`/${asset.symbol}`}>
+              //         <a>
+              //           <div className="inline-block pt-2">
+              //             <div className="h-1 md:h-1 bg-ath-100 w-full -mb-6 md:-mb-5" />
+              //             <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-4 mb-1">
+              //               {asset.ath.toLocaleString(undefined, {
+              //                 minimumFractionDigits: 2,
+              //               })}
+              //             </h3>
+              //           </div>
+              //         </a>
+              //       </Link>
+              //     </div>
+              //     <p className="font-sans font-light text-md text-gray-400">
+              //       Set {athTimestamp.fromNow()}
+              //     </p>
+              //   </div>
+              //   <div className="mt-5 h-px w-full bg-gray-300" />
+              // </Fragment>
             );
           })}
         </ul>

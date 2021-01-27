@@ -6,6 +6,7 @@ import Image from "next/image";
 import MetaTags from "../components/MetaTags";
 import moment from "moment";
 import Layout from "../components/Layout";
+import AssetListItem from "../components/AssetListItem";
 
 const AssetPage = (props) => {
   const { errorCode, assetid, market, list } = props;
@@ -51,9 +52,9 @@ const AssetPage = (props) => {
     } (${assetid.toUpperCase()}) was ${assetInfo[0].ath.toLocaleString(
       undefined,
       { minimumFractionDigits: 2 }
-    )} USD, set ${athTimestamp.fromNow()} on ${moment(athTimestamp).format(
-      "MMMM Do, YYYY"
-    )} at ${moment(athTimestamp).format("h:mm:ss A UTC")}`;
+    )} USD, set on ${moment(athTimestamp).format("MMMM Do, YYYY")} at ${moment(
+      athTimestamp
+    ).format("h:mm:ss A UTC")}`;
 
     return (
       <Layout assetList={list}>
@@ -292,35 +293,7 @@ const AssetPage = (props) => {
             All-time highs of other assets
           </p>
           {market.map((asset, index) => (
-            <Link href={`/${asset.symbol}`} key={`${asset.id}-${index}`}>
-              <a
-                className={`py-5 ${
-                  index !== 0 ? "border-t" : ""
-                } border-gray-200 font-sans text-lg md:text-lg text-gray-700 font-semibold flex flex-col md:flex-row items-start md:items-center md:justify-between`}
-              >
-                <span className="flex flex-row items-center justify-center">
-                  <Image
-                    src={asset.image}
-                    height={20}
-                    width={20}
-                    alt={`${asset.name} logo`}
-                  />{" "}
-                  <span className="pl-2 font-bold">
-                    {asset.symbol.toUpperCase()}
-                    <span className="pl-2 text-gray-400 font-medium">
-                      {asset.name}
-                    </span>
-                  </span>
-                </span>
-                {/* <span className="flex-grow mx-3 h-px bg-gray-200" /> */}
-                <span className="font-bold text-black text-xl pt-2 md:pt-0 md:text-lg">
-                  {asset.ath.toLocaleString(undefined, {
-                    minimumFractionDigits: 2,
-                  })}{" "}
-                  USD
-                </span>
-              </a>
-            </Link>
+            <AssetListItem asset={asset} index={index} />
           ))}
           <button
             className="mt-20 bg-gray-200 p-2 rounded-lg"
