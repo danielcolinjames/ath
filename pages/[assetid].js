@@ -293,7 +293,7 @@ const AssetPage = (props) => {
             All-time highs of other assets
           </p>
           {market.map((asset, index) => (
-            <AssetListItem asset={asset} index={index} />
+            <AssetListItem asset={asset} index={index} showTimeSince />
           ))}
           <button
             className="mt-20 bg-gray-200 p-2 rounded-lg"
