@@ -352,23 +352,23 @@ const AssetPage = (props) => {
   }
 };
 
-export async function getStaticPaths() {
-  const marketRes = await fetch(
-    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=25"
-  );
-  const market = await marketRes.json();
+// export async function getStaticPaths() {
+//   const marketRes = await fetch(
+//     "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=25"
+//   );
+//   const market = await marketRes.json();
 
-  const paths = market.map((asset) => ({
-    params: { assetid: asset.symbol },
-  }));
+//   const paths = market.map((asset) => ({
+//     params: { assetid: asset.symbol },
+//   }));
 
-  return {
-    paths,
-    fallback: "blocking",
-  };
-}
+//   return {
+//     paths,
+//     fallback: "blocking",
+//   };
+// }
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const props = {};
 
   const { assetid } = params;
@@ -434,7 +434,7 @@ export async function getStaticProps({ params }) {
 
   return {
     props,
-    revalidate: 60,
+    // revalidate: 60,
   };
 }
 

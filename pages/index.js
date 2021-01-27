@@ -112,7 +112,7 @@ const HomePage = ({ list, market }) => {
   );
 };
 
-export async function getStaticProps() {
+export async function getServerSideProps() {
   const listRes = await fetch("https://api.coingecko.com/api/v3/coins/list");
   const list = await listRes.json();
 
@@ -122,7 +122,10 @@ export async function getStaticProps() {
 
   const market = await marketRes.json();
   // console.log(market);
-  return { props: { list, market }, revalidate: 86400 };
+  return {
+    props: { list, market },
+    // revalidate: 86400
+  };
 }
 
 export default HomePage;
