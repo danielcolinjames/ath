@@ -108,11 +108,9 @@ const AssetPage = (props) => {
               } (${assetid.toUpperCase()}) was ${assetInfo[0].ath.toLocaleString(
                 undefined,
                 { minimumFractionDigits: 2 }
-              )} USD, set ${athTimestamp.fromNow()} on ${moment(
-                athTimestamp
-              ).format("MMMM Do, YYYY")} at ${moment(athTimestamp).format(
-                "h:mm A UTC."
-              )}`}
+              )} USD, set on ${moment(athTimestamp).format(
+                "MMMM Do, YYYY"
+              )} at ${moment(athTimestamp).format("h:mm A UTC.")}`}
             </p>
             <div className="bg-gray-100 p-3 inline-block mt-4">
               <p className="font-sans font-light text-sm text-gray-700">
