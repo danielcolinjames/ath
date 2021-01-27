@@ -9,14 +9,16 @@ const NotFoundPage = ({ assetid, market, list }) => {
   const [showList, setShowList] = useState(false);
 
   const url = new URL("https://og.ath.ooo");
-  url.pathname = `${encodeURIComponent(
-    `ATH.ooo – All-Time Highs of Crypto Assets.png`
-  )}`;
+  url.pathname = `${encodeURIComponent(`ATH.ooo – 404`)}`;
   url.searchParams.append("theme", "dark");
   url.searchParams.append("md", true);
   url.searchParams.append("fontSize", "64px");
-  url.searchParams.append("images", "https://ath.ooo/athwordmarkwhite.png");
+  url.searchParams.append(
+    "images",
+    "https://ath.ooo/wordmark_transparent_tight_new.png"
+  );
   url.searchParams.append("cornerLogo", "false");
+  url.searchParams.append("hideHeader", "true");
   url.searchParams.append("centered", "true");
 
   return (
