@@ -1,2 +1,3 @@
 User-agent: *
-Diallow:
+Disallow:
+Sitemap: https://ath.ooo/sitemap.xml
