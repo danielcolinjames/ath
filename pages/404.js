@@ -15,7 +15,7 @@ const NotFoundPage = ({ assetid, market, list }) => {
   url.searchParams.append("fontSize", "64px");
   url.searchParams.append(
     "images",
-    "https://ath.ooo/images/logo/wordmark_transparent_tight_new.png"
+    "https://ath.ooo/logo/wordmark_transparent_tight_new.png"
   );
   url.searchParams.append("cornerLogo", "false");
   url.searchParams.append("hideHeader", "true");
