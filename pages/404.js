@@ -9,7 +9,7 @@ const NotFoundPage = ({ assetid, market, list }) => {
   const [showList, setShowList] = useState(false);
 
   const url = new URL("https://og.ath.ooo");
-  url.pathname = `${encodeURIComponent(`ATH.ooo – 404`)}`;
+  url.pathname = `${encodeURIComponent(`ATH.ooo – 404.png`)}`;
   url.searchParams.append("theme", "dark");
   url.searchParams.append("md", true);
   url.searchParams.append("fontSize", "64px");
