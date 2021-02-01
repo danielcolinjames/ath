@@ -44,17 +44,29 @@ const AssetPage = (props) => {
     url.searchParams.append("centered", "false");
     url.searchParams.append("heights", 200);
 
-    const athTimestamp = moment.utc(assetInfo[0].ath_date);
+    const hasAth = assetInfo[0].ath !== null;
+
+    const ath = hasAth
+      ? assetInfo[0].ath.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+        })
+      : "unknown";
+
+    const athTimestamp = moment.utc(assetInfo[0]?.ath_date);
     const lastUpdated = moment.utc(assetInfo[0].last_updated);
 
-    const descriptionText = `The all-time high price of ${
-      assetInfo[0].name
-    } (${assetid.toUpperCase()}) was ${assetInfo[0].ath.toLocaleString(
-      undefined,
-      { minimumFractionDigits: 2 }
-    )} USD, set on ${moment(athTimestamp).format("MMMM Do, YYYY")} at ${moment(
-      athTimestamp
-    ).format("h:mm:ss A UTC")}`;
+    const descriptionText = hasAth
+      ? `The all-time high price of ${
+          assetInfo[0].name
+        } (${assetid.toUpperCase()}) was ${assetInfo[0]?.ath?.toLocaleString(
+          undefined,
+          { minimumFractionDigits: 2 }
+        )} USD, set on ${moment(athTimestamp).format(
+          "MMMM Do, YYYY"
+        )} at ${moment(athTimestamp).format("h:mm:ss A UTC")}`
+      : `The all-time high price of ${
+          assetInfo[0].name
+        } (${assetid.toUpperCase()}) is unknown.`;
 
     return (
       <Layout assetList={list}>
@@ -80,127 +92,148 @@ const AssetPage = (props) => {
                 </span>
               </h1>
             </div>
-            <h2 className="text-3xl font-sans font-black">
-              All-time high price
-            </h2>
-            <div className="inline-block">
-              <div className="h-2 md:h-3 bg-ath-100 w-full -mb-4 md:-mb-5 mt-5" />
-              <h3
-                className={`text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4 pl-4`}
-              >
-                <span className="font-extralight text-xl absolute pt-2 -ml-4">
-                  $
-                </span>
-                {assetInfo[0].ath.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                })}
-                {assetInfo[0].ath < assetInfo[0].current_price && (
-                  <span
-                    className={`${
-                      assetInfo[0].ath >= assetInfo[0].current_price
-                        ? "flex flex-col"
-                        : "inline-block"
-                    }`}
+            {hasAth ? (
+              <>
+                <h2 className="text-3xl font-sans font-black">
+                  All-time high price
+                </h2>
+                <div className="inline-block">
+                  <div className="h-2 md:h-3 bg-ath-100 w-full -mb-4 md:-mb-5 mt-5" />
+                  <h3
+                    className={`text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4 pl-4`}
                   >
-                    <span className="flex flex-row items-center justify-start pt-2">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        className="h-5 w-auto text-yellow-500"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                        />
-                      </svg>
-                      <p className="text-xs pl-2 font-normal text-yellow-500">
-                        Current price is equal to or above ATH
-                      </p>
+                    <span className="font-extralight text-xl absolute pt-2 -ml-4">
+                      $
                     </span>
-                  </span>
-                )}
-              </h3>
-            </div>
-            <div>
-              <p className="font-sans font-light text-2xl text-gray-400">
-                Set {athTimestamp.fromNow()}
-              </p>
-              <p className="font-sans font-light text-xs text-gray-400">
-                on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
-                {moment(athTimestamp).format("h:mm:ss A UTC")}
-              </p>
-            </div>
-            <p className="pt-5 pb-5 text-md md:text-md font-sans text-gray-500">
-              {`The highest price ever paid for ${
-                assetInfo[0].name
-              } (${assetid.toUpperCase()}) was ${assetInfo[0].ath.toLocaleString(
-                undefined,
-                { minimumFractionDigits: 2 }
-              )} USD, set on ${moment(athTimestamp).format(
-                "MMMM Do, YYYY"
-              )} at ${moment(athTimestamp).format("h:mm A UTC.")}`}
-            </p>
-            <div className="bg-gray-100 p-3 inline-block mt-4">
-              <p className="font-sans font-light text-sm text-gray-700">
-                Data accurate as of {lastUpdated.fromNow()}
-              </p>
-              <div className="h-px bg-gray-300 mt-2" />
-              <div className="flex flex-row items-center justify-start pt-2">
-                <Image
-                  src="/cglogo.svg"
-                  height={20}
-                  width={20}
-                  alt={`CoinGecko logo`}
-                />
-                <a
-                  target="_blank"
-                  href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
-                  className="font-sans font-light text-xs text-gray-600 leading-none px-2"
-                >
-                  Powered by CoinGecko data
-                </a>
-              </div>
-              {/* Other info about [assetid] */}
-            </div>
-            <div className="pt-10">
-              <div className="h-px bg-gray-200 w-full mb-4" />
-              <div className="grid grid-cols-1 md:grid-cols-2">
-                {/* <p>{JSON.stringify(assetInfo[0])}</p> */}
-                <div>
-                  <h2 className="text-lg font-sans font-bold text-gray-600">
-                    Current price in USD
-                  </h2>
-                  <div className="inline-block">
-                    <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-1 mb-4">
-                      {assetInfo[0].current_price.toLocaleString(undefined, {
-                        minimumFractionDigits: 2,
-                      })}
-                    </h3>
-                  </div>
+                    {ath}
+                    {assetInfo[0]?.ath < assetInfo[0].current_price && (
+                      <span className={`flex flex-col`}>
+                        <span className="flex flex-row items-center justify-start pt-4 -ml-4">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            className="h-5 w-auto text-yellow-500"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                            />
+                          </svg>
+                          <p className="text-sm pl-2 font-normal text-yellow-500">
+                            Current price is equal to or above ATH
+                          </p>
+                        </span>
+                      </span>
+                    )}
+                  </h3>
                 </div>
                 <div>
-                  <h2 className="text-lg font-sans font-bold text-gray-600">
-                    Change since all-time high
-                  </h2>
-                  <div className="inline-block">
-                    <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-1 mb-4">
-                      {assetInfo[0].ath_change_percentage.toLocaleString(
-                        undefined,
-                        {
+                  <p className="font-sans font-light text-2xl text-gray-400">
+                    Set {athTimestamp.fromNow()}
+                  </p>
+                  <p className="font-sans font-light text-xs text-gray-400">
+                    on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
+                    {moment(athTimestamp).format("h:mm:ss A UTC")}
+                  </p>
+                </div>
+                <p className="pt-5 pb-5 text-md md:text-md font-sans text-gray-500">
+                  {`The highest price ever paid for ${
+                    assetInfo[0].name
+                  } (${assetid.toUpperCase()}) was ${ath} USD, set on ${moment(
+                    athTimestamp
+                  ).format("MMMM Do, YYYY")} at ${moment(athTimestamp).format(
+                    "h:mm A UTC."
+                  )}`}
+                </p>
+                <div className="bg-gray-100 p-3 inline-block mt-4">
+                  <p className="font-sans font-light text-sm text-gray-700">
+                    Data accurate as of {lastUpdated.fromNow()}
+                  </p>
+                  <div className="h-px bg-gray-300 mt-2" />
+                  <div className="flex flex-row items-center justify-start pt-2">
+                    <Image
+                      src="/cglogo.svg"
+                      height={20}
+                      width={20}
+                      alt={`CoinGecko logo`}
+                    />
+                    <a
+                      target="_blank"
+                      href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
+                      className="font-sans font-light text-xs text-gray-600 leading-none px-2"
+                    >
+                      Powered by CoinGecko data
+                    </a>
+                  </div>
+                  {/* Other info about [assetid] */}
+                </div>
+              </>
+            ) : (
+              <>
+                <h2 className="text-3xl font-sans font-black pt-5">
+                  No price data found for {assetInfo[0].symbol.toUpperCase()}
+                </h2>
+                <div className="bg-gray-100 p-3 inline-block mt-4">
+                  <div className="flex flex-row items-center justify-start">
+                    <Image
+                      src="/cglogo.svg"
+                      height={20}
+                      width={20}
+                      alt={`CoinGecko logo`}
+                    />
+                    <a
+                      target="_blank"
+                      href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
+                      className="font-sans font-light text-xs text-gray-600 leading-none px-2"
+                    >
+                      Powered by CoinGecko data
+                    </a>
+                  </div>
+                </div>
+              </>
+            )}
+
+            {hasAth && (
+              <div className="pt-10">
+                <div className="h-px bg-gray-200 w-full mb-4" />
+                <div className="grid grid-cols-1 md:grid-cols-2">
+                  {/* <p>{JSON.stringify(assetInfo[0])}</p> */}
+                  <div>
+                    <h2 className="text-lg font-sans font-bold text-gray-600">
+                      Current price in USD
+                    </h2>
+                    <div className="inline-block">
+                      <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-1 mb-4">
+                        {assetInfo[0].current_price?.toLocaleString(undefined, {
                           minimumFractionDigits: 2,
-                          maximumFractionDigits: 2,
-                        }
-                      )}
-                      %
-                    </h3>
+                        })}
+                      </h3>
+                    </div>
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-sans font-bold text-gray-600">
+                      Change since all-time high
+                    </h2>
+                    <div className="inline-block">
+                      <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-1 mb-4">
+                        {assetInfo[0].ath_change_percentage?.toLocaleString(
+                          undefined,
+                          {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          }
+                        )}
+                        %
+                      </h3>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            )}
 
             {!singleAssetMatch && (
               <div className="bg-gray-100 mt-10 p-5">
