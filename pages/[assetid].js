@@ -106,31 +106,40 @@ const AssetPage = (props) => {
                       $
                     </span>
                     {ath}
-                    {assetInfo[0]?.ath < assetInfo[0].current_price && (
-                      <span className={`flex flex-col`}>
-                        <span className="flex flex-row items-center justify-start pt-4 -ml-4">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            className="h-5 w-auto text-yellow-500"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                            />
-                          </svg>
-                          <p className="text-sm pl-2 font-normal text-yellow-500">
-                            Current price is equal to or above ATH
-                          </p>
-                        </span>
-                      </span>
-                    )}
                   </h3>
                 </div>
+                {assetInfo[0]?.ath < assetInfo[0].current_price && (
+                  <div>
+                    <span
+                      className={`inline-block bg-yellow-100 rounded-lg mb-10 py-2 px-3`}
+                    >
+                      <span className="flex flex-row items-center justify-start">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          className="h-5 w-auto text-yellow-500"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                          />
+                        </svg>
+                        <p className="text-sm pl-2 font-light text-black">
+                          Current price (
+                          {assetInfo[0].current_price.toLocaleString(
+                            undefined,
+                            { minimumFractionDigits: 2 }
+                          )}
+                          ) is equal to or above all-time high price
+                        </p>
+                      </span>
+                    </span>
+                  </div>
+                )}
                 <div>
                   <p className="font-sans font-light text-2xl text-gray-400">
                     Set {athTimestamp.fromNow()}
@@ -140,7 +149,7 @@ const AssetPage = (props) => {
                     {moment(athTimestamp).format("h:mm:ss A UTC")}
                   </p>
                 </div>
-                <p className="pt-5 pb-5 text-md md:text-md font-sans text-gray-500">
+                <p className="pt-8 pb-5 text-xl md:text-2xl font-sans font-semibold text-black max-w-sm md:max-w-md">
                   {`The highest price ever paid for ${
                     assetInfo[0].name
                   } (${assetid.toUpperCase()}) was ${ath} USD, set on ${moment(
@@ -149,7 +158,11 @@ const AssetPage = (props) => {
                     "h:mm A UTC."
                   )}`}
                 </p>
-                <div className="bg-gray-100 p-3 inline-block mt-4">
+                <a
+                  target="_blank"
+                  href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
+                  className="bg-gray-100 p-3 inline-block mt-4"
+                >
                   <p className="font-sans font-light text-sm text-gray-700">
                     Data accurate as of {lastUpdated.fromNow()}
                   </p>
@@ -161,16 +174,12 @@ const AssetPage = (props) => {
                       width={20}
                       alt={`CoinGecko logo`}
                     />
-                    <a
-                      target="_blank"
-                      href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
-                      className="font-sans font-light text-xs text-gray-600 leading-none px-2"
-                    >
+                    <p className="font-sans font-light text-xs text-gray-600 leading-none px-2">
                       Powered by CoinGecko data
-                    </a>
+                    </p>
                   </div>
                   {/* Other info about [assetid] */}
-                </div>
+                </a>
               </>
             ) : (
               <>
@@ -253,14 +262,14 @@ const AssetPage = (props) => {
                         d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                    <p className="font-sans font-light text-lg text-gray-400">
+                    <p className="font-sans font-light text-lg text-gray-600">
                       The ticker symbol "
                       <span className="font-bold">{assetid.toUpperCase()}</span>
                       " also represents other assets
                     </p>
                   </div>
                   <button
-                    className="bg-white px-2 py-1 mx-2 text-gray-400 text-xs font-sans flex flex-row items-center justify-center"
+                    className="bg-white px-2 py-1 mx-2 text-gray-800 text-sm font-sans flex flex-row items-center justify-center"
                     onClick={() => {
                       setShowSymbolSharerAssets(!showSymbolSharerAssets);
                     }}
@@ -319,13 +328,11 @@ const AssetPage = (props) => {
                                 )}
                               </h3>
                             </div>
-                            <p className="font-sans font-light text-lg text-gray-400">
+                            <p className="font-sans font-light text-lg text-gray-600">
                               Set {athTimestamp.fromNow()}
                             </p>
-                            <p className="font-sans font-light text-xs text-gray-400">
-                              on {moment(athTimestamp).format("MMMM Do, YYYY")}
-                            </p>
-                            <p className="font-sans font-light text-xs text-gray-400">
+                            <p className="font-sans font-light text-xs text-gray-600">
+                              on {moment(athTimestamp).format("MMMM Do, YYYY")}{" "}
                               at {moment(athTimestamp).format("h:mm:ss A UTC")}
                             </p>
                             <div className="bg-white p-3 inline-block mt-4 border border-dotted border-gray-100">
@@ -339,7 +346,7 @@ const AssetPage = (props) => {
                                 <a
                                   target="_blank"
                                   href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
-                                  className="font-sans font-light text-xs text-gray-300 leading-none px-2"
+                                  className="font-sans font-light text-xs text-gray-800 leading-none px-2"
                                 >
                                   Data accurate as of {lastUpdated.fromNow()}
                                 </a>
@@ -363,7 +370,9 @@ const AssetPage = (props) => {
             className="mt-20 bg-gray-200 p-2 rounded-lg"
             onClick={() => setShowList(!showList)}
           >
-            {showList ? "Hide" : "Show"} more assets{" "}
+            <span className="text-gray-800">
+              {showList ? "Hide" : "Show"} more assets{" "}
+            </span>
           </button>
           {showList && (
             <ul className="text-gray-400">

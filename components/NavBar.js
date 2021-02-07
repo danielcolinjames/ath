@@ -104,7 +104,7 @@ const NavBar = ({ assetList }) => {
                                 setFilterText("");
                               }}
                               className={`py-1 px-2 w-full ${
-                                resultCount === 1
+                                resultCount >= 1
                                   ? "bg-ath-100 bg-opacity-25 text-black"
                                   : ""
                               }`}
