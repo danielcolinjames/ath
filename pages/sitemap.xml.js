@@ -10,7 +10,11 @@ const createSitemap = (assets) =>
                     </url>
         ${assets
           .map(({ symbol }) => {
-            if (!symbol.includes("+"))
+            if (
+              !symbol.includes("+") &&
+              !symbol.includes("/") &&
+              symbol !== "404"
+            )
               return `
                     <url>
                         <loc>${`https://ath.ooo/${symbol}`}</loc>
