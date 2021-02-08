@@ -7,6 +7,7 @@ import MetaTags from "../components/MetaTags";
 import moment from "moment";
 import Layout from "../components/Layout";
 import AssetListItem from "../components/AssetListItem";
+import { usePalette } from "react-palette";
 
 const AssetPage = (props) => {
   const { errorCode, assetid, market, list } = props;
@@ -68,6 +69,14 @@ const AssetPage = (props) => {
           assetInfo[0].name
         } (${assetid.toUpperCase()}) is unknown.`;
 
+    const {
+      data: assetColors,
+      loading: assetColorsLoading,
+      error: assetColorsError,
+    } = usePalette(assetInfo[0].image);
+
+    // if (!assetColorsLoading) console.log(assetColors);
+
     return (
       <Layout assetList={list}>
         <div className="p-5 mx-auto max-w-2xl">
@@ -78,27 +87,52 @@ const AssetPage = (props) => {
             url={`https://ath.ooo/${assetid}`}
           />
           <div>
-            <div className="flex flex-row py-2">
+            <div className="flex flex-row items-center py-2">
               <Image
                 src={assetInfo[0].image}
-                height={28}
-                width={28}
+                height={75}
+                width={75}
                 alt={`${assetInfo[0].name} logo`}
               />
-              <h1 className="font-sans ml-2 font-bold text-xl">
+              <h1
+                className={`font-sans ml-4 font-bold text-2xl duration-500 transition-opacity ${
+                  assetColorsLoading ? "opacity-0" : "opacity-100"
+                }`}
+                style={
+                  assetColorsLoading || assetColorsError
+                    ? { color: "black" }
+                    : { color: assetColors.vibrant }
+                }
+              >
                 {assetid.toUpperCase()}{" "}
-                <span className="font-medium text-gray-500 pl-1">
+                <p
+                  className="font-bold text-gray-500 zpl-1"
+                  style={
+                    assetColorsLoading || assetColorsError
+                      ? { color: "black" }
+                      : { color: assetColors.darkMuted }
+                  }
+                >
                   {assetInfo[0].name}
-                </span>
+                </p>
               </h1>
             </div>
             {hasAth ? (
               <>
-                <h2 className="text-3xl font-sans font-black">
+                <h2 className="text-3xl font-sans font-black pt-3">
                   All-time high price
                 </h2>
                 <div className="inline-block">
-                  <div className="h-2 md:h-3 bg-ath-100 w-full -mb-4 md:-mb-5 mt-5" />
+                  <div
+                    className={`h-2 md:h-3 zbg-ath-100 w-full -mb-4 md:-mb-5 mt-5 duration-500 transition-opacity ${
+                      assetColorsLoading ? "opacity-0" : "opacity-100"
+                    }`}
+                    style={
+                      assetColorsLoading || assetColorsError
+                        ? { backgroundColor: "white" }
+                        : { backgroundColor: assetColors.vibrant }
+                    }
+                  />
                   <h3
                     className={`text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4 pl-4`}
                   >
