@@ -455,7 +455,7 @@ export async function getServerSideProps({ params }) {
   const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
 
   const marketRes = await fetch(
-    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=200"
+    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=25"
   );
   let errorCode = !res.ok
     ? res.statusCode
