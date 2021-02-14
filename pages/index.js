@@ -10,18 +10,18 @@ import AssetListItem from "../components/AssetListItem";
 const HomePage = ({ list, market }) => {
   const [showList, setShowList] = useState(false);
 
-  const url = new URL("https://og.ath.ooo");
-  url.pathname = `${encodeURIComponent(`All-Time Highs of Crypto Assets.png`)}`;
-  url.searchParams.append("theme", "dark");
-  url.searchParams.append("md", true);
-  url.searchParams.append("fontSize", "64px");
-  url.searchParams.append(
-    "images",
-    "https://ath.ooo/logo/wordmark_transparent_tight.png"
-  );
-  url.searchParams.append("cornerLogo", "false");
-  url.searchParams.append("centered", "true");
-  url.searchParams.append("hideHeader", "true");
+  // const url = new URL("https://og.ath.ooo");
+  // url.pathname = `${encodeURIComponent(`All-Time Highs of Crypto Assets.png`)}`;
+  // url.searchParams.append("theme", "dark");
+  // url.searchParams.append("md", true);
+  // url.searchParams.append("fontSize", "64px");
+  // url.searchParams.append(
+  //   "images",
+  //   "https://ath.ooo/logo/wordmark_transparent_tight.png"
+  // );
+  // url.searchParams.append("cornerLogo", "false");
+  // url.searchParams.append("centered", "true");
+  // url.searchParams.append("hideHeader", "true");
 
   return (
     <Layout assetList={list}>
@@ -29,7 +29,7 @@ const HomePage = ({ list, market }) => {
         <MetaTags
           title={"ATH.ooo — All-Time Highs"}
           description={`See the all-time highs of crypto assets`}
-          openGraphImageAbsoluteUrl={url}
+          openGraphImageAbsoluteUrl={`https://ath.ooo/og.png`}
           url={`https://ath.ooo/`}
         />
         <div className="pt-5 pb-10">
