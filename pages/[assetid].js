@@ -1,4 +1,4 @@
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import Link from "next/link";
 import NotFoundPage from "./404.js";
 import Error from "./_error.js";
@@ -25,8 +25,15 @@ const AssetPage = (props) => {
       return <Error statusCode={statusCode} />;
     }
   } else {
-    const { asset, assetid, list, assetInfo, market, singleAssetMatch } = props;
-
+    const {
+      asset,
+      assetid,
+      list,
+      assetInfo,
+      market,
+      singleAssetMatch,
+      marketChart,
+    } = props;
     const [showList, setShowList] = useState(false);
     const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
     const title = `${
@@ -73,9 +80,7 @@ const AssetPage = (props) => {
       data: assetColors,
       loading: assetColorsLoading,
       error: assetColorsError,
-    } = usePalette(assetInfo[0].image);
-
-    // if (!assetColorsLoading) console.log(assetColors);
+    } = usePalette(`https://cors.ath.ooo/${assetInfo[0].image}`);
 
     return (
       <Layout assetList={list}>
@@ -90,29 +95,13 @@ const AssetPage = (props) => {
             <div className="flex flex-row items-center py-2">
               <Image
                 src={assetInfo[0].image}
-                height={75}
-                width={75}
+                height={60}
+                width={60}
                 alt={`${assetInfo[0].name} logo`}
               />
-              <h1
-                className={`font-sans ml-4 font-bold text-2xl duration-500 transition-opacity ${
-                  assetColorsLoading ? "opacity-0" : "opacity-100"
-                }`}
-                style={
-                  assetColorsLoading || assetColorsError
-                    ? { color: "black" }
-                    : { color: assetColors.vibrant }
-                }
-              >
+              <h1 className={`font-sans ml-4 font-bold text-2xl text-gray-800`}>
                 {assetid.toUpperCase()}{" "}
-                <p
-                  className="font-bold text-gray-500 zpl-1"
-                  style={
-                    assetColorsLoading || assetColorsError
-                      ? { color: "black" }
-                      : { color: assetColors.darkMuted }
-                  }
-                >
+                <p className="font-bold text-gray-500 zpl-1">
                   {assetInfo[0].name}
                 </p>
               </h1>
@@ -183,6 +172,37 @@ const AssetPage = (props) => {
                     {moment(athTimestamp).format("h:mm:ss A UTC")}
                   </p>
                 </div>
+                {/* {console.log(marketChart.prices.map((p) => p[1]))} */}
+                {/* <Line
+                  className="pt-10"
+                  data={totalEarningsData}
+                  width={400}
+                  height={150}
+                  options={{
+                    legend: {
+                      position: "bottom",
+                      align: "center",
+                    },
+                    scales: {
+                      yAxes: [
+                        {
+                          stacked: false,
+                        },
+                      ],
+                    },
+                    maintainAspectRatio: true,
+                  }}
+                /> */}
+                {/* <Sparklines
+                  width={100}
+                  height={50}
+                  margin={5}
+                  data={marketChart.prices.map((p) => p[1])}
+                >
+                  <SparklinesLine
+                    color={assetColorsLoading ? "black" : assetColors.vibrant}
+                  />
+                </Sparklines> */}
                 <p className="pt-8 pb-5 text-xl md:text-2xl font-sans font-semibold text-black max-w-sm md:max-w-md">
                   {`The highest price ever paid for ${
                     assetInfo[0].name
@@ -430,22 +450,6 @@ const AssetPage = (props) => {
   }
 };
 
-// export async function getStaticPaths() {
-//   const marketRes = await fetch(
-//     "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=25"
-//   );
-//   const market = await marketRes.json();
-
-//   const paths = market.map((asset) => ({
-//     params: { assetid: asset.symbol },
-//   }));
-
-//   return {
-//     paths,
-//     fallback: "blocking",
-//   };
-// }
-
 export async function getServerSideProps({ params }) {
   const props = {};
 
@@ -507,12 +511,34 @@ export async function getServerSideProps({ params }) {
 
       const assetInfo = await assetsResponse.json();
       props.assetInfo = assetInfo;
+
+      const athTimestamp = moment
+        .utc(assetInfo[0]?.ath_date)
+        .subtract(7, "days")
+        .format("X");
+      // TODO: set the above "7 days" to some logical thing like: if the distance between now and ATH Date > 30 days, set it to 7 days, if now - ATH > 7 days, set to 1 day, if < 1 day, set to 4 hours
+
+      const marketChartResponse = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${
+          assetInfo[0].id
+        }/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
+          Date.now() / 1000
+        )}`
+      );
+      // console.log(
+      //   `https://api.coingecko.com/api/v3/coins/${assetCoingeckoId}/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
+      //     Date.now() / 1000
+      //   )}`
+      // );
+
+      const marketChart = await marketChartResponse.json();
+
+      props.marketChart = marketChart;
     }
   }
 
   return {
     props,
-    // revalidate: 60,
   };
 }
 
