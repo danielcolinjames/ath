@@ -8,6 +8,8 @@ import moment from "moment";
 import Layout from "../components/Layout";
 import AssetListItem from "../components/AssetListItem";
 import { usePalette } from "react-palette";
+import { Line } from "react-chartjs-2";
+import { fromUnixTime, format, addMinutes, parseISO } from "date-fns";
 
 const AssetPage = (props) => {
   const { errorCode, assetid, market, list } = props;
@@ -81,6 +83,25 @@ const AssetPage = (props) => {
       loading: assetColorsLoading,
       error: assetColorsError,
     } = usePalette(`https://cors.ath.ooo/${assetInfo[0].image}`);
+
+    const data = marketChart.prices;
+    const labels = data.map((p) => {
+      return format(fromUnixTime(p[0] / 1000), "MMM do");
+    });
+    const prices = data.map((p) => {
+      return p[1];
+    });
+    const datasets = [
+      {
+        label: `${assetInfo[0].symbol.toUpperCase()} price`,
+        data: prices,
+        backgroundColor: assetColorsLoading
+          ? "transparent"
+          : assetColors.vibrant,
+      },
+    ];
+
+    const chartData = { labels, datasets };
 
     return (
       <Layout assetList={list}>
@@ -173,26 +194,39 @@ const AssetPage = (props) => {
                   </p>
                 </div>
                 {/* {console.log(marketChart.prices.map((p) => p[1]))} */}
-                {/* <Line
-                  className="pt-10"
-                  data={totalEarningsData}
-                  width={400}
-                  height={150}
-                  options={{
-                    legend: {
-                      position: "bottom",
-                      align: "center",
-                    },
-                    scales: {
-                      yAxes: [
-                        {
-                          stacked: false,
-                        },
-                      ],
-                    },
-                    maintainAspectRatio: true,
-                  }}
-                /> */}
+                <div className="pt-10">
+                  <Line
+                    data={chartData}
+                    width={400}
+                    height={150}
+                    options={{
+                      legend: {
+                        position: "bottom",
+                        align: "center",
+                      },
+                      scales: {
+                        // xAxes: [
+                        //   {
+                        //     // type: "linear",
+                        //     position: "bottom",
+                        //     ticks: {
+                        //       // min: 1,
+                        //       // max: 800,
+                        //       // stepSize: 1000,
+                        //       // fixedStepSize: 1000,
+                        //     },
+                        //   },
+                        // ],
+                        yAxes: [
+                          {
+                            stacked: false,
+                          },
+                        ],
+                      },
+                      maintainAspectRatio: true,
+                    }}
+                  />
+                </div>
                 {/* <Sparklines
                   width={100}
                   height={50}
