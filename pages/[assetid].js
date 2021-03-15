@@ -205,18 +205,6 @@ const AssetPage = (props) => {
                         align: "center",
                       },
                       scales: {
-                        // xAxes: [
-                        //   {
-                        //     // type: "linear",
-                        //     position: "bottom",
-                        //     ticks: {
-                        //       // min: 1,
-                        //       // max: 800,
-                        //       // stepSize: 1000,
-                        //       // fixedStepSize: 1000,
-                        //     },
-                        //   },
-                        // ],
                         yAxes: [
                           {
                             stacked: false,
@@ -227,16 +215,6 @@ const AssetPage = (props) => {
                     }}
                   />
                 </div>
-                {/* <Sparklines
-                  width={100}
-                  height={50}
-                  margin={5}
-                  data={marketChart.prices.map((p) => p[1])}
-                >
-                  <SparklinesLine
-                    color={assetColorsLoading ? "black" : assetColors.vibrant}
-                  />
-                </Sparklines> */}
                 <p className="pt-8 pb-5 text-xl md:text-2xl font-sans font-semibold text-black max-w-sm md:max-w-md">
                   {`The highest price ever paid for ${
                     assetInfo[0].name
