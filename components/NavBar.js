@@ -49,7 +49,7 @@ const NavBar = ({ assetList }) => {
 
   return (
     <div className="w-full fixed z-30 bg-black">
-      <div className="py-4 bg-black flex justify-start items-center w-full max-w-2xl mx-auto px-5">
+      <div className="py-4 bg-black flex justify-start items-center w-full max-w-2xl md:max-w-screen-xl mx-auto px-5">
         <Link href="/">
           <a className="p-0 m-0 -mb-2">
             <div className="block md:hidden">

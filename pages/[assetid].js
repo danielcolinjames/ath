@@ -105,7 +105,7 @@ const AssetPage = (props) => {
 
     return (
       <Layout assetList={list}>
-        <div className="p-5 mx-auto max-w-2xl">
+        <div className="p-5 mx-auto max-w-2xl md:max-w-screen-xl">
           <MetaTags
             title={title}
             description={descriptionText}
@@ -197,17 +197,37 @@ const AssetPage = (props) => {
                 <div className="pt-10">
                   <Line
                     data={chartData}
-                    width={400}
-                    height={150}
+                    width={800}
+                    height={400}
                     options={{
                       legend: {
                         position: "bottom",
                         align: "center",
+                        display: false,
                       },
                       scales: {
                         yAxes: [
                           {
+                            ticks: {
+                              display: false,
+                            },
                             stacked: false,
+                            gridLines: {
+                              color: "rgba(0, 0, 0, 0)",
+                            },
+                            drawBorder: false,
+                          },
+                        ],
+                        xAxes: [
+                          {
+                            ticks: {
+                              display: false,
+                            },
+                            gridLines: {
+                              color: "rgba(0, 0, 0, 0)",
+                              zeroLineColor: "rgba(0, 0, 0, 0)",
+                            },
+                            drawBorder: false,
                           },
                         ],
                       },
