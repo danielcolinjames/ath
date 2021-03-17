@@ -105,7 +105,7 @@ const AssetPage = (props) => {
 
     return (
       <Layout assetList={list}>
-        <div className="p-5 mx-auto max-w-2xl md:max-w-screen-xl">
+        <div className="p-5 mx-auto max-w-2xl">
           <MetaTags
             title={title}
             description={descriptionText}
@@ -194,11 +194,11 @@ const AssetPage = (props) => {
                   </p>
                 </div>
                 {/* {console.log(marketChart.prices.map((p) => p[1]))} */}
-                <div className="pt-10">
+                <div className="pt-10 w-full">
                   <Line
                     data={chartData}
-                    width={800}
-                    height={400}
+                    width={400}
+                    height={300}
                     options={{
                       legend: {
                         position: "bottom",
