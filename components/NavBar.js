@@ -53,7 +53,7 @@ const NavBar = ({
 
   let resultCount = 0;
 
-  const ringString = `ring-[${assetColors.vibrant}]`;
+  // const ringString = `ring-[${assetColors.vibrant}]`;
 
   return (
     <div className="w-full h-14 shadow-xl fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect zborder zborder-solid zborder-[#fefefe]">
@@ -97,7 +97,7 @@ const NavBar = ({
                 <div className="w-full relative">
                   <input
                     // ${
-                    //   assetColorsLoading ? "ring-ath-100" : "ring-[#fc4c04]"
+                    //   assetColorsLoading && !assetColorsError ? "ring-ath-100" : "ring-[#fc4c04]"
                     //   // "ring-[#000fff]"
                     //   // `ring-[${assetColors.vibrant}]`
                     //   }
@@ -156,20 +156,14 @@ const NavBar = ({
         {/* <div className="bg-black w-full h-px" /> */}
       </div>
       <style jsx global>{`
-          :root {
-            --tw-ring-color: ${hexToRgba(
-              assetColorsLoading ? "#00FFBA" : assetColors.vibrant
-            ).slice(0, -4)}, var(--tw-ring-opacity));
-          }
-
-          .bg-dynamic {
-            background-color: ${
-              assetColorsLoading
-                ? "#00FFBA"
-                : hexToRgba(assetColors.vibrant, 0.85)
-            };
-          }
-        `}</style>
+        .bg-dynamic {
+          background-color: ${!assetColorsLoading &&
+          assetColors !== undefined &&
+          !assetColorsError
+            ? hexToRgba(assetColors?.vibrant, 0.85)
+            : "#00FFBA"};
+        }
+      `}</style>
     </div>
   );
 };

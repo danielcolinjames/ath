@@ -107,7 +107,10 @@ const AssetPage = (props) => {
           : hexToRgba(assetColors.vibrant, 0.085),
         // backgroundColor: gradient,
         // borderColor: 'rgba(247,147,26,1)',
-        borderColor: assetColorsLoading ? "transparent" : assetColors.vibrant,
+        borderColor:
+          assetColorsLoading && !assetColorsError
+            ? "transparent"
+            : assetColors.vibrant,
         borderJoinStyle: "round",
         borderCapStyle: "round",
         borderWidth: 3,
@@ -137,29 +140,9 @@ const AssetPage = (props) => {
                 ? "transparent"
                 : assetColors.vibrant,
             }}
-          />
-        </div> */}
-        <div
-          className="w-full h-1 relative"
-          style={{
-            backgroundColor: assetColorsLoading
-              ? "transparent"
-              : assetColors.vibrant,
-          }}
-        >
-          {/* <div className="absolute">
-            <h3
-              className={`max-w-2xl mx-auto top-0 text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4 pl-4`}
-            >
-              <span className="font-extralight text-xl absolute pt-2 -ml-4">
-                $
-              </span>
-              {ath}
-            </h3>
+            />
           </div> */}
-        </div>
-        {/* <div className="relative"> */}
-        <div className="absolute w-full pointer-events-none pt-16 z-10">
+        <div className="w-full pointer-events-none pt-14 z-10">
           <div className="max-w-2xl mx-auto">
             <div className="p-5 mx-autoz zmax-w-2xl">
               <div className="rounded-full shadow-xlz inline-block px-5 pr-10 z-10 relative blur-effect bg-[rgba(255,255,255,0.5)] py-3 -ml-5 -mt-20">
@@ -182,6 +165,26 @@ const AssetPage = (props) => {
               </div>
             </div>
           </div>
+          <div
+            className="w-full h-1 relative mb-5z zmt-10"
+            // style={{
+            //   backgroundColor: assetColorsLoading
+            //     ? "transparent"
+            //     : assetColors.vibrant,
+            // }}
+          >
+            {/* <div className="absolute">
+            <h3
+              className={`max-w-2xl mx-auto top-0 text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4 pl-4`}
+            >
+              <span className="font-extralight text-xl absolute pt-2 -ml-4">
+                $
+              </span>
+              {ath}
+            </h3>
+          </div> */}
+          </div>
+          {/* <div className="relative"> */}
           {/* </div> */}
         </div>
         <Line
@@ -255,6 +258,16 @@ const AssetPage = (props) => {
               ],
               xAxes: [
                 {
+                  // type: "time",
+                  // time: {
+                  //   parser: "MM/DD/YYYY HH:mm",
+                  //   tooltipFormat: "ll HH:mm",
+                  //   unit: "day",
+                  //   unitStepSize: 1,
+                  //   displayFormats: {
+                  //     day: "MM/DD/YYYY",
+                  //   },
+                  // },
                   padding: 0,
                   backdropPaddingX: 0,
                   backdropPaddingY: 0,
@@ -325,7 +338,9 @@ const AssetPage = (props) => {
                   <div className="inline-block">
                     <div
                       className={`h-2 md:h-3 zbg-ath-100 w-full -mb-4 md:-mb-5 mt-5 duration-500 transition-opacity ${
-                        assetColorsLoading ? "opacity-0" : "opacity-100"
+                        assetColorsLoading && !assetColorsError
+                          ? "opacity-0"
+                          : "opacity-100"
                       }`}
                       style={
                         assetColorsLoading || assetColorsError
@@ -644,8 +659,13 @@ const AssetPage = (props) => {
           }
           #nprogress .peg {
             box-shadow: 0 0 10px
-                ${assetColorsLoading ? "#00FFBA" : assetColors.vibrant},
-              0 0 5px ${assetColorsLoading ? "#00FFBA" : assetColors.vibrant};
+                ${assetColorsLoading && !assetColorsError
+                  ? "#00FFBA"
+                  : assetColors.vibrant},
+              0 0 5px
+                ${assetColorsLoading && !assetColorsError
+                  ? "#00FFBA"
+                  : assetColors.vibrant};
           }
 
           #nprogress .spinner-icon {

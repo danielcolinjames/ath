@@ -28,7 +28,7 @@ const AssetListItem = ({ asset, index, showGreenLine, showTimeSince }) => {
         <span className="flex flex-col items-start sm:items-end">
           <span className="inline-block">
             {showGreenLine && (
-              <div className="h-1 transform bg-transparent transition-all ease-in-out duration-200 group-hover:-translate-y-10 group-hover:bg-ath-100 group-hover:scale-110 w-full -mb-1 mt-3 sm:mt-0 sm:-mb-1" />
+              <div className="h-1 transform bg-transparent transition-all ease-in-out duration-200 group-hover:-translate-y-2 group-hover:bg-ath-100 group-hover:scale-110 w-full -mb-1 mt-3 sm:mt-0 sm:-mb-1" />
             )}
             <span className="font-bold text-black text-xl pt-2 sm:pt-0 sm:text-lg">
               {asset.ath.toLocaleString(undefined, {
