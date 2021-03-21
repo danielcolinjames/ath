@@ -128,14 +128,17 @@ const AssetPage = (props) => {
         assetColorsError={assetColorsError}
         assetList={list}
       >
-        <div
-          className="w-full h-5 -mt-14 fixed"
-          style={{
-            backgroundColor: assetColorsLoading
-              ? "transparent"
-              : assetColors.vibrant,
-          }}
-        />
+        {/* <div className="w-full -mt-14 fixed" />
+        <div className="w-full">
+          <div
+            className="h-5"
+            style={{
+              backgroundColor: assetColorsLoading
+                ? "transparent"
+                : assetColors.vibrant,
+            }}
+          />
+        </div> */}
         <div
           className="w-full h-1 relative"
           style={{
@@ -159,7 +162,7 @@ const AssetPage = (props) => {
         <div className="absolute w-full pointer-events-none pt-16 z-10">
           <div className="max-w-2xl mx-auto">
             <div className="p-5 mx-autoz zmax-w-2xl">
-              <div className="rounded-full shadow-xl inline-block px-5 pr-10 z-10 relative blur-effect bg-[rgba(255,255,255,0.5)] py-3 -ml-5 -mt-20">
+              <div className="rounded-full shadow-xlz inline-block px-5 pr-10 z-10 relative blur-effect bg-[rgba(255,255,255,0.5)] py-3 -ml-5 -mt-20">
                 <div className="flex flex-row items-center">
                   <Image
                     src={assetInfo[0].image}
