@@ -150,7 +150,7 @@ const AssetPage = (props) => {
             </div>
           </div>
         </div>
-        <div className="max-h-[80vw]">
+        <div className="max-h-[30vh]">
           <Line
             data={chartData}
             className="z-10"

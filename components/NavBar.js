@@ -54,7 +54,7 @@ const NavBar = ({
   let resultCount = 0;
 
   return (
-    <div className="w-full h-14 zshadow-xl fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect zborder zborder-solid zborder-[#fefefe]">
+    <div className="w-full h-14 shadow-sm fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect zborder zborder-solid zborder-[#fefefe]">
       <div className="max-w-2xl mx-auto zmt-3">
         <div className="rounded-full">
           <div className="flex justify-start items-center w-full max-w-2xl mx-auto px-5">
@@ -144,7 +144,7 @@ const NavBar = ({
             !assetColorsLoading &&
             assetColors !== undefined &&
             !assetColorsError
-              ? hexToRgba(assetColors.vibrant, 0.2)
+              ? hexToRgba(assetColors.vibrant, 0.5)
               : "#00FFBA",
         }}
       />
