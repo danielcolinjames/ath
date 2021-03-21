@@ -39,39 +39,15 @@ const NotFoundPage = ({ assetid, market, list }) => {
             There doesn't appear to be an asset called "{assetid?.toUpperCase()}
             " in CoinGecko's database
           </h1>
-          <p className="text-md md:text-md font-sans text-gray-500">
-            Take a look at the assets below, or try searching a ticker symbol in
-            the search bar above.
+          <p className="text-md md:text-md font-sans text-gray-500 pb-5">
+            Try visiting the home page:
           </p>
         </div>
-        <p className="font-sans text-base md:text-xl font-bold mt-20 mb-2 text-gray-400">
-          All-time highs of other assets
-        </p>
-        {market?.map((asset, index) => (
-          <AssetListItem asset={asset} index={index} />
-        ))}
-        <button
-          className="mt-20 bg-gray-200 p-2 rounded-lg"
-          onClick={() => setShowList(!showList)}
-        >
-          {showList ? "Hide" : "Show"} more assets{" "}
-        </button>
-        {showList && (
-          <ul className="text-gray-400">
-            {list?.map((asset, index) => (
-              <li
-                className="list-disc ml-8 pt-2"
-                key={`${asset.symbol}-${index}`}
-              >
-                <Link href={`/${asset.symbol}`}>
-                  <a>
-                    {asset.symbol.toUpperCase()} ({asset.name})
-                  </a>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        )}
+        <div>
+          <Link href="/">
+            <a className="mt-20 bg-gray-200 p-2 rounded-lg">Go home</a>
+          </Link>
+        </div>
       </div>
     </Layout>
   );
