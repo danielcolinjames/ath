@@ -187,111 +187,113 @@ const AssetPage = (props) => {
           {/* <div className="relative"> */}
           {/* </div> */}
         </div>
-        <Line
-          data={chartData}
-          className="z-10"
-          responsive
-          height={500}
-          width={1000}
-          options={{
-            legend: {
-              position: "bottom",
-              align: "center",
-              display: false,
-            },
-            // padding: 0,
-            layout: {
-              padding: {
-                left: 0,
-                right: 0,
-                top: 0,
-                bottom: 0,
+        <div className="chart-containerz max-h-[50vw]">
+          <Line
+            data={chartData}
+            className="z-10"
+            // responsive
+            height={500}
+            width={1000}
+            options={{
+              legend: {
+                position: "bottom",
+                align: "center",
+                display: false,
               },
-            }, // layout: {
-            //   padding: 0,
-            // },
-            tooltips: {
-              callbacks: {
-                //This removes the tooltip title
-                title: function () {},
-              },
-              //this removes legend color
-              displayColors: false,
-              yPadding: 10,
-              xPadding: 10,
-              position: "nearest",
-              caretSize: 10,
-              backgroundColor: "rgba(255,255,255,.9)",
-              bodyFontSize: 15,
-              bodyFontColor: "#303030",
-            },
-            backdropPaddingX: 0,
-            backdropPaddingY: 0,
-            scales: {
-              title: {
-                padding: 0,
-              },
-              yAxes: [
-                {
-                  padding: 0,
-                  ticks: {
-                    display: false,
-                    padding: 0,
-                    mirror: true,
-                    backdropPadding: {
-                      x: 0,
-                      y: 0,
-                    },
-                    // backdropPaddingY: 0,
-                  },
-                  backdropPaddingX: 0,
-                  backdropPaddingY: 0,
-                  padding: 0,
-                  stacked: false,
-                  gridLines: {
-                    drawTicks: false,
-                    color: "rgba(0, 0, 0, 0)",
-                  },
-                  drawBorder: false,
-                  drawTicks: false,
+              // padding: 0,
+              layout: {
+                padding: {
+                  left: 0,
+                  right: 0,
+                  top: 0,
+                  bottom: 0,
                 },
-              ],
-              xAxes: [
-                {
-                  // type: "time",
-                  // time: {
-                  //   parser: "MM/DD/YYYY HH:mm",
-                  //   tooltipFormat: "ll HH:mm",
-                  //   unit: "day",
-                  //   unitStepSize: 1,
-                  //   displayFormats: {
-                  //     day: "MM/DD/YYYY",
-                  //   },
-                  // },
+              }, // layout: {
+              //   padding: 0,
+              // },
+              tooltips: {
+                // callbacks: {
+                //   //This removes the tooltip title
+                //   // title: function () {},
+                // },
+                //this removes legend color
+                // displayColors: false,
+                // yPadding: 15,
+                // xPadding: 15,
+                // position: "nearest",
+                // caretSize: 10,
+                // backgroundColor: "rgba(255,255,255,.9)",
+                // bodyFontSize: 15,
+                // bodyFontColor: "#303030",
+              },
+              backdropPaddingX: 0,
+              backdropPaddingY: 0,
+              scales: {
+                title: {
                   padding: 0,
-                  backdropPaddingX: 0,
-                  backdropPaddingY: 0,
-                  ticks: {
-                    display: false,
+                },
+                yAxes: [
+                  {
                     padding: 0,
-                    mirror: true,
+                    ticks: {
+                      display: false,
+                      padding: 0,
+                      mirror: true,
+                      backdropPadding: {
+                        x: 0,
+                        y: 0,
+                      },
+                      // backdropPaddingY: 0,
+                    },
                     backdropPaddingX: 0,
                     backdropPaddingY: 0,
-                  },
-                  padding: 0,
-                  gridLines: {
+                    padding: 0,
+                    stacked: false,
+                    gridLines: {
+                      drawTicks: false,
+                      color: "rgba(0, 0, 0, 0)",
+                    },
+                    drawBorder: false,
                     drawTicks: false,
-                    color: "rgba(0, 0, 0, 0)",
-                    zeroLineColor: "rgba(0, 0, 0, 0)",
                   },
-                  drawBorder: false,
-                  drawTicks: false,
-                },
-              ],
-            },
-            // maintainAspectRatio: true,
-          }}
-        />
+                ],
+                xAxes: [
+                  {
+                    // type: "time",
+                    // time: {
+                    //   parser: "MM/DD/YYYY HH:mm",
+                    //   tooltipFormat: "ll HH:mm",
+                    //   unit: "day",
+                    //   unitStepSize: 1,
+                    //   displayFormats: {
+                    //     day: "MM/DD/YYYY",
+                    //   },
+                    // },
+                    padding: 0,
+                    backdropPaddingX: 0,
+                    backdropPaddingY: 0,
+                    ticks: {
+                      display: false,
+                      padding: 0,
+                      mirror: true,
+                      backdropPaddingX: 0,
+                      backdropPaddingY: 0,
+                    },
+                    padding: 0,
+                    gridLines: {
+                      drawTicks: false,
+                      color: "rgba(0, 0, 0, 0)",
+                      zeroLineColor: "rgba(0, 0, 0, 0)",
+                    },
+                    drawBorder: false,
+                    drawTicks: false,
+                  },
+                ],
+              },
+              maintainAspectRatio: false,
+            }}
+          />
+        </div>
         <div
           className="w-full"
           style={{

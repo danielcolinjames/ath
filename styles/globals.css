@@ -81,3 +81,10 @@ a {
   -webkit-animation: nprogress-spinner 600ms linear infinite !important;
   animation: nprogress-spinner 600ms linear infinite !important;
 } */
+
+.chart-container {
+  position: relative;
+  /* margin: auto; */
+  max-height: 80vh;
+  /* width: 80vw; */
+}
