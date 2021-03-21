@@ -14,12 +14,11 @@ function MyApp({ Component, pageProps }) {
       <style jsx global>{`
         ::-moz-selection {
           color: black;
-          background: #00ffbf;
+          background: "#00FFBA";
         }
-
         ::selection {
           color: black;
-          background: #00ffbf;
+          background: "#00FFBA";
         }
       `}</style>
     </>
