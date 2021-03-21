@@ -1,4 +1,4 @@
-import { useState, Fragment, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import NotFoundPage from "./404.js";
 import Error from "./_error.js";
@@ -9,7 +9,9 @@ import Layout from "../components/Layout";
 import AssetListItem from "../components/AssetListItem";
 import { usePalette } from "react-palette";
 import { Line } from "react-chartjs-2";
-import { fromUnixTime, format, addMinutes, parseISO } from "date-fns";
+import { fromUnixTime, format, parseISO, differenceInDays } from "date-fns";
+import { formatNumber } from "../utils/numbers";
+
 import hexToRgba from "hex-to-rgba";
 
 const AssetPage = (props) => {
@@ -57,11 +59,7 @@ const AssetPage = (props) => {
 
     const hasAth = assetInfo[0].ath !== null;
 
-    const ath = hasAth
-      ? assetInfo[0].ath.toLocaleString(undefined, {
-          minimumFractionDigits: 2,
-        })
-      : "unknown";
+    const ath = hasAth ? formatNumber(assetInfo[0].ath) : "unknown";
 
     const athTimestamp = moment.utc(assetInfo[0]?.ath_date);
     const lastUpdated = moment.utc(assetInfo[0].last_updated);
@@ -87,16 +85,11 @@ const AssetPage = (props) => {
 
     const data = marketChart.prices;
     const labels = data.map((p) => {
-      return format(fromUnixTime(p[0] / 1000), "MMM do");
+      return format(fromUnixTime(p[0] / 1000), "MMMM do, yyyy");
     });
     const prices = data.map((p) => {
       return p[1];
     });
-
-    // let gradient = btcChart.createLinearGradient(0, 0, 0, 400);
-
-    // gradient.addColorStop(0, 'rgba(247,147,26,.5)');
-    // gradient.addColorStop(.425, 'rgba(255,193,119,0)');
 
     const datasets = [
       {
@@ -105,8 +98,6 @@ const AssetPage = (props) => {
         backgroundColor: assetColorsLoading
           ? "transparent"
           : hexToRgba(assetColors.vibrant, 0.085),
-        // backgroundColor: gradient,
-        // borderColor: 'rgba(247,147,26,1)',
         borderColor:
           assetColorsLoading && !assetColorsError
             ? "transparent"
@@ -122,8 +113,6 @@ const AssetPage = (props) => {
 
     const chartData = { labels, datasets };
 
-    // console.log(assetColors);
-
     return (
       <Layout
         assetColors={assetColors}
@@ -131,17 +120,12 @@ const AssetPage = (props) => {
         assetColorsError={assetColorsError}
         assetList={list}
       >
-        {/* <div className="w-full -mt-14 fixed" />
-        <div className="w-full">
-          <div
-            className="h-5"
-            style={{
-              backgroundColor: assetColorsLoading
-                ? "transparent"
-                : assetColors.vibrant,
-            }}
-            />
-          </div> */}
+        <MetaTags
+          title={title}
+          description={descriptionText}
+          openGraphImageAbsoluteUrl={url}
+          url={`https://ath.ooo/${assetid}`}
+        />
         <div className="w-full pointer-events-none pt-14 z-10">
           <div className="max-w-2xl mx-auto">
             <div className="p-5 mx-autoz zmax-w-2xl">
@@ -165,89 +149,52 @@ const AssetPage = (props) => {
               </div>
             </div>
           </div>
-          <div
-            className="w-full h-1 relative mb-5z zmt-10"
-            // style={{
-            //   backgroundColor: assetColorsLoading
-            //     ? "transparent"
-            //     : assetColors.vibrant,
-            // }}
-          >
-            {/* <div className="absolute">
-            <h3
-              className={`max-w-2xl mx-auto top-0 text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4 pl-4`}
-            >
-              <span className="font-extralight text-xl absolute pt-2 -ml-4">
-                $
-              </span>
-              {ath}
-            </h3>
-          </div> */}
-          </div>
-          {/* <div className="relative"> */}
-          {/* </div> */}
         </div>
-        <div className="chart-containerz max-h-[50vw]">
+        <div className="max-h-[80vw]">
           <Line
             data={chartData}
             className="z-10"
-            // responsive
-            height={500}
-            width={1000}
+            height={600}
             options={{
+              hover: { intersect: false },
               legend: {
                 position: "bottom",
                 align: "center",
                 display: false,
               },
-              // padding: 0,
-              layout: {
-                padding: {
-                  left: 0,
-                  right: 0,
-                  top: 0,
-                  bottom: 0,
-                },
-              }, // layout: {
-              //   padding: 0,
-              // },
               tooltips: {
-                // callbacks: {
-                //   //This removes the tooltip title
-                //   // title: function () {},
-                // },
-                //this removes legend color
-                // displayColors: false,
-                // yPadding: 15,
-                // xPadding: 15,
-                // position: "nearest",
-                // caretSize: 10,
-                // backgroundColor: "rgba(255,255,255,.9)",
-                // bodyFontSize: 15,
-                // bodyFontColor: "#303030",
-              },
-              backdropPaddingX: 0,
-              backdropPaddingY: 0,
-              scales: {
-                title: {
-                  padding: 0,
+                intersect: false,
+                // mode: "y",
+                mode: "index",
+                callbacks: {
+                  //This removes the tooltip title
+                  // title: function () {},
+                  label: ({ yLabel }, data) => `$${formatNumber(yLabel)}`,
                 },
+                //this removes legend color
+                displayColors: false,
+                yPadding: 15,
+                xPadding: 15,
+                position: "nearest",
+                pointHitRadius: 20,
+                caretSize: 10,
+                backgroundColor: "rgba(255,255,255,.9)",
+                bodyFontSize: 18,
+                borderColor: assetColorsLoading
+                  ? "transparent"
+                  : hexToRgba(assetColors.vibrant, 0.35),
+                borderWidth: 2,
+                bodyFontFamily: "Inter",
+                titleFontFamily: "Inter",
+                titleFontColor: "#000000",
+                bodyFontColor: "#303030",
+              },
+              scales: {
                 yAxes: [
                   {
-                    padding: 0,
                     ticks: {
                       display: false,
-                      padding: 0,
-                      mirror: true,
-                      backdropPadding: {
-                        x: 0,
-                        y: 0,
-                      },
-                      // backdropPaddingY: 0,
                     },
-                    backdropPaddingX: 0,
-                    backdropPaddingY: 0,
-                    padding: 0,
                     stacked: false,
                     gridLines: {
                       drawTicks: false,
@@ -259,16 +206,6 @@ const AssetPage = (props) => {
                 ],
                 xAxes: [
                   {
-                    // type: "time",
-                    // time: {
-                    //   parser: "MM/DD/YYYY HH:mm",
-                    //   tooltipFormat: "ll HH:mm",
-                    //   unit: "day",
-                    //   unitStepSize: 1,
-                    //   displayFormats: {
-                    //     day: "MM/DD/YYYY",
-                    //   },
-                    // },
                     padding: 0,
                     backdropPaddingX: 0,
                     backdropPaddingY: 0,
@@ -302,35 +239,7 @@ const AssetPage = (props) => {
               : hexToRgba(assetColors.vibrant, 0.085),
           }}
         >
-          <div className="max-w-2xl mx-auto">
-            {/* <div className="p-5 mx-autoz zmax-w-2xl">
-              <div className="rounded-full shadow-xl inline-block px-5 pr-10 z-10 relative blur-effect bg-[rgba(255,255,255,0.5)] py-3 -ml-5 -mt-20">
-                <div className="flex flex-row items-center">
-                  <Image
-                    src={assetInfo[0].image}
-                    height={60}
-                    width={60}
-                    alt={`${assetInfo[0].name} logo`}
-                  />
-                  <h1
-                    className={`font-sans ml-4 font-bold text-2xl text-gray-800`}
-                  >
-                    {assetid.toUpperCase()}{" "}
-                    <p className="font-bold text-gray-500 pr-2">
-                      {assetInfo[0].name}
-                    </p>
-                  </h1>
-                </div>
-              </div>
-            </div> */}
-          </div>
           <div className="p-5 mx-auto max-w-2xl">
-            <MetaTags
-              title={title}
-              description={descriptionText}
-              openGraphImageAbsoluteUrl={url}
-              url={`https://ath.ooo/${assetid}`}
-            />
             <div>
               {hasAth ? (
                 <>
@@ -400,7 +309,6 @@ const AssetPage = (props) => {
                       {moment(athTimestamp).format("h:mm:ss A UTC")}
                     </p>
                   </div>
-                  {/* {console.log(marketChart.prices.map((p) => p[1]))} */}
                   <div className="pt-10 w-full"></div>
                   <p className="pt-8 pb-5 text-xl md:text-2xl font-sans font-semibold text-black max-w-sm md:max-w-md">
                     {`The highest price ever paid for ${
@@ -463,7 +371,6 @@ const AssetPage = (props) => {
                 <div className="pt-10">
                   <div className="h-px bg-gray-200 w-full mb-4" />
                   <div className="grid grid-cols-1 md:grid-cols-2">
-                    {/* <p>{JSON.stringify(assetInfo[0])}</p> */}
                     <div>
                       <h2 className="text-lg font-sans font-bold text-gray-600">
                         Current price in USD
@@ -653,8 +560,20 @@ const AssetPage = (props) => {
           </div>
         </div>
         <style jsx global>{`
+          ::-moz-selection {
+            color: white !important;
+            background: ${assetColorsLoading
+              ? "#00FFBA"
+              : assetColors.darkMuted} !important;
+          }
+          ::selection {
+            color: white !important;
+            background: ${assetColorsLoading
+              ? "#00FFBA"
+              : assetColors.darkMuted} !important;
+          }
           #nprogress .bar {
-            height: 3px;
+            height: 5px;
             background: ${assetColorsLoading
               ? "#00FFBA"
               : assetColors.vibrant} !important;
@@ -669,7 +588,6 @@ const AssetPage = (props) => {
                   ? "#00FFBA"
                   : assetColors.vibrant};
           }
-
           #nprogress .spinner-icon {
             border-top-color: ${assetColorsLoading
               ? "#00FFBA"
@@ -678,29 +596,6 @@ const AssetPage = (props) => {
               ? "#00FFBA"
               : assetColors.vibrant};
           }
-           {
-            /* #nprogress .spinner {
-            background: ${assetColorsLoading
-              ? "#00FFBA"
-              : assetColors.vibrant} !important;
-          } */
-          }
-          /* 
-#nprogress .spinner-icon {
-  width: 60px !important;
-  position: absolute !important;
-  height: 60px !important;
-  box-sizing: border-box !important;
-  left: calc(50% - 30px) !important;
-  top: calc(50% - 30px) !important;
-  border: solid 7px transparent !important;
-  border-top-color: #fff !important;
-  border-left-color: #fff !important;
-  border-radius: 50% !important;
-
-  -webkit-animation: nprogress-spinner 600ms linear infinite !important;
-  animation: nprogress-spinner 600ms linear infinite !important;
-} */
         `}</style>
       </Layout>
     );
@@ -769,9 +664,14 @@ export async function getServerSideProps({ params }) {
       const assetInfo = await assetsResponse.json();
       props.assetInfo = assetInfo;
 
-      const athTimestamp = moment
-        .utc(assetInfo[0]?.ath_date)
-        .subtract(7, "days")
+      const athTimestampMoment = moment.utc(assetInfo[0]?.ath_date);
+      const daysBetweenNowAndAth = differenceInDays(
+        new Date(),
+        parseISO(assetInfo[0]?.ath_date)
+      );
+
+      const athTimestamp = athTimestampMoment
+        .subtract(daysBetweenNowAndAth + 1, "days")
         .format("X");
       // TODO: set the above "7 days" to some logical thing like: if the distance between now and ATH Date > 30 days, set it to 7 days, if now - ATH > 7 days, set to 1 day, if < 1 day, set to 4 hours
 
@@ -782,11 +682,6 @@ export async function getServerSideProps({ params }) {
           Date.now() / 1000
         )}`
       );
-      // console.log(
-      //   `https://api.coingecko.com/api/v3/coins/${assetCoingeckoId}/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
-      //     Date.now() / 1000
-      //   )}`
-      // );
 
       const marketChart = await marketChartResponse.json();
 

@@ -53,10 +53,8 @@ const NavBar = ({
 
   let resultCount = 0;
 
-  // const ringString = `ring-[${assetColors.vibrant}]`;
-
   return (
-    <div className="w-full h-14 shadow-xl fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect zborder zborder-solid zborder-[#fefefe]">
+    <div className="w-full h-14 zshadow-xl fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect zborder zborder-solid zborder-[#fefefe]">
       <div className="max-w-2xl mx-auto zmt-3">
         <div className="rounded-full">
           <div className="flex justify-start items-center w-full max-w-2xl mx-auto px-5">
@@ -80,15 +78,6 @@ const NavBar = ({
                     alt="ATH.ooo logo"
                   />
                 </div>
-                {/* <div className="hidden md:block">
-              <Image
-                className="image-override"
-                src="/logo/wordmark_transparent_tight.png"
-                width={163.285714286}
-                height={38.857142857}
-                alt="ATH.ooo logo"
-              />
-            </div> */}
               </a>
             </Link>
             {/* Search bar */}
@@ -96,14 +85,7 @@ const NavBar = ({
               <div className="flex flex-grow flex-wrap pl-6">
                 <div className="w-full relative">
                   <input
-                    // ${
-                    //   assetColorsLoading && !assetColorsError ? "ring-ath-100" : "ring-[#fc4c04]"
-                    //   // "ring-[#000fff]"
-                    //   // `ring-[${assetColors.vibrant}]`
-                    //   }
-                    //   className={`p-2 pl-4 w-full max-w-md rounded-3xlz
-                    //  placeholder-opacity-50 bg-[rgba(255,255,255,0.5)] border-px border-transparent focus:outline-none ring-opacity-25 zring border-opacity-0 focus:border-opacity-100 focus:border border-px border-gray-200 border-solid ring-ath-100z zfocus:ring-opacity-100 text-md font-body font-light transition-all`}
-                    className={`p-2 pl-4 w-full max-w-md placeholder-opacity-50 bg-[rgba(255,255,255,0.75)] border border-solid border-1 focus:outline-none border-opacity-0 focus:border-opacity-100 border-gray-200 text-md font-body font-light`}
+                    className={`p-2 pl-4 w-full max-w-md placeholder-opacity-50 bg-[rgba(255,255,255,0.75)] border border-solid border-1 focus:outline-none border-opacity-0 focus:border-opacity-100 border-gray-200 text-md font-body font-light mr-2`}
                     value={filterText}
                     type="search"
                     ref={input}
@@ -131,7 +113,7 @@ const NavBar = ({
                                   }}
                                   className={`py-2 px-5 w-full ${
                                     resultCount >= 1
-                                      ? ` bg-dynamicz bg-ath-100 blur-effect text-black text-xs font-light`
+                                      ? `bg-[rgba(235,238,235,0.95)] blur-effect text-black text-xs font-light`
                                       : ""
                                   }`}
                                   id={`result-${index}`}
@@ -155,6 +137,14 @@ const NavBar = ({
         </div>
         {/* <div className="bg-black w-full h-px" /> */}
       </div>
+      <div
+        className="mt-px h-px w-full"
+        style={{
+          backgroundColor: assetColorsLoading
+            ? "transparent"
+            : hexToRgba(assetColors.vibrant, 0.2),
+        }}
+      />
       <style jsx global>{`
         .bg-dynamic {
           background-color: ${!assetColorsLoading &&
