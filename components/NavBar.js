@@ -140,9 +140,12 @@ const NavBar = ({
       <div
         className="mt-px h-px w-full"
         style={{
-          backgroundColor: assetColorsLoading
-            ? "transparent"
-            : hexToRgba(assetColors.vibrant, 0.2),
+          backgroundColor:
+            !assetColorsLoading &&
+            assetColors !== undefined &&
+            !assetColorsError
+              ? hexToRgba(assetColors.vibrant, 0.2)
+              : "#00FFBA",
         }}
       />
       <style jsx global>{`
