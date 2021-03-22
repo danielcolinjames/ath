@@ -46,9 +46,7 @@ const AssetPage = (props) => {
     } (${assetid.toUpperCase()}) All-Time High`;
 
     const url = new URL("https://og.ath.ooo");
-    url.pathname = `${encodeURIComponent(
-      `${asset.name} (${assetid.toUpperCase()})`
-    )}.png`;
+    url.pathname = `${encodeURIComponent(`${assetInfo[0].name}`)}.png`;
     url.searchParams.append("theme", "dark");
     url.searchParams.append("md", true);
     url.searchParams.append("fontSize", "94px");
