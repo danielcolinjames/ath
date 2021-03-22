@@ -13,6 +13,7 @@ import { fromUnixTime, format, parseISO, differenceInDays } from "date-fns";
 import { formatNumber } from "../utils/numbers";
 
 import hexToRgba from "hex-to-rgba";
+import rgbHex from "rgb-hex";
 
 const AssetPage = (props) => {
   const { errorCode, assetid, market, list } = props;
@@ -38,12 +39,21 @@ const AssetPage = (props) => {
       market,
       singleAssetMatch,
       marketChart,
+      palette,
     } = props;
     const [showList, setShowList] = useState(false);
     const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
     const title = `${
       assetInfo[0].name
     } (${assetid.toUpperCase()}) All-Time High`;
+
+    console.log("FUCK YESSSS PALETTE!!!!");
+    console.log(palette);
+    const [r, g, b] = palette.Vibrant.rgb;
+    const VIBRANTHEXSSRBABY = rgbHex(r, g, b);
+    console.log(VIBRANTHEXSSRBABY);
+
+    console.log(assetInfo[0]);
 
     const url = new URL("https://og.ath.ooo");
     url.pathname = `${encodeURIComponent(`${assetInfo[0].name}`)}.png`;
@@ -600,6 +610,7 @@ const AssetPage = (props) => {
     );
   }
 };
+import { getImg } from "./api/hex";
 
 export async function getServerSideProps({ params }) {
   const props = {};
@@ -681,6 +692,10 @@ export async function getServerSideProps({ params }) {
           Date.now() / 1000
         )}`
       );
+
+      const palette = await getImg(assetInfo[0].image);
+      console.log(palette);
+      props.palette = JSON.parse(palette);
 
       const marketChart = await marketChartResponse.json();
 

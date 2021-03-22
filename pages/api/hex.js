@@ -13,7 +13,8 @@
 //   return new ethers.Contract(address, resolverContract, provider)
 // }
 
-import { usePalette } from "react-palette";
+// import { usePalette } from "react-palette";
+import * as Vibrant from "node-vibrant";
 
 // async function getAddrWithResolver({ name, key, resolverAddr, provider }) {
 //   const nh = namehash(name)
@@ -36,11 +37,8 @@ import { usePalette } from "react-palette";
 //   }
 // }
 
-export default async function handler(req, res) {
-  const {
-    query: { url },
-  } = req;
-
+export async function getImg(url) {
+  // console.log(url);
   try {
     // const provider = getProvider()
     // const resolver = await provider.getResolver(name)
@@ -51,13 +49,38 @@ export default async function handler(req, res) {
     //     resolverAddr: resolver.address,
     //     provider,
     //   })
-    const colors = usePalette(`https://cors.ath.ooo/${url}`);
+    // const colors = usePalette(`https://cors.ath.ooo/${url}`);
+    const img = new Vibrant(url);
+    console.log(img);
+    const colors = await img.getPalette();
+    console.log(colors);
+    // getSwatches(function (e, s) {
+    //   if (e) {
+    //     console.log(e);
+    //   } else {
+    //     console.log("swatches for remote url:");
+    //     console.log(JSON.stringify(s, null, 2));
+    //   }
+    // });
+    //   .then((palette) => console.log(palette));
+    // const colors = await Vibrant.from({
+    //   image: `https://cors.ath.ooo/${url}`,
+    // }).useQuantizer(Vibrant.Quantizer.WebWorker);
 
-    return res.status(200).json({ colors });
+    // const colors = await Vibrant.from(
+    //   axios({
+    //     method: "get",
+    //     url: url,
+    //     responseType: "arraybuffer",
+    //   })
+    // ).getPalette((err, palette) => console.log(palette));
+    // console.log(colors);
+
+    return JSON.stringify(colors);
     // }
   } catch (error) {
     console.error(error);
   }
 
-  res.status(200).json({ address: null });
+  // res.status(200).json({ colors: null });
 }
