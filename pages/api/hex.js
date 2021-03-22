@@ -38,7 +38,7 @@ import { usePalette } from "react-palette";
 
 export default async function handler(req, res) {
   const {
-    query: { img },
+    query: { url },
   } = req;
 
   try {
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
     //     resolverAddr: resolver.address,
     //     provider,
     //   })
-    const colors = usePalette(img);
+    const colors = usePalette(`https://cors.ath.ooo/${url}`);
 
     return res.status(200).json({ colors });
     // }
