@@ -55,6 +55,7 @@ const AssetPage = (props) => {
     url.searchParams.append("images", assetInfo[0].image);
     url.searchParams.append("cornerLogo", "true");
     url.searchParams.append("centered", "false");
+    url.searchParams.append("symbol", assetid.toUpperCase());
     url.searchParams.append("heights", 200);
 
     const hasAth = assetInfo[0].ath !== null;
