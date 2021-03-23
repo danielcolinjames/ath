@@ -8,26 +8,13 @@ import AssetListItem from "../components/AssetListItem";
 const NotFoundPage = ({ assetid, market, list }) => {
   const [showList, setShowList] = useState(false);
 
-  const url = new URL("https://og.ath.ooo");
-  url.pathname = `${encodeURIComponent(`ATH.ooo – 404.png`)}`;
-  url.searchParams.append("theme", "dark");
-  url.searchParams.append("md", true);
-  url.searchParams.append("fontSize", "64px");
-  url.searchParams.append(
-    "images",
-    "https://ath.ooo/logo/wordmark_transparent_tight_new.png"
-  );
-  url.searchParams.append("cornerLogo", "false");
-  url.searchParams.append("hideHeader", "true");
-  url.searchParams.append("centered", "true");
-
   return (
     <Layout assetList={list}>
       <div className="p-5 mx-auto max-w-2xl">
         <MetaTags
           title={"ATH.ooo — 404: Not Found"}
           description={`See the all-time highs of crypto assets`}
-          openGraphImageAbsoluteUrl={url}
+          openGraphImageAbsoluteUrl={`https://ath.ooo/og.png`}
           url={`https://ath.ooo/`}
           noIndex
         />
