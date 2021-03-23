@@ -7,13 +7,15 @@ import MetaTags from "../components/MetaTags";
 import moment from "moment";
 import Layout from "../components/Layout";
 import AssetListItem from "../components/AssetListItem";
-import { usePalette } from "react-palette";
 import { Line } from "react-chartjs-2";
 import { fromUnixTime, format, parseISO, differenceInDays } from "date-fns";
 import { formatNumber } from "../utils/numbers";
+import {
+  getAssetColorsFromVibrantObj,
+  rgbaStringFromRGBObj,
+} from "../utils/colors";
 
 import hexToRgba from "hex-to-rgba";
-import rgbHex from "rgb-hex";
 
 const AssetPage = (props) => {
   const { errorCode, assetid, market, list } = props;
@@ -47,24 +49,20 @@ const AssetPage = (props) => {
       assetInfo[0].name
     } (${assetid.toUpperCase()}) All-Time High`;
 
-    console.log("FUCK YESSSS PALETTE!!!!");
-    console.log(palette);
     const [r, g, b] = palette.Vibrant.rgb;
-    const VIBRANTHEXSSRBABY = rgbHex(r, g, b);
-    console.log(VIBRANTHEXSSRBABY);
-
-    console.log(assetInfo[0]);
 
     const url = new URL("https://og.ath.ooo");
-    url.pathname = `${encodeURIComponent(`${assetInfo[0].name}`)}.png`;
-    url.searchParams.append("theme", "dark");
-    url.searchParams.append("md", true);
-    url.searchParams.append("fontSize", "94px");
-    url.searchParams.append("images", assetInfo[0].image);
-    url.searchParams.append("cornerLogo", "true");
-    url.searchParams.append("centered", "false");
-    url.searchParams.append("symbol", assetid.toUpperCase());
-    url.searchParams.append("heights", 200);
+    url.pathname = `${encodeURIComponent(
+      `${assetInfo[0].name}-${assetInfo[0].ath}`
+    )}.png`;
+
+    url.searchParams.append("assetName", assetInfo[0].name);
+    url.searchParams.append("assetSymbol", assetid.toUpperCase());
+    url.searchParams.append("image", assetInfo[0].image);
+    url.searchParams.append("r", r);
+    url.searchParams.append("g", g);
+    url.searchParams.append("b", b);
+    url.searchParams.append("ath", assetInfo[0].ath);
 
     const hasAth = assetInfo[0].ath !== null;
 
@@ -76,21 +74,25 @@ const AssetPage = (props) => {
     const descriptionText = hasAth
       ? `The all-time high price of ${
           assetInfo[0].name
-        } (${assetid.toUpperCase()}) was ${assetInfo[0]?.ath?.toLocaleString(
-          undefined,
-          { minimumFractionDigits: 2 }
-        )} USD, set on ${moment(athTimestamp).format(
-          "MMMM Do, YYYY"
-        )} at ${moment(athTimestamp).format("h:mm:ss A UTC")}`
+        } (${assetid.toUpperCase()}) was $${formatNumber(
+          assetInfo[0]?.ath
+        )}, set on ${moment(athTimestamp).format("MMMM Do, YYYY")} at ${moment(
+          athTimestamp
+        ).format("h:mm A (UTC)")}`
       : `The all-time high price of ${
           assetInfo[0].name
         } (${assetid.toUpperCase()}) is unknown.`;
 
-    const {
-      data: assetColors,
-      loading: assetColorsLoading,
-      error: assetColorsError,
-    } = usePalette(`https://cors.ath.ooo/${assetInfo[0].image}`);
+    const assetColors =
+      palette !== undefined
+        ? getAssetColorsFromVibrantObj(palette)
+        : {
+            vibrant: "#00FFBA",
+            darkVibrant: "#00FFBA",
+            muted: "#00FFBA",
+            darkMuted: "#00FFBA",
+            lightMuted: "#00FFBA",
+          };
 
     const data = marketChart.prices;
     const labels = data.map((p) => {
@@ -104,13 +106,8 @@ const AssetPage = (props) => {
       {
         label: `${assetInfo[0].symbol.toUpperCase()} price`,
         data: prices,
-        backgroundColor: assetColorsLoading
-          ? "transparent"
-          : hexToRgba(assetColors.vibrant, 0.085),
-        borderColor:
-          assetColorsLoading && !assetColorsError
-            ? "transparent"
-            : assetColors.vibrant,
+        backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
+        borderColor: assetColors.vibrant,
         borderJoinStyle: "round",
         borderCapStyle: "round",
         borderWidth: 3,
@@ -123,12 +120,7 @@ const AssetPage = (props) => {
     const chartData = { labels, datasets };
 
     return (
-      <Layout
-        assetColors={assetColors}
-        assetColorsLoading={assetColorsLoading}
-        assetColorsError={assetColorsError}
-        assetList={list}
-      >
+      <Layout assetColors={assetColors} assetList={list}>
         <MetaTags
           title={title}
           description={descriptionText}
@@ -189,9 +181,7 @@ const AssetPage = (props) => {
                 caretSize: 10,
                 backgroundColor: "rgba(255,255,255,.9)",
                 bodyFontSize: 18,
-                borderColor: assetColorsLoading
-                  ? "transparent"
-                  : hexToRgba(assetColors.vibrant, 0.35),
+                borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
                 borderWidth: 2,
                 bodyFontFamily: "Inter",
                 titleFontFamily: "Inter",
@@ -243,9 +233,7 @@ const AssetPage = (props) => {
         <div
           className="w-full"
           style={{
-            backgroundColor: assetColorsLoading
-              ? "transparent"
-              : hexToRgba(assetColors.vibrant, 0.085),
+            backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
           }}
         >
           <div className="p-5 mx-auto max-w-2xl">
@@ -257,16 +245,10 @@ const AssetPage = (props) => {
                   </h2>
                   <div className="inline-block">
                     <div
-                      className={`h-2 md:h-3 zbg-ath-100 w-full -mb-4 md:-mb-5 mt-5 duration-500 transition-opacity ${
-                        assetColorsLoading && !assetColorsError
-                          ? "opacity-0"
-                          : "opacity-100"
-                      }`}
-                      style={
-                        assetColorsLoading || assetColorsError
-                          ? { backgroundColor: "white" }
-                          : { backgroundColor: assetColors.vibrant }
-                      }
+                      className={`h-2 md:h-3 zbg-ath-100 w-full -mb-4 md:-mb-5 mt-5 duration-500 transition-opacity opacity-100`}
+                      style={{
+                        backgroundColor: assetColors.vibrant,
+                      }}
                     />
                     <h3
                       className={`text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4 pl-4`}
@@ -310,16 +292,16 @@ const AssetPage = (props) => {
                     </div>
                   )}
                   <div>
-                    <p className="font-sans font-light text-2xl text-gray-400">
+                    <p className="font-sans font-light text-3xl py-1 text-gray-900">
                       Set {athTimestamp.fromNow()}
                     </p>
-                    <p className="font-sans font-light text-xs text-gray-400">
+                    <p className="font-sans font-light text-xs text-gray-600">
                       on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
                       {moment(athTimestamp).format("h:mm:ss A UTC")}
                     </p>
                   </div>
                   <div className="pt-10 w-full"></div>
-                  <p className="pt-8 pb-5 text-xl md:text-2xl font-sans font-semibold text-black max-w-sm md:max-w-md">
+                  <p className="pt-8 pb-5 text-lg md:text-2xl font-sans font-normal text-black max-w-sm md:max-w-md">
                     {`The highest price ever paid for ${
                       assetInfo[0].name
                     } (${assetid.toUpperCase()}) was ${ath} USD, set on ${moment(
@@ -331,7 +313,7 @@ const AssetPage = (props) => {
                   <a
                     target="_blank"
                     href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
-                    className="bg-gray-100 p-3 inline-block mt-4"
+                    className="bg-white p-3 inline-block mt-4 border border-solid border-gray-200 border-px"
                   >
                     <p className="font-sans font-light text-sm text-gray-700">
                       Data accurate as of {lastUpdated.fromNow()}
@@ -417,7 +399,7 @@ const AssetPage = (props) => {
               )}
 
               {!singleAssetMatch && (
-                <div className="bg-gray-100 mt-10 p-5">
+                <div className="bg-white border border-px border-solid border-gray-300 mt-10 p-5">
                   <div className="flex flex-row items-center justify-between">
                     <div className="flex flex-row items-center justify-start">
                       <svg
@@ -570,40 +552,33 @@ const AssetPage = (props) => {
         </div>
         <style jsx global>{`
           ::-moz-selection {
-            color: white !important;
-            background: ${assetColorsLoading
-              ? "#00FFBA"
-              : assetColors.darkMuted} !important;
+            color: black !important;
+            background: ${rgbaStringFromRGBObj(
+              palette.Vibrant.rgb,
+              0.85
+            )} !important;
           }
           ::selection {
-            color: white !important;
-            background: ${assetColorsLoading
-              ? "#00FFBA"
-              : assetColors.darkMuted} !important;
+            color: black !important;
+            background: ${rgbaStringFromRGBObj(
+              palette.Vibrant.rgb,
+              0.85
+            )} !important;
           }
           #nprogress .bar {
             height: 5px;
-            background: ${assetColorsLoading
-              ? "#00FFBA"
-              : assetColors.vibrant} !important;
+            background: ${rgbaStringFromRGBObj(
+              palette.Vibrant.rgb,
+              1
+            )} !important;
           }
           #nprogress .peg {
-            box-shadow: 0 0 10px
-                ${assetColorsLoading && !assetColorsError
-                  ? "#00FFBA"
-                  : assetColors.vibrant},
-              0 0 5px
-                ${assetColorsLoading && !assetColorsError
-                  ? "#00FFBA"
-                  : assetColors.vibrant};
+            box-shadow: 0 0 10px ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)}
+              0 0 5px ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)};
           }
           #nprogress .spinner-icon {
-            border-top-color: ${assetColorsLoading
-              ? "#00FFBA"
-              : assetColors.vibrant};
-            border-left-color: ${assetColorsLoading
-              ? "#00FFBA"
-              : assetColors.vibrant};
+            border-top-color: ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)};
+            border-left-color: ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)};
           }
         `}</style>
       </Layout>
@@ -694,7 +669,6 @@ export async function getServerSideProps({ params }) {
       );
 
       const palette = await getImg(assetInfo[0].image);
-      console.log(palette);
       props.palette = JSON.parse(palette);
 
       const marketChart = await marketChartResponse.json();
