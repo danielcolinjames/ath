@@ -46,15 +46,17 @@ const AssetPage = (props) => {
     } (${assetid.toUpperCase()}) All-Time High`;
 
     const url = new URL("https://og.ath.ooo");
-    url.pathname = `${encodeURIComponent(`${assetInfo[0].name}`)}.png`;
-    url.searchParams.append("theme", "dark");
-    url.searchParams.append("md", true);
-    url.searchParams.append("fontSize", "94px");
-    url.searchParams.append("images", assetInfo[0].image);
-    url.searchParams.append("cornerLogo", "true");
-    url.searchParams.append("centered", "false");
-    url.searchParams.append("symbol", assetid.toUpperCase());
-    url.searchParams.append("heights", 200);
+    url.pathname = `${encodeURIComponent(
+      `${assetInfo[0].name}-${assetInfo[0].ath}`
+    )}.png`;
+
+    url.searchParams.append("assetName", assetInfo[0].name);
+    url.searchParams.append("assetSymbol", assetid.toUpperCase());
+    url.searchParams.append("image", assetInfo[0].image);
+    url.searchParams.append("r", r);
+    url.searchParams.append("g", g);
+    url.searchParams.append("b", b);
+    url.searchParams.append("ath", formatNumber(assetInfo[0].ath));
 
     const hasAth = assetInfo[0].ath !== null;
 
