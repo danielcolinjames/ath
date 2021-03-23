@@ -38,49 +38,11 @@ import * as Vibrant from "node-vibrant";
 // }
 
 export async function getImg(url) {
-  // console.log(url);
   try {
-    // const provider = getProvider()
-    // const resolver = await provider.getResolver(name)
-    // if (resolver) {
-    //   const address = await getAddrWithResolver({
-    //     name: name,
-    //     key: 'HNT',
-    //     resolverAddr: resolver.address,
-    //     provider,
-    //   })
-    // const colors = usePalette(`https://cors.ath.ooo/${url}`);
     const img = new Vibrant(url);
-    console.log(img);
     const colors = await img.getPalette();
-    console.log(colors);
-    // getSwatches(function (e, s) {
-    //   if (e) {
-    //     console.log(e);
-    //   } else {
-    //     console.log("swatches for remote url:");
-    //     console.log(JSON.stringify(s, null, 2));
-    //   }
-    // });
-    //   .then((palette) => console.log(palette));
-    // const colors = await Vibrant.from({
-    //   image: `https://cors.ath.ooo/${url}`,
-    // }).useQuantizer(Vibrant.Quantizer.WebWorker);
-
-    // const colors = await Vibrant.from(
-    //   axios({
-    //     method: "get",
-    //     url: url,
-    //     responseType: "arraybuffer",
-    //   })
-    // ).getPalette((err, palette) => console.log(palette));
-    // console.log(colors);
-
     return JSON.stringify(colors);
-    // }
   } catch (error) {
     console.error(error);
   }
-
-  // res.status(200).json({ colors: null });
 }

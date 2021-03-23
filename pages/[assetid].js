@@ -14,8 +14,7 @@ import {
   getAssetColorsFromVibrantObj,
   rgbaStringFromRGBObj,
 } from "../utils/colors";
-
-import hexToRgba from "hex-to-rgba";
+import { getImg } from "./api/vibrant-extraction";
 
 const AssetPage = (props) => {
   const { errorCode, assetid, market, list } = props;
@@ -139,7 +138,7 @@ const AssetPage = (props) => {
                     alt={`${assetInfo[0].name} logo`}
                   />
                   <h1
-                    className={`font-sans ml-4 font-bold text-2xl text-gray-800`}
+                    className={`font-sans ml-4 font-bold text-xl md:text-2xl text-gray-800`}
                   >
                     {assetid.toUpperCase()}{" "}
                     <p className="font-bold text-gray-500 pr-2">
@@ -231,7 +230,7 @@ const AssetPage = (props) => {
           />
         </div>
         <div
-          className="w-full"
+          className="w-full pb-20"
           style={{
             backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
           }}
@@ -301,14 +300,14 @@ const AssetPage = (props) => {
                     </p>
                   </div>
                   <div className="pt-10 w-full"></div>
-                  <p className="pt-8 pb-5 text-lg md:text-2xl font-sans font-normal text-black max-w-sm md:max-w-md">
+                  <p className="pt-8 pb-5 text-lg md:text-2xl font-sans font-normal text-black max-w-md md:max-w-xl">
                     {`The highest price ever paid for ${
                       assetInfo[0].name
-                    } (${assetid.toUpperCase()}) was ${ath} USD, set on ${moment(
-                      athTimestamp
-                    ).format("MMMM Do, YYYY")} at ${moment(athTimestamp).format(
-                      "h:mm A UTC."
-                    )}`}
+                    } (${assetid.toUpperCase()}) was ${formatNumber(
+                      ath
+                    )} USD, set on ${moment(athTimestamp).format(
+                      "MMMM Do, YYYY"
+                    )}.`}
                   </p>
                   <a
                     target="_blank"
@@ -368,12 +367,7 @@ const AssetPage = (props) => {
                       </h2>
                       <div className="inline-block">
                         <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-1 mb-4">
-                          {assetInfo[0].current_price?.toLocaleString(
-                            undefined,
-                            {
-                              minimumFractionDigits: 2,
-                            }
-                          )}
+                          {formatNumber(assetInfo[0]?.current_price)}
                         </h3>
                       </div>
                     </div>
@@ -518,6 +512,10 @@ const AssetPage = (props) => {
                 </div>
               )}
             </div>
+          </div>
+        </div>
+        <div className="w-full bg-white">
+          <div className="p-5 mx-auto max-w-2xl">
             <p className="font-sans text-base md:text-xl font-bold mt-20 mb-2 text-gray-400">
               All-time highs of other assets
             </p>
@@ -585,7 +583,6 @@ const AssetPage = (props) => {
     );
   }
 };
-import { getImg } from "./api/hex";
 
 export async function getServerSideProps({ params }) {
   const props = {};
