@@ -1,20 +1,9 @@
 import NavBar from "./NavBar";
 
-const Layout = ({
-  children,
-  assetList,
-  assetColors,
-  assetColorsLoading,
-  assetColorsError,
-}) => {
+const Layout = ({ children, assetList, assetColors }) => {
   return (
     <>
-      <NavBar
-        assetColors={assetColors}
-        assetColorsLoading={assetColorsLoading}
-        assetColorsError={assetColorsError}
-        assetList={assetList}
-      />
+      <NavBar assetColors={assetColors} assetList={assetList} />
       <div className="pt-14" />
       {children}
     </>

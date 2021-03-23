@@ -4,12 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useRef, useEffect } from "react";
 import hexToRgba from "hex-to-rgba";
 
-const NavBar = ({
-  assetList,
-  assetColors,
-  assetColorsLoading,
-  assetColorsError,
-}) => {
+const NavBar = ({ assetList, assetColors }) => {
   const router = useRouter();
 
   const [filterText, setFilterText] = useState("");
@@ -135,24 +130,19 @@ const NavBar = ({
             )}
           </div>
         </div>
-        {/* <div className="bg-black w-full h-px" /> */}
       </div>
       <div
         className="mt-px h-px w-full"
         style={{
           backgroundColor:
-            !assetColorsLoading &&
-            assetColors !== undefined &&
-            !assetColorsError
+            assetColors !== undefined
               ? hexToRgba(assetColors.vibrant, 0.5)
               : "#00FFBA",
         }}
       />
       <style jsx global>{`
         .bg-dynamic {
-          background-color: ${!assetColorsLoading &&
-          assetColors !== undefined &&
-          !assetColorsError
+          background-color: ${assetColors !== undefined
             ? hexToRgba(assetColors?.vibrant, 0.85)
             : "#00FFBA"};
         }
