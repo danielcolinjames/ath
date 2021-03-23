@@ -93,11 +93,11 @@ const AssetPage = (props) => {
             lightMuted: "#00FFBA",
           };
 
-    const data = marketChart.prices;
-    const labels = data.map((p) => {
+    const data = marketChart?.prices;
+    const labels = data?.map((p) => {
       return format(fromUnixTime(p[0] / 1000), "MMMM do, yyyy");
     });
-    const prices = data.map((p) => {
+    const prices = data?.map((p) => {
       return p[1];
     });
 
@@ -150,85 +150,94 @@ const AssetPage = (props) => {
             </div>
           </div>
         </div>
-        <div className="max-h-[30vh]">
-          <Line
-            data={chartData}
-            className="z-10"
-            height={600}
-            options={{
-              hover: { intersect: false },
-              legend: {
-                position: "bottom",
-                align: "center",
-                display: false,
-              },
-              tooltips: {
-                intersect: false,
-                // mode: "y",
-                mode: "index",
-                callbacks: {
-                  //This removes the tooltip title
-                  // title: function () {},
-                  label: ({ yLabel }, data) => `$${formatNumber(yLabel)}`,
+        {data?.length > 0 ? (
+          <div className="max-h-[30vh]">
+            <Line
+              data={chartData}
+              className="z-10"
+              height={600}
+              options={{
+                hover: { intersect: false },
+                legend: {
+                  position: "bottom",
+                  align: "center",
+                  display: false,
                 },
-                //this removes legend color
-                displayColors: false,
-                yPadding: 15,
-                xPadding: 15,
-                position: "nearest",
-                pointHitRadius: 20,
-                caretSize: 10,
-                backgroundColor: "rgba(255,255,255,.9)",
-                bodyFontSize: 18,
-                borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
-                borderWidth: 2,
-                bodyFontFamily: "Inter",
-                titleFontFamily: "Inter",
-                titleFontColor: "#000000",
-                bodyFontColor: "#303030",
-              },
-              scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      display: false,
-                    },
-                    stacked: false,
-                    gridLines: {
-                      drawTicks: false,
-                      color: "rgba(0, 0, 0, 0)",
-                    },
-                    drawBorder: false,
-                    drawTicks: false,
+                tooltips: {
+                  intersect: false,
+                  // mode: "y",
+                  mode: "index",
+                  callbacks: {
+                    //This removes the tooltip title
+                    // title: function () {},
+                    label: ({ yLabel }, data) => `$${formatNumber(yLabel)}`,
                   },
-                ],
-                xAxes: [
-                  {
-                    padding: 0,
-                    backdropPaddingX: 0,
-                    backdropPaddingY: 0,
-                    ticks: {
-                      display: false,
+                  //this removes legend color
+                  displayColors: false,
+                  yPadding: 15,
+                  xPadding: 15,
+                  position: "nearest",
+                  pointHitRadius: 20,
+                  caretSize: 10,
+                  backgroundColor: "rgba(255,255,255,.9)",
+                  bodyFontSize: 18,
+                  borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
+                  borderWidth: 2,
+                  bodyFontFamily: "Inter",
+                  titleFontFamily: "Inter",
+                  titleFontColor: "#000000",
+                  bodyFontColor: "#303030",
+                },
+                scales: {
+                  yAxes: [
+                    {
+                      ticks: {
+                        display: false,
+                      },
+                      stacked: false,
+                      gridLines: {
+                        drawTicks: false,
+                        color: "rgba(0, 0, 0, 0)",
+                      },
+                      drawBorder: false,
+                      drawTicks: false,
+                    },
+                  ],
+                  xAxes: [
+                    {
                       padding: 0,
-                      mirror: true,
                       backdropPaddingX: 0,
                       backdropPaddingY: 0,
-                    },
-                    padding: 0,
-                    gridLines: {
+                      ticks: {
+                        display: false,
+                        padding: 0,
+                        mirror: true,
+                        backdropPaddingX: 0,
+                        backdropPaddingY: 0,
+                      },
+                      padding: 0,
+                      gridLines: {
+                        drawTicks: false,
+                        color: "rgba(0, 0, 0, 0)",
+                        zeroLineColor: "rgba(0, 0, 0, 0)",
+                      },
+                      drawBorder: false,
                       drawTicks: false,
-                      color: "rgba(0, 0, 0, 0)",
-                      zeroLineColor: "rgba(0, 0, 0, 0)",
                     },
-                    drawBorder: false,
-                    drawTicks: false,
-                  },
-                ],
-              },
-              maintainAspectRatio: false,
-            }}
-          />
-        </div>
+                  ],
+                },
+                maintainAspectRatio: false,
+              }}
+            />
+          </div>
+        ) : (
+          <div className="max-h-[30vh] max-w-2xl mx-auto px-5 py-1">
+            <p className="text-xs text-gray-200 font-body">
+              Normally there would be a price chart here, but an error occured
+            </p>
+          </div>
+        )}
+
         <div
           className="w-full pb-20"
           style={{
@@ -571,7 +580,7 @@ const AssetPage = (props) => {
             )} !important;
           }
           #nprogress .peg {
-            box-shadow: 0 0 10px ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)}
+            box-shadow: 0 0 10px ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)},
               0 0 5px ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)};
           }
           #nprogress .spinner-icon {
@@ -655,7 +664,6 @@ export async function getServerSideProps({ params }) {
       const athTimestamp = athTimestampMoment
         .subtract(daysBetweenNowAndAth + 1, "days")
         .format("X");
-      // TODO: set the above "7 days" to some logical thing like: if the distance between now and ATH Date > 30 days, set it to 7 days, if now - ATH > 7 days, set to 1 day, if < 1 day, set to 4 hours
 
       const marketChartResponse = await fetch(
         `https://api.coingecko.com/api/v3/coins/${
@@ -664,11 +672,12 @@ export async function getServerSideProps({ params }) {
           Date.now() / 1000
         )}`
       );
+      const marketChart = marketChartResponse.ok
+        ? await marketChartResponse.json()
+        : [];
 
       const palette = await getImg(assetInfo[0].image);
       props.palette = JSON.parse(palette);
-
-      const marketChart = await marketChartResponse.json();
 
       props.marketChart = marketChart;
     }
