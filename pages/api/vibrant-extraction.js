@@ -13,7 +13,8 @@
 //   return new ethers.Contract(address, resolverContract, provider)
 // }
 
-import { usePalette } from "react-palette";
+// import { usePalette } from "react-palette";
+import * as Vibrant from "node-vibrant";
 
 // async function getAddrWithResolver({ name, key, resolverAddr, provider }) {
 //   const nh = namehash(name)
@@ -36,28 +37,12 @@ import { usePalette } from "react-palette";
 //   }
 // }
 
-export default async function handler(req, res) {
-  const {
-    query: { url },
-  } = req;
-
+export async function getImg(url) {
   try {
-    // const provider = getProvider()
-    // const resolver = await provider.getResolver(name)
-    // if (resolver) {
-    //   const address = await getAddrWithResolver({
-    //     name: name,
-    //     key: 'HNT',
-    //     resolverAddr: resolver.address,
-    //     provider,
-    //   })
-    const colors = usePalette(`https://cors.ath.ooo/${url}`);
-
-    return res.status(200).json({ colors });
-    // }
+    const img = new Vibrant(url);
+    const colors = await img.getPalette();
+    return JSON.stringify(colors);
   } catch (error) {
     console.error(error);
   }
-
-  res.status(200).json({ address: null });
 }
