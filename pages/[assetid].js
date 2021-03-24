@@ -52,7 +52,9 @@ const AssetPage = (props) => {
 
     const url = new URL("https://og.ath.ooo");
     url.pathname = `${encodeURIComponent(
-      `${assetInfo[0].name}-${assetInfo[0].ath}`
+      `${assetInfo[0].name}-${
+        assetInfo[0].ath ? assetInfo[0].ath : "undefined"
+      }`
     )}.png`;
 
     url.searchParams.append("assetName", assetInfo[0].name);
