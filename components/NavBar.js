@@ -5,7 +5,19 @@ import { useState, useRef, useEffect } from "react";
 import hexToRgba from "hex-to-rgba";
 
 const NavBar = ({ assetList, assetColors }) => {
+  // console.log(assetList);
   const router = useRouter();
+
+  const [assetPlaceholder, setAssetPlaceholder] = useState("BTC");
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const max = Math.floor(assetList.length);
+      const randomNumber = Math.floor(Math.random() * (max - 1));
+      setAssetPlaceholder(assetList[randomNumber].symbol);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const [filterText, setFilterText] = useState("");
 
@@ -50,9 +62,9 @@ const NavBar = ({ assetList, assetColors }) => {
 
   return (
     <div className="w-full h-14 shadow-sm fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect zborder zborder-solid zborder-[#fefefe]">
-      <div className="max-w-2xl mx-auto zmt-3">
+      <div className="max-w-4xl mx-auto zmt-3">
         <div className="rounded-full">
-          <div className="flex justify-start items-center w-full max-w-2xl mx-auto px-5">
+          <div className="flex justify-start items-center w-full max-w-4xl mx-auto px-5">
             <Link href="/">
               <a className="p-0 m-0 -mb-2 flex flex-row">
                 <div className="block">
@@ -77,16 +89,16 @@ const NavBar = ({ assetList, assetColors }) => {
             </Link>
             {/* Search bar */}
             {assetList && (
-              <div className="flex flex-grow flex-wrap pl-6">
+              <div className="flex flex-grow flex-wrap pl-6 pr-10">
                 <div className="w-full relative">
                   <input
-                    className={`p-2 pl-4 w-full max-w-md placeholder-opacity-50 bg-[rgba(255,255,255,0.75)] border border-solid border-1 focus:outline-none border-opacity-0 focus:border-opacity-100 border-gray-200 text-md font-body font-light mr-2`}
+                    className={`p-2 pl-4 w-full max-w-md placeholder-opacity-25 bg-[rgba(255,255,255,0.75)] border border-solid border-1 focus:outline-none border-opacity-0 focus:border-opacity-100 border-gray-200 text-md font-ath font-light mr-20`}
                     value={filterText}
                     type="search"
                     ref={input}
                     onChange={handleFilterTextChange}
                     onKeyPress={handleKeyPress}
-                    placeholder={`Enter a ticker symbol`}
+                    placeholder={`${assetPlaceholder.toUpperCase()}`}
                     id="input"
                   />
                 </div>

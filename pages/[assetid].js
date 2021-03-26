@@ -2,6 +2,7 @@ import { useState } from "react";
 import Link from "next/link";
 import NotFoundPage from "./404.js";
 import Error from "./_error.js";
+import Head from "next/head";
 import Image from "next/image";
 import MetaTags from "../components/MetaTags";
 import moment from "moment";
@@ -120,6 +121,8 @@ const AssetPage = (props) => {
 
     const chartData = { labels, datasets };
 
+    // console.log(assetInfo);
+
     return (
       <Layout assetColors={assetColors} assetList={list}>
         <MetaTags
@@ -127,23 +130,24 @@ const AssetPage = (props) => {
           description={descriptionText}
           openGraphImageAbsoluteUrl={url}
           url={`https://ath.ooo/${assetid}`}
+          rgb={[r, g, b]}
         />
-        <div className="w-full pointer-events-none pt-14 z-10">
-          <div className="max-w-2xl mx-auto">
-            <div className="p-5 mx-autoz zmax-w-2xl">
-              <div className="rounded-full shadow-xlz inline-block px-5 pr-10 z-10 relative blur-effect bg-[rgba(255,255,255,0.5)] py-3 -ml-5 -mt-20">
+        <div className="w-full pointer-events-none pt-7 md:pt-14 z-10">
+          <div className="max-w-4xl mx-auto">
+            <div className="p-5">
+              <div className="w-full inline-block px-5 z-10 relative blur-effect bg-[rgba(255,255,255,0.5)] py-3 -ml-5 -mt-20">
                 <div className="flex flex-row items-center">
                   <Image
                     src={assetInfo[0].image}
-                    height={60}
-                    width={60}
+                    height={50}
+                    width={50}
                     alt={`${assetInfo[0].name} logo`}
                   />
                   <h1
-                    className={`font-sans ml-4 font-bold text-xl md:text-2xl text-gray-800`}
+                    className={`font-ath ml-2.5 md:ml-4 -mt-0.5 font-bold text-xl md:text-2xl text-gray-800`}
                   >
                     {assetid.toUpperCase()}{" "}
-                    <p className="font-bold text-gray-500 pr-2">
+                    <p className="font-normal text-gray-500 -mt-1 pr-2">
                       {assetInfo[0].name}
                     </p>
                   </h1>
@@ -178,15 +182,16 @@ const AssetPage = (props) => {
                   displayColors: false,
                   yPadding: 15,
                   xPadding: 15,
-                  position: "nearest",
+                  position: "average",
                   pointHitRadius: 20,
+                  pointRadius: 30,
                   caretSize: 10,
                   backgroundColor: "rgba(255,255,255,.9)",
                   bodyFontSize: 18,
                   borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
                   borderWidth: 2,
-                  bodyFontFamily: "Inter",
-                  titleFontFamily: "Inter",
+                  bodyFontFamily: "Satoshi",
+                  titleFontFamily: "Satoshi",
                   titleFontColor: "#000000",
                   bodyFontColor: "#303030",
                 },
@@ -200,6 +205,7 @@ const AssetPage = (props) => {
                       gridLines: {
                         drawTicks: false,
                         color: "rgba(0, 0, 0, 0)",
+                        zeroLineColor: "rgba(0, 0, 0, 0)",
                       },
                       drawBorder: false,
                       drawTicks: false,
@@ -233,8 +239,8 @@ const AssetPage = (props) => {
             />
           </div>
         ) : (
-          <div className="max-h-[30vh] max-w-2xl mx-auto px-5 py-1">
-            <p className="text-xs text-gray-200 font-body">
+          <div className="max-h-[30vh] max-w-4xl mx-auto px-5 py-1">
+            <p className="text-xs text-gray-200 font-ath">
               Normally there would be a price chart here, but an error occured
             </p>
           </div>
@@ -246,72 +252,56 @@ const AssetPage = (props) => {
             backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
           }}
         >
-          <div className="p-5 mx-auto max-w-2xl">
+          <div className="p-5 pt-2 mx-auto max-w-4xl">
             <div>
               {hasAth ? (
                 <>
-                  <h2 className="text-3xl font-sans font-black pt-3">
+                  <h2 className="text-2xl md:text-3xl font-ath font-black pt-4">
                     All-time high price
                   </h2>
-                  <div className="inline-block">
+                  <div className="inline-block relative">
                     <div
-                      className={`h-2 md:h-3 zbg-ath-100 w-full -mb-4 md:-mb-5 mt-5 duration-500 transition-opacity opacity-100`}
+                      className={`h-2.5 md:h-4 w-full -mb-4 md:-mb-5 mt-2 md:mt-3 duration-500 transition-opacity opacity-100`}
                       style={{
                         backgroundColor: assetColors.vibrant,
                       }}
                     />
                     <h3
-                      className={`text-6xl md:text-8xl text-black font-sans font-black inline-block mt-4 mb-4 pl-4`}
+                      className={`text-7xl md:text-9xl text-black font-ath font-black inline-block mt-3 mb-4 pl-4`}
                     >
-                      <span className="font-extralight text-xl absolute pt-2 -ml-4">
+                      <span className="font-bold text-2xl absolute mt-1.5 md:mt-4 -ml-4">
                         $
                       </span>
                       {ath}
                     </h3>
+                  </div>
+                  <div>
+                    <p className="font-ath font-light text-2xl md:text-3xl py-1 text-gray-900">
+                      Set {athTimestamp.fromNow()}
+                    </p>
+                    <p className="font-ath font-light text-sm md:text-md text-gray-600">
+                      on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
+                      {moment(athTimestamp).format("h:mm:ss A UTC")}
+                    </p>
                   </div>
                   {assetInfo[0]?.ath < assetInfo[0].current_price && (
                     <div>
                       <span
                         className={`inline-block bg-yellow-100 rounded-lg mb-10 py-2 px-3`}
                       >
-                        <span className="flex flex-row items-center justify-start">
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            className="h-5 w-auto text-yellow-500"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                            />
-                          </svg>
+                        <span className="flex flex-row items-center justify-start font-ath">
+                          🚀{" "}
                           <p className="text-sm pl-2 font-light text-black">
                             Current price (
-                            {assetInfo[0].current_price.toLocaleString(
-                              undefined,
-                              { minimumFractionDigits: 2 }
-                            )}
-                            ) is equal to or above all-time high price
+                            {formatNumber(assetInfo[0].current_price)}) is equal
+                            to or above all-time high price
                           </p>
                         </span>
                       </span>
                     </div>
                   )}
-                  <div>
-                    <p className="font-sans font-light text-3xl py-1 text-gray-900">
-                      Set {athTimestamp.fromNow()}
-                    </p>
-                    <p className="font-sans font-light text-xs text-gray-600">
-                      on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
-                      {moment(athTimestamp).format("h:mm:ss A UTC")}
-                    </p>
-                  </div>
-                  <div className="pt-10 w-full"></div>
-                  <p className="pt-8 pb-5 text-lg md:text-2xl font-sans font-normal text-black max-w-md md:max-w-xl">
+                  {/* <div className="pt-5 w-full"></div> */}
+                  <p className="pt-8 pb-5 text-lg md:text-2xl font-ath font-normal text-black max-w-md md:max-w-xl">
                     {`The highest price ever paid for ${
                       assetInfo[0].name
                     } (${assetid.toUpperCase()}) was ${formatNumber(
@@ -323,9 +313,9 @@ const AssetPage = (props) => {
                   <a
                     target="_blank"
                     href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
-                    className="bg-white p-3 inline-block mt-4 border border-solid border-gray-200 border-px"
+                    className="bg-white p-3 inline-block mt-4 border-solid border-gray-200 border-px"
                   >
-                    <p className="font-sans font-light text-sm text-gray-700">
+                    <p className="font-ath font-light text-sm text-gray-700">
                       Data accurate as of {lastUpdated.fromNow()}
                     </p>
                     <div className="h-px bg-gray-300 mt-2" />
@@ -336,7 +326,7 @@ const AssetPage = (props) => {
                         width={20}
                         alt={`CoinGecko logo`}
                       />
-                      <p className="font-sans font-light text-xs text-gray-600 leading-none px-2">
+                      <p className="font-ath font-light text-xs text-gray-600 leading-none px-2">
                         Powered by CoinGecko data
                       </p>
                     </div>
@@ -345,10 +335,10 @@ const AssetPage = (props) => {
                 </>
               ) : (
                 <>
-                  <h2 className="text-3xl font-sans font-black pt-5">
+                  <h2 className="text-3xl font-ath font-black pt-5">
                     No price data found for {assetInfo[0].symbol.toUpperCase()}
                   </h2>
-                  <div className="bg-gray-100 p-3 inline-block mt-4">
+                  <div className="bg-white p-3 inline-block mt-4 border-solid border-gray-200 border-px">
                     <div className="flex flex-row items-center justify-start">
                       <Image
                         src="/cglogo.svg"
@@ -359,7 +349,7 @@ const AssetPage = (props) => {
                       <a
                         target="_blank"
                         href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
-                        className="font-sans font-light text-xs text-gray-600 leading-none px-2"
+                        className="font-ath font-light text-xs text-gray-700 leading-none px-2"
                       >
                         Powered by CoinGecko data
                       </a>
@@ -373,21 +363,21 @@ const AssetPage = (props) => {
                   <div className="h-px bg-gray-200 w-full mb-4" />
                   <div className="grid grid-cols-1 md:grid-cols-2">
                     <div>
-                      <h2 className="text-lg font-sans font-bold text-gray-600">
+                      <h2 className="text-lg font-ath font-bold text-gray-600">
                         Current price in USD
                       </h2>
                       <div className="inline-block">
-                        <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-1 mb-4">
+                        <h3 className="text-2xl md:text-3xl text-black font-ath font-black inline-block mt-1 mb-4">
                           {formatNumber(assetInfo[0]?.current_price)}
                         </h3>
                       </div>
                     </div>
                     <div>
-                      <h2 className="text-lg font-sans font-bold text-gray-600">
+                      <h2 className="text-lg font-ath font-bold text-gray-600">
                         Change since all-time high
                       </h2>
                       <div className="inline-block">
-                        <h3 className="text-2xl md:text-3xl text-black font-sans font-black inline-block mt-1 mb-4">
+                        <h3 className="text-2xl md:text-3xl text-black font-ath font-black inline-block mt-1 mb-4">
                           {assetInfo[0].ath_change_percentage?.toLocaleString(
                             undefined,
                             {
@@ -421,7 +411,7 @@ const AssetPage = (props) => {
                           d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                       </svg>
-                      <p className="font-sans font-light text-lg text-gray-600">
+                      <p className="font-ath font-light text-lg text-gray-600">
                         The ticker symbol "
                         <span className="font-bold">
                           {assetid.toUpperCase()}
@@ -430,7 +420,7 @@ const AssetPage = (props) => {
                       </p>
                     </div>
                     <button
-                      className="bg-white px-2 py-1 mx-2 text-gray-800 text-sm font-sans flex flex-row items-center justify-center"
+                      className="bg-white px-2 py-1 mx-2 text-gray-800 text-sm font-ath flex flex-row items-center justify-center"
                       onClick={() => {
                         setShowSymbolSharerAssets(!showSymbolSharerAssets);
                       }}
@@ -459,6 +449,12 @@ const AssetPage = (props) => {
                   {showSymbolSharerAssets && (
                     <>
                       {assetInfo.map((asset, index) => {
+                        const athTimestamp = moment.utc(
+                          assetInfo[index]?.ath_date
+                        );
+                        const lastUpdated = moment.utc(
+                          assetInfo[index].last_updated
+                        );
                         if (index !== 0)
                           return (
                             <div className="pt-4" key={`shared-${index}`}>
@@ -470,17 +466,17 @@ const AssetPage = (props) => {
                                   width={25}
                                   alt={`${assetInfo[index].name} logo`}
                                 />
-                                <h1 className="font-sans ml-2 font-bold text-lg">
+                                <h1 className="font-ath ml-2 font-bold text-lg">
                                   {assetInfo[index].name} (
                                   {assetid.toUpperCase()})
                                 </h1>
                               </div>
-                              <h2 className="text-md font-sans font-black">
+                              <h2 className="text-md font-ath font-black">
                                 All-time high price in USD
                               </h2>
                               <div className="inline-block">
                                 <div className="h-1 bg-ath-100 w-full -mb-4 mt-2" />
-                                <h3 className="text-2xl md:text-4xl text-black font-sans font-black inline-block mt-4 mb-4">
+                                <h3 className="text-2xl md:text-4xl text-black font-ath font-black inline-block mt-4 mb-4">
                                   {assetInfo[index].ath.toLocaleString(
                                     undefined,
                                     {
@@ -489,10 +485,10 @@ const AssetPage = (props) => {
                                   )}
                                 </h3>
                               </div>
-                              <p className="font-sans font-light text-lg text-gray-600">
+                              <p className="font-ath font-light text-lg text-gray-600">
                                 Set {athTimestamp.fromNow()}
                               </p>
-                              <p className="font-sans font-light text-xs text-gray-600">
+                              <p className="font-ath font-light text-xs text-gray-600">
                                 on{" "}
                                 {moment(athTimestamp).format("MMMM Do, YYYY")}{" "}
                                 at{" "}
@@ -509,7 +505,7 @@ const AssetPage = (props) => {
                                   <a
                                     target="_blank"
                                     href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
-                                    className="font-sans font-light text-xs text-gray-800 leading-none px-2"
+                                    className="font-ath font-light text-xs text-gray-800 leading-none px-2"
                                   >
                                     Data accurate as of {lastUpdated.fromNow()}
                                   </a>
@@ -526,8 +522,8 @@ const AssetPage = (props) => {
           </div>
         </div>
         <div className="w-full bg-white">
-          <div className="p-5 mx-auto max-w-2xl">
-            <p className="font-sans text-base md:text-xl font-bold mt-20 mb-2 text-gray-400">
+          <div className="p-5 mx-auto max-w-4xl">
+            <p className="font-ath text-base md:text-xl font-bold mt-20 mb-2 text-gray-400">
               All-time highs of other assets
             </p>
             {market.map((asset, index) => (
@@ -581,6 +577,7 @@ const AssetPage = (props) => {
               1
             )} !important;
           }
+
           #nprogress .peg {
             box-shadow: 0 0 10px ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)},
               0 0 5px ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)};
@@ -679,7 +676,19 @@ export async function getServerSideProps({ params }) {
         : [];
 
       const palette = await getImg(assetInfo[0].image);
-      props.palette = JSON.parse(palette);
+
+      if (palette.Vibrant === null) palette.Vibrant = { rgb: [125, 125, 125] };
+      if (palette.DarkVibrant === null)
+        palette.DarkVibrant = { rgb: [125, 125, 125] };
+      if (palette.LightVibrant === null)
+        palette.LightVibrant = { rgb: [125, 125, 125] };
+      if (palette.Muted === null) palette.Muted = { rgb: [125, 125, 125] };
+      if (palette.DarkMuted === null)
+        palette.DarkMuted = { rgb: [125, 125, 125] };
+      if (palette.LightMuted === null)
+        palette.LightMuted = { rgb: [125, 125, 125] };
+
+      props.palette = JSON.parse(JSON.stringify(palette));
 
       props.marketChart = marketChart;
     }

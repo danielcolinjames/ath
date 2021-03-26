@@ -1,16 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import moment from "moment";
+import { formatNumber } from "../utils/numbers";
 
 const AssetListItem = ({ asset, index, showGreenLine, showTimeSince }) => {
   const athTimestamp = moment.utc(asset.ath_date);
 
   return (
-    <Link href={`/${asset.symbol}`} key={`${asset.id}-${index}`}>
+    <Link href={`/${asset.symbol.toUpperCase()}`} key={`${asset.id}-${index}`}>
       <a
         className={`py-5 group ${
           index !== 0 ? "border-t" : ""
-        } border-gray-200 font-sans text-lg sm:text-lg text-gray-700 font-semibold flex flex-col sm:flex-row items-start sm:items-center sm:justify-between`}
+        } border-gray-200 text-lg sm:text-lg text-gray-700 font-semibold flex flex-col sm:flex-row items-start sm:items-center sm:justify-between font-ath`}
       >
         <span className="flex flex-row items-center justify-center">
           <Image
@@ -31,10 +32,7 @@ const AssetListItem = ({ asset, index, showGreenLine, showTimeSince }) => {
               <div className="h-1 transform bg-transparent transition-all ease-in-out duration-200 group-hover:-translate-y-2 group-hover:bg-ath-100 group-hover:scale-110 w-full -mb-1 mt-3 sm:mt-0 sm:-mb-1" />
             )}
             <span className="font-bold text-black text-xl pt-2 sm:pt-0 sm:text-lg">
-              {asset.ath.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-              })}{" "}
-              USD
+              {formatNumber(asset.ath)} USD
             </span>
           </span>
           {showTimeSince && (

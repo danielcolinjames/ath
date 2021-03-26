@@ -8,14 +8,13 @@ export const formatNumber = (incomingNumber) => {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
-  } else if (incomingNumber < 0.0001) {
+  } else if (incomingNumber < 0.01) {
     return incomingNumber?.toLocaleString(undefined, {
       minimumFractionDigits: 4,
-      maximumFractionDigits: 6,
     });
   } else {
     return incomingNumber?.toLocaleString(undefined, {
-      minimumFractionDigits: 4,
+      minimumFractionDigits: 2,
     });
   }
 };
