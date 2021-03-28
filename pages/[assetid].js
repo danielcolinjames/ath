@@ -53,7 +53,7 @@ const AssetPage = (props) => {
 
     const url = new URL("https://og.ath.ooo");
     url.pathname = `${encodeURIComponent(
-      `${assetInfo[0].name}-${
+      `${assetInfo[0].name}-${assetInfo[0].symbol}-${
         assetInfo[0].ath ? assetInfo[0].ath : "undefined"
       }`
     )}.png`;
@@ -122,8 +122,7 @@ const AssetPage = (props) => {
     const chartData = { labels, datasets };
 
     const pc = parseFloat(assetInfo[0].ath_change_percentage);
-    console.log(pc);
-    console.log(pc < -50);
+
     return (
       <Layout assetColors={assetColors} rgb={[r, g, b]} assetList={list}>
         <MetaTags
