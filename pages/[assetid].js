@@ -121,6 +121,9 @@ const AssetPage = (props) => {
 
     const chartData = { labels, datasets };
 
+    const pc = parseFloat(assetInfo[0].ath_change_percentage);
+    console.log(pc);
+    console.log(pc < -50);
     return (
       <Layout assetColors={assetColors} rgb={[r, g, b]} assetList={list}>
         <MetaTags
@@ -254,24 +257,82 @@ const AssetPage = (props) => {
             <div>
               {hasAth ? (
                 <>
-                  <h2 className="text-2xl md:text-3xl font-ath font-black pt-4">
-                    All-time high price
-                  </h2>
-                  <div className="inline-block relative">
-                    <div
-                      className={`h-2.5 md:h-4 w-full -mb-4 md:-mb-5 mt-2 md:mt-3 duration-500 transition-opacity opacity-100`}
-                      style={{
-                        backgroundColor: assetColors.vibrant,
-                      }}
-                    />
-                    <h3
-                      className={`text-7xl md:text-9xl text-black font-ath font-black inline-block mt-3 mb-4 pl-4 break-all`}
-                    >
-                      <span className="font-bold text-2xl absolute mt-1.5 md:mt-4 -ml-4">
-                        $
-                      </span>
-                      {ath}
-                    </h3>
+                  <div className="flex items-end justify-between mb-4">
+                    <div>
+                      <h2 className="text-2xl md:text-3xl font-ath font-black pt-4">
+                        All-time high price
+                      </h2>
+                      <div className="inline-block relative">
+                        <div
+                          className={`h-2.5 md:h-4 w-full -mb-4 md:-mb-5 mt-2 md:mt-3 duration-500 transition-opacity opacity-100`}
+                          style={{
+                            backgroundColor: assetColors.vibrant,
+                          }}
+                        />
+                        <h3
+                          className={`text-7xl md:text-9xl text-black font-ath font-black inline-block mt-3 pl-4 break-all`}
+                        >
+                          <span className="font-bold text-2xl absolute mt-1.5 md:mt-4 -ml-4">
+                            $
+                          </span>
+                          {ath}
+                        </h3>
+                      </div>
+                    </div>
+                    <div className={`hidden sm:flex items-end justify-end`}>
+                      <div
+                        className={`h-full flex-col items-end justify-end text-right`}
+                      >
+                        <h2 className={`text-sm sm:text-lg font-ath font-bold`}>
+                          Current price
+                        </h2>
+                        <div className="inline-block">
+                          <div
+                            className={`h-1 sm:h-2.5 w-full duration-500 transition-opacity opacity-100`}
+                            style={{
+                              backgroundColor: assetColors.vibrant,
+                            }}
+                          />
+                          <div className="">
+                            <h3
+                              className={`text-3xl text-black font-ath font-black`}
+                            >
+                              ${formatNumber(assetInfo[0]?.current_price)}
+                            </h3>
+                            <p
+                              className={`text-sm font-ath font-black rounded-full ${
+                                pc < -95
+                                  ? "text-red-900"
+                                  : pc < -75
+                                  ? "text-red-800"
+                                  : pc < -60
+                                  ? "text-red-700"
+                                  : pc < -45
+                                  ? "text-yellow-800"
+                                  : pc < -30
+                                  ? "text-yellow-700"
+                                  : pc < -15
+                                  ? "text-yellow-600"
+                                  : pc < -10
+                                  ? "text-yellow-500"
+                                  : pc < -5
+                                  ? "text-gray-500"
+                                  : "text-gray-400"
+                              }`}
+                            >
+                              {assetInfo[0].ath_change_percentage?.toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }
+                              )}
+                              %
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                   <div>
                     <p className="font-ath font-light text-2xl md:text-3xl py-1 text-gray-900">
