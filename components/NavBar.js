@@ -4,8 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useRef, useEffect } from "react";
 import hexToRgba from "hex-to-rgba";
 
-const NavBar = ({ assetList, assetColors }) => {
-  // console.log(assetList);
+const NavBar = ({ assetList, assetColors, rgb }) => {
   const router = useRouter();
 
   const [assetPlaceholder, setAssetPlaceholder] = useState("BTC");
@@ -30,6 +29,15 @@ const NavBar = ({ assetList, assetColors }) => {
       document.removeEventListener("keydown", handleKeydown);
     };
   }, []);
+
+  let r, g, b;
+  if (rgb === undefined) {
+    r = 45;
+    g = 254;
+    b = 193;
+  } else {
+    [r, g, b] = rgb;
+  }
 
   const handleKeydown = (event) => {
     // Disable the following keyboard shortcuts when the user is typing
@@ -60,6 +68,8 @@ const NavBar = ({ assetList, assetColors }) => {
 
   let resultCount = 0;
 
+  const LOGO_WIDTH = 56;
+
   return (
     <div className="w-full h-14 shadow-sm fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect">
       <div className="max-w-4xl mx-auto">
@@ -67,24 +77,72 @@ const NavBar = ({ assetList, assetColors }) => {
           <div className="flex justify-start items-center w-full max-w-4xl mx-auto px-5">
             <Link href="/">
               <div className="flex flex-row align-start justify-start">
-                <a className="p-0 m-0 -mb-2 flex flex-row">
+                <a className="p-0 m-0 -mb-2 flex flex-row cursor-pointer">
                   <div className="block">
                     <Image
-                      className="image-override"
-                      src="/images/ath-tp-2.png"
-                      width={56}
-                      height={56}
+                      className="image-override logo-pulse"
+                      src="/logo/2/ath_0.svg"
+                      width={LOGO_WIDTH}
+                      height={LOGO_WIDTH}
                       alt="ATH.ooo logo"
                     />
                   </div>
-                  <div className="block -ml-14 logo-pulse">
+                  <div className={`block`} style={{ marginLeft: -LOGO_WIDTH }}>
                     <Image
                       className="image-override"
-                      src="/images/ath-tp.png"
-                      width={56}
-                      height={56}
+                      src="/logo/2/ath_1.svg"
+                      width={LOGO_WIDTH}
+                      height={LOGO_WIDTH}
                       alt="ATH.ooo logo"
                     />
+                  </div>
+                  <div
+                    className="block"
+                    style={{
+                      marginLeft: -LOGO_WIDTH,
+                      width: LOGO_WIDTH,
+                      height: LOGO_WIDTH,
+                    }}
+                  >
+                    <svg
+                      width="100%"
+                      height="100%"
+                      viewBox="0 0 2778 2778"
+                      version="1.1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{
+                        fillRule: "evenodd",
+                        clipRule: "evenodd",
+                        strokeLinejoin: "round",
+                        strokeMiterlimit: 2,
+                      }}
+                    >
+                      <g transform="matrix(2.77778,0,0,2.77778,0,-47111.1)">
+                        <g
+                          id="ath_final_wordmark_light"
+                          transform="matrix(0.260417,0,0,0.462963,0,16960)"
+                        >
+                          <rect
+                            x="0"
+                            y="0"
+                            width="3840"
+                            height="2160"
+                            style={{ fill: "none" }}
+                          />
+                          <g transform="matrix(-3.03494,-2.09066e-16,3.17232e-16,-1.4571,9887.66,2081.78)">
+                            <g id="Logomark">
+                              <rect
+                                x="2353.03"
+                                y="1012.95"
+                                width="544.81"
+                                height="127.661"
+                                style={{ fill: `rgb(${r},${g},${b})` }}
+                              />
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                    </svg>
                   </div>
                 </a>
               </div>

@@ -121,10 +121,8 @@ const AssetPage = (props) => {
 
     const chartData = { labels, datasets };
 
-    // console.log(assetInfo);
-
     return (
-      <Layout assetColors={assetColors} assetList={list}>
+      <Layout assetColors={assetColors} rgb={[r, g, b]} assetList={list}>
         <MetaTags
           title={title}
           description={descriptionText}
@@ -267,7 +265,7 @@ const AssetPage = (props) => {
                       }}
                     />
                     <h3
-                      className={`text-7xl md:text-9xl text-black font-ath font-black inline-block mt-3 mb-4 pl-4`}
+                      className={`text-7xl md:text-9xl text-black font-ath font-black inline-block mt-3 mb-4 pl-4 break-all`}
                     >
                       <span className="font-bold text-2xl absolute mt-1.5 md:mt-4 -ml-4">
                         $

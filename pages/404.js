@@ -14,8 +14,8 @@ const NotFoundPage = ({ assetid, market, list }) => {
         <MetaTags
           title={"ATH.ooo — 404: Not Found"}
           description={`See the all-time highs of crypto assets`}
-          openGraphImageAbsoluteUrl={`https://ath.ooo/og.png`}
-          url={`https://ath.ooo/`}
+          openGraphImageAbsoluteUrl={`https://ath.ooo/images/og/404.png`}
+          url={`https://ath.ooo/404`}
           noIndex
         />
         <div className="flex flex-col max-w-xl break-words">
