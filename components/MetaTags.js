@@ -18,7 +18,7 @@ const MetaTags = ({
     : "ATH.ooo is the fastest way to check the all-time high price of any crypto asset";
   const metaImage = openGraphImageAbsoluteUrl
     ? openGraphImageAbsoluteUrl
-    : "https://og.ath.ooo/og.png";
+    : "https://og.ath.ooo/images/logo/2/og.png";
   const metaUrl = url ? url : "https://ath.ooo/";
   let r, g, b;
 
