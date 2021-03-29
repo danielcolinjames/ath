@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
-import NotFoundPage from "./404.js";
-import Error from "./_error.js";
-import Head from "next/head";
+// import NotFoundPage from "./404.js";
+// import Error from "./500.js";
+// import Head from "next/head";
 import Image from "next/image";
 import MetaTags from "../components/MetaTags";
 import moment from "moment";
@@ -677,68 +677,75 @@ export async function getServerSideProps({ params }) {
       notFound: true,
     };
   } else {
-    props.asset = asset;
+    try {
+      props.asset = asset;
 
-    const singleAssetMatch = matchingAssets.length === 1;
-    props.singleAssetMatch = singleAssetMatch;
+      const singleAssetMatch = matchingAssets.length === 1;
+      props.singleAssetMatch = singleAssetMatch;
 
-    let assetCoingeckoId = "";
+      let assetCoingeckoId = "";
 
-    if (singleAssetMatch) {
-      assetCoingeckoId = asset.id;
-    } else {
-      // multiple found with same ticker symbol
-      const multipleAssetsArray = [];
-      matchingAssets.map((matchingAssetObject) => {
-        multipleAssetsArray.push(matchingAssetObject.id);
-      });
-      assetCoingeckoId = multipleAssetsArray.join(",");
+      if (singleAssetMatch) {
+        assetCoingeckoId = asset.id;
+      } else {
+        // multiple found with same ticker symbol
+        const multipleAssetsArray = [];
+        matchingAssets.map((matchingAssetObject) => {
+          multipleAssetsArray.push(matchingAssetObject.id);
+        });
+        assetCoingeckoId = multipleAssetsArray.join(",");
+      }
+
+      const assetsResponse = await fetch(
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${assetCoingeckoId}`
+      );
+
+      const assetInfo = await assetsResponse.json();
+      props.assetInfo = assetInfo;
+
+      const athTimestampMoment = moment.utc(assetInfo[0]?.ath_date);
+      const daysBetweenNowAndAth = differenceInDays(
+        new Date(),
+        parseISO(assetInfo[0]?.ath_date)
+      );
+
+      const athTimestamp = athTimestampMoment
+        .subtract(daysBetweenNowAndAth + 1, "days")
+        .format("X");
+
+      const marketChartResponse = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${
+          assetInfo[0].id
+        }/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
+          Date.now() / 1000
+        )}`
+      );
+      const marketChart = marketChartResponse.ok
+        ? await marketChartResponse.json()
+        : [];
+
+      const palette = await getImg(assetInfo[0].image);
+
+      if (palette.Vibrant === null) palette.Vibrant = { rgb: [125, 125, 125] };
+      if (palette.DarkVibrant === null)
+        palette.DarkVibrant = { rgb: [125, 125, 125] };
+      if (palette.LightVibrant === null)
+        palette.LightVibrant = { rgb: [125, 125, 125] };
+      if (palette.Muted === null) palette.Muted = { rgb: [125, 125, 125] };
+      if (palette.DarkMuted === null)
+        palette.DarkMuted = { rgb: [125, 125, 125] };
+      if (palette.LightMuted === null)
+        palette.LightMuted = { rgb: [125, 125, 125] };
+
+      props.palette = JSON.parse(JSON.stringify(palette));
+
+      props.marketChart = marketChart;
+    } catch (e) {
+      console.log(e);
+      return {
+        props: {},
+      };
     }
-
-    const assetsResponse = await fetch(
-      `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${assetCoingeckoId}`
-    );
-
-    const assetInfo = await assetsResponse.json();
-    props.assetInfo = assetInfo;
-
-    const athTimestampMoment = moment.utc(assetInfo[0]?.ath_date);
-    const daysBetweenNowAndAth = differenceInDays(
-      new Date(),
-      parseISO(assetInfo[0]?.ath_date)
-    );
-
-    const athTimestamp = athTimestampMoment
-      .subtract(daysBetweenNowAndAth + 1, "days")
-      .format("X");
-
-    const marketChartResponse = await fetch(
-      `https://api.coingecko.com/api/v3/coins/${
-        assetInfo[0].id
-      }/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
-        Date.now() / 1000
-      )}`
-    );
-    const marketChart = marketChartResponse.ok
-      ? await marketChartResponse.json()
-      : [];
-
-    const palette = await getImg(assetInfo[0].image);
-
-    if (palette.Vibrant === null) palette.Vibrant = { rgb: [125, 125, 125] };
-    if (palette.DarkVibrant === null)
-      palette.DarkVibrant = { rgb: [125, 125, 125] };
-    if (palette.LightVibrant === null)
-      palette.LightVibrant = { rgb: [125, 125, 125] };
-    if (palette.Muted === null) palette.Muted = { rgb: [125, 125, 125] };
-    if (palette.DarkMuted === null)
-      palette.DarkMuted = { rgb: [125, 125, 125] };
-    if (palette.LightMuted === null)
-      palette.LightMuted = { rgb: [125, 125, 125] };
-
-    props.palette = JSON.parse(JSON.stringify(palette));
-
-    props.marketChart = marketChart;
   }
 
   return {
