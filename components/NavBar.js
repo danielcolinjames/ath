@@ -10,12 +10,14 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
   const [assetPlaceholder, setAssetPlaceholder] = useState("BTC");
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const max = Math.floor(assetList.length);
-      const randomNumber = Math.floor(Math.random() * (max - 1));
-      setAssetPlaceholder(assetList[randomNumber].symbol);
-    }, 5000);
-    return () => clearInterval(interval);
+    if (assetList) {
+      const interval = setInterval(() => {
+        const max = Math.floor(assetList?.length);
+        const randomNumber = Math.floor(Math.random() * (max - 1));
+        setAssetPlaceholder(assetList[randomNumber]?.symbol);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
   }, []);
 
   const [filterText, setFilterText] = useState("");
@@ -50,8 +52,10 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
     }
   };
 
+  let resultCount = 0;
+
   const handleKeyPress = (event) => {
-    if (event.key === "Enter" && filterText.length > 0) {
+    if (event.key === "Enter" && filterText.length > 0 && resultCount !== 0) {
       router.push(`/${filterText}`);
       setFilterText("");
       window.scrollTo(0, 0);
@@ -65,8 +69,6 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
   const handleFilterTextChange = (event) => {
     setFilterText(event.target.value.toUpperCase());
   };
-
-  let resultCount = 0;
 
   const LOGO_WIDTH = 56;
 
