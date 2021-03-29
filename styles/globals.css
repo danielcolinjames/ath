@@ -49,7 +49,16 @@ a {
 }
 
 #nprogress .bar {
-  background: #ffbb00 !important;
+  height: 5px !important;
+  background: #00ffba !important;
+}
+
+#nprogress .peg {
+  box-shadow: 0 0 10px rgba(45, 254, 193, 1), 0 0 5px rgba(45, 254, 193, 1);
+}
+#nprogress .spinner-icon {
+  border-top-color: rgba(45, 254, 193, 1);
+  border-left-color: rgba(45, 254, 193, 1);
 }
 
 input {

@@ -269,7 +269,11 @@ const AssetPage = (props) => {
                           }}
                         />
                         <h3
-                          className={`text-7xl md:text-9xl text-black font-ath font-black inline-block mt-3 pl-4 break-all`}
+                          className={`text-7xl md:text-9xl text-black font-ath font-black inline-block mt-3 pl-4 break-all ${
+                            assetInfo[0]?.ath < assetInfo[0].current_price
+                              ? "line-through"
+                              : ""
+                          }`}
                         >
                           <span className="font-bold text-2xl absolute mt-1.5 md:mt-4 -ml-4">
                             $
@@ -316,6 +320,8 @@ const AssetPage = (props) => {
                                   ? "text-yellow-500"
                                   : pc < -5
                                   ? "text-gray-500"
+                                  : pc > 0
+                                  ? "text-green-500"
                                   : "text-gray-400"
                               }`}
                             >
@@ -333,29 +339,61 @@ const AssetPage = (props) => {
                       </div>
                     </div>
                   </div>
-                  <div>
-                    <p className="font-ath font-light text-2xl md:text-3xl py-1 text-gray-900">
-                      Set {athTimestamp.fromNow()}
-                    </p>
-                    <p className="font-ath font-light text-sm md:text-md text-gray-600">
-                      on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
-                      {moment(athTimestamp).format("h:mm:ss A UTC")}
-                    </p>
-                  </div>
-                  {assetInfo[0]?.ath < assetInfo[0].current_price && (
+                  {assetInfo[0]?.ath < assetInfo[0].current_price ? (
                     <div>
                       <span
-                        className={`inline-block bg-yellow-100 rounded-lg mb-10 py-2 px-3`}
+                        className={`inline-block bg-yellow-200 border-2 border-yellow-500 rounded-lg mb-10 py-2 px-3 mt-2`}
                       >
-                        <span className="flex flex-row items-center justify-start font-ath">
-                          🚀{" "}
-                          <p className="text-sm pl-2 font-light text-black">
-                            Current price (
-                            {formatNumber(assetInfo[0].current_price)}) is equal
-                            to or above all-time high price
+                        <span className="">
+                          <div className="flex flex-col sm:flex-row items-start justify-start">
+                            <span className="mr-1 mt-1">🚀 </span>
+                            <p className="pl-0 sm:pl-2 text-black font-ath font-semibold text-lg">
+                              Current price (
+                              {formatNumber(assetInfo[0].current_price)}) is
+                              above previous all-time high price!
+                            </p>
+                          </div>
+                          <p className="text-md text-black font-ath font-light pt-1">
+                            Once the {assetInfo[0].name} rocketship takes a
+                            breather, the all-time high value coming back from
+                            CoinGecko's API will update.
                           </p>
                         </span>
                       </span>
+                    </div>
+                  ) : (
+                    <div className="flex flex-col sm:flex-row items-start justify-between">
+                      <div>
+                        <p className="font-ath font-light text-2xl md:text-3xl py-1 text-gray-900">
+                          Set {athTimestamp.fromNow()}
+                        </p>
+                        <p className="font-ath font-light text-sm md:text-md text-gray-600">
+                          on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
+                          {moment(athTimestamp).format("h:mm:ss A UTC")}
+                        </p>
+                      </div>
+                      <a
+                        target="_blank"
+                        href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
+                        className="p-3 inline-block border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-md border-px mt-4 sm:mt-0 sm:ml-4 coingecko-link transition-all"
+                      >
+                        <p className="font-ath font-light text-sm text-gray-700 sm:text-right">
+                          Data accurate as of {lastUpdated.fromNow()}
+                        </p>
+                        {/* <div className="h-px bg-gray-300 mt-2" /> */}
+                        <div className="flex flex-row items-center justify-start pt-2">
+                          <Image
+                            src="/cglogo.svg"
+                            height={20}
+                            width={20}
+                            alt={`CoinGecko logo`}
+                          />
+                          <p className="font-ath font-light text-xs text-gray-600 leading-none px-2 sm:text-right">
+                            Powered by CoinGecko
+                          </p>
+                        </div>
+                        {/* Other info about [assetid] */}
+                      </a>
                     </div>
                   )}
                   {/* <div className="pt-5 w-full"></div> */}
@@ -368,28 +406,6 @@ const AssetPage = (props) => {
                       "MMMM Do, YYYY"
                     )}.`}
                   </p>
-                  <a
-                    target="_blank"
-                    href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
-                    className="bg-white p-3 inline-block mt-4 border-solid border-gray-200 border-px"
-                  >
-                    <p className="font-ath font-light text-sm text-gray-700">
-                      Data accurate as of {lastUpdated.fromNow()}
-                    </p>
-                    <div className="h-px bg-gray-300 mt-2" />
-                    <div className="flex flex-row items-center justify-start pt-2">
-                      <Image
-                        src="/cglogo.svg"
-                        height={20}
-                        width={20}
-                        alt={`CoinGecko logo`}
-                      />
-                      <p className="font-ath font-light text-xs text-gray-600 leading-none px-2">
-                        Powered by CoinGecko data
-                      </p>
-                    </div>
-                    {/* Other info about [assetid] */}
-                  </a>
                 </>
               ) : (
                 <>
@@ -417,12 +433,12 @@ const AssetPage = (props) => {
               )}
 
               {hasAth && (
-                <div className="pt-10">
+                <div className="block sm:hidden pt-10">
                   <div className="h-px bg-gray-200 w-full mb-4" />
                   <div className="grid grid-cols-1 md:grid-cols-2">
                     <div>
                       <h2 className="text-lg font-ath font-bold text-gray-600">
-                        Current price in USD
+                        Current price
                       </h2>
                       <div className="inline-block">
                         <h3 className="text-2xl md:text-3xl text-black font-ath font-black inline-block mt-1 mb-4">
@@ -643,6 +659,12 @@ const AssetPage = (props) => {
           #nprogress .spinner-icon {
             border-top-color: ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)};
             border-left-color: ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)};
+          }
+          .coingecko-link:hover {
+            background-color: ${rgbaStringFromRGBObj(
+              palette.Vibrant.rgb,
+              0.15
+            )};
           }
         `}</style>
       </Layout>

@@ -74,10 +74,10 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
     <div className="w-full h-14 shadow-sm fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect">
       <div className="max-w-4xl mx-auto">
         <div className="rounded-full">
-          <div className="flex justify-start items-center w-full max-w-4xl mx-auto px-5">
+          <div className="flex justify-between items-center w-full max-w-4xl mx-auto px-5">
             <Link href="/">
               <div className="flex flex-row align-start justify-start">
-                <a className="p-0 m-0 -mb-2 flex flex-row cursor-pointer">
+                <a className="w-14 p-0 m-0 -mb-2 flex flex-row cursor-pointer">
                   <div className="block">
                     <Image
                       className="image-override logo-pulse"
@@ -149,10 +149,10 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
             </Link>
             {/* Search bar */}
             {assetList && (
-              <div className="flex flex-grow flex-wrap pl-2">
-                <div className="w-full relative">
+              <div className="w-full mx-auto max-w-screen-sm flex pl-2 pr-2">
+                <div className="flex relative w-full">
                   <input
-                    className={`p-2 w-full max-w-md placeholder-opacity-25 bg-[rgba(255,255,255,0.75)] border border-solid border-1 focus:outline-none border-opacity-0 focus:border-opacity-100 border-gray-200 text-md font-ath font-light`}
+                    className={`w-full relative px-2 py-1 placeholder-opacity-25 rounded-md bg-[rgba(255,255,255,0.75)] border-solid border-2 focus:outline-none border-opacity-50 focus:border-opacity-100 text-md font-ath font-light`}
                     value={filterText}
                     type="search"
                     ref={input}
@@ -160,7 +160,14 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                     onKeyPress={handleKeyPress}
                     placeholder={`${assetPlaceholder.toUpperCase()}`}
                     id="input"
-                  />
+                  ></input>
+                  <div className="hidden sm:flex align-center justify-end absolute right-0 h-full">
+                    <div className="bg-gray-50 rounded-md border border-solid border-gray-300 w-5 flex items-center justify-center my-2 mr-2">
+                      <p className="text-gray-500 text-xs font-ath font-thin">
+                        /
+                      </p>
+                    </div>
+                  </div>
                 </div>
                 <div className="absolute max-w-md mt-10">
                   <div className="grid grid-cols-1">
@@ -200,11 +207,18 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                 </div>
               </div>
             )}
+            <div className="w-auto flex items-center justify-end pr-4 sm:pr-0">
+              <Link href="/about">
+                <a className="text-gray-500 font-ath font-light about-link py-1 px-2 rounded-md transition-all">
+                  About
+                </a>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
       <div
-        className="mt-px h-px w-full"
+        className="mt-px h-1 w-full"
         style={{
           backgroundColor:
             assetColors !== undefined
@@ -217,6 +231,15 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
           background-color: ${assetColors !== undefined
             ? hexToRgba(assetColors?.vibrant, 0.85)
             : "#00FFBA"};
+        }
+        #input {
+          border-color: rgba(${r}, ${g}, ${b}, 0.15);
+        }
+        #input:focus {
+          border-color: rgba(${r}, ${g}, ${b}, 0.5);
+        }
+        .about-link:hover {
+          background-color: rgba(${r}, ${g}, ${b}, 0.15);
         }
       `}</style>
     </div>

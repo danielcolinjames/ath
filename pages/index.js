@@ -12,7 +12,7 @@ const HomePage = ({ list, market }) => {
 
   return (
     <Layout assetList={list}>
-      <div className="p-5 mx-auto max-w-2xl">
+      <div className="p-5 mx-auto max-w-4xl">
         <MetaTags
           title={"ATH.ooo — All-Time Highs"}
           description={`See the all-time highs of crypto assets`}
