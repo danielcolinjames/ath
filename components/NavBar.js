@@ -169,8 +169,8 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                     </div>
                   </div>
                 </div>
-                <div className="absolute max-w-md mt-10">
-                  <div className="grid grid-cols-1">
+                <div className="absolute max-w-md mt-7">
+                  <div className="grid grid-cols-1 mt-1.5">
                     {assetList?.map((asset, index) => {
                       if (
                         filterText.length > 1 &&
@@ -185,17 +185,19 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                                   onClick={() => {
                                     setFilterText("");
                                   }}
-                                  className={`py-2 px-5 w-full ${
+                                  className={`search-result w-full ${
                                     resultCount >= 1
-                                      ? `bg-[rgba(235,238,235,0.95)] blur-effect text-black text-xs font-light`
+                                      ? `blur-effect text-xs font-light`
                                       : ""
                                   }`}
                                   id={`result-${index}`}
                                 >
-                                  <span className="font-bold">
-                                    {asset.symbol.toUpperCase()}
-                                  </span>{" "}
-                                  ({asset.name})
+                                  <div className="bg-[rgba(255,255,255,0.75)] py-2 px-5 w-full">
+                                    <span className="font-bold">
+                                      {asset.symbol.toUpperCase()}
+                                    </span>{" "}
+                                    ({asset.name})
+                                  </div>
                                 </a>
                               </Link>
                             </div>
@@ -240,6 +242,9 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
         }
         .about-link:hover {
           background-color: rgba(${r}, ${g}, ${b}, 0.15);
+        }
+        .search-result {
+          background-color: rgba(${r}, ${g}, ${b}, 0.85);
         }
       `}</style>
     </div>
