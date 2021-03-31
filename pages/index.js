@@ -72,8 +72,10 @@ export async function getServerSideProps() {
   const marketRes = await fetch(
     "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=100"
   );
-
-  const market = await marketRes.json();
+  const marketUnsorted = await marketRes.json();
+  const market = marketUnsorted.sort((a, b) => {
+    return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0;
+  });
   return {
     props: { list, market },
   };
