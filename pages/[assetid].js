@@ -26,6 +26,7 @@ const AssetPage = ({
   singleAssetMatch,
   marketChart,
   palette,
+  paletteExtended,
 }) => {
   const [showList, setShowList] = useState(false);
   const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
@@ -77,6 +78,14 @@ const AssetPage = ({
           darkMuted: "#00FFBA",
           lightMuted: "#00FFBA",
         };
+
+  let assetColorsExtended = [];
+  if (!singleAssetMatch) {
+    paletteExtended.map((p) => {
+      const pf = getAssetColorsFromVibrantObj(p);
+      assetColorsExtended.push(pf);
+    });
+  }
 
   const data = marketChart?.prices;
   const labels = data?.map((p) => {
@@ -232,6 +241,7 @@ const AssetPage = ({
         className="w-full pb-20"
         style={{
           backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
+          borderBottom: `${assetColors.vibrant} 3px solid`,
         }}
       >
         <div className="p-5 pt-2 mx-auto max-w-4xl">
@@ -529,7 +539,13 @@ const AssetPage = ({
                               All-time high price in USD
                             </h2>
                             <div className="inline-block">
-                              <div className="h-1 bg-ath-100 w-full -mb-4 mt-2" />
+                              <div
+                                className="h-1 w-full -mb-4 mt-2"
+                                style={{
+                                  backgroundColor:
+                                    assetColorsExtended[index].vibrant,
+                                }}
+                              />
                               <h3 className="text-2xl md:text-4xl text-black font-ath font-black inline-block mt-4 mb-4">
                                 {assetInfo[index].ath.toLocaleString(
                                   undefined,
@@ -581,12 +597,12 @@ const AssetPage = ({
           {market.map((asset, index) => (
             <AssetListItem asset={asset} index={index} showTimeSince />
           ))}
-          <button
+          {/* <button
             className="mt-20 bg-gray-200 p-2 rounded-lg"
             onClick={() => setShowList(!showList)}
           >
             <span className="text-gray-800">
-              {showList ? "Hide" : "Show"} more assets{" "}
+              {showList ? "Hide" : "Show"} all assets{" "}
             </span>
           </button>
           {showList && (
@@ -604,7 +620,7 @@ const AssetPage = ({
                 </li>
               ))}
             </ul>
-          )}
+          )} */}
         </div>
       </div>
       <style jsx global>{`
@@ -655,13 +671,17 @@ export async function getServerSideProps({ params }) {
   const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
 
   const marketRes = await fetch(
-    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=25"
+    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=50"
   );
 
   const list = await res.json();
   props.list = list;
 
-  const market = await marketRes.json();
+  const marketUnsorted = await marketRes.json();
+
+  const market = marketUnsorted.sort((a, b) => {
+    return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0;
+  });
   props.market = market;
 
   const asset = list.find((x) => {
@@ -724,7 +744,19 @@ export async function getServerSideProps({ params }) {
         ? await marketChartResponse.json()
         : [];
 
-      const palette = await getImg(assetInfo[0].image);
+      let palette;
+      if (singleAssetMatch) {
+        palette = await getImg(assetInfo[0].image);
+      } else {
+        palette = await getImg(assetInfo[0].image);
+        const paletteExtended = await Promise.all(
+          assetInfo.map(async (a, i) => {
+            const p = await getImg(a.image);
+            return JSON.parse(JSON.stringify(p));
+          })
+        );
+        props.paletteExtended = paletteExtended;
+      }
 
       if (palette.Vibrant === null) palette.Vibrant = { rgb: [125, 125, 125] };
       if (palette.DarkVibrant === null)

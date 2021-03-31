@@ -7,7 +7,9 @@ import hexToRgba from "hex-to-rgba";
 const NavBar = ({ assetList, assetColors, rgb }) => {
   const router = useRouter();
 
-  const [assetPlaceholder, setAssetPlaceholder] = useState("BTC");
+  const [assetPlaceholder, setAssetPlaceholder] = useState(
+    "Enter a ticker symbol..."
+  );
 
   useEffect(() => {
     if (assetList) {
