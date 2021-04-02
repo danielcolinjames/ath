@@ -22,7 +22,7 @@ const Footer = ({ assetColors, rgb }) => {
         }}
       />
       <div className="max-w-4xl mx-auto">
-        <div className="flex flex-col md:flex-row items-center justify-center md:space-x-10 space-y-5 md:space-y-0">
+        <div className="flex flex-row items-center justify-center">
           <Link href="/about">
             <a className="font-ath text-base footer-text">About</a>
           </Link>
@@ -31,14 +31,14 @@ const Footer = ({ assetColors, rgb }) => {
             target="_blank"
             className="font-ath text-base footer-text"
           >
-            Follow for updates
+            Twitter
           </a>
           <a
             href="https://github.com/danielcolinjames/ath"
             target="_blank"
             className="font-ath text-base footer-text"
           >
-            Help make the site better
+            GitHub
           </a>
         </div>
       </div>
@@ -50,7 +50,7 @@ const Footer = ({ assetColors, rgb }) => {
           background-color: rgba(${r}, ${g}, ${b}, 0.125);
         }
         .footer-text {
-          padding: 12px 18px;
+          padding: 12px 12px;
           color: #888;
         }
       `}</style>
