@@ -68,7 +68,7 @@ const HomePage = ({ list }) => {
             })}
           </ul>
         ) : (
-          <SkeletonTheme color="#efefef" highlightColor={`#00ffba`}>
+          <SkeletonTheme color="#efefef" highlightColor="white">
             <Skeleton count={10} height={97} />
           </SkeletonTheme>
         )}
