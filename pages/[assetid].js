@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 // import NotFoundPage from "./404.js";
 // import Error from "./500.js";
@@ -16,19 +16,18 @@ import {
   rgbaStringFromRGBObj,
 } from "../utils/colors";
 import { getImg } from "./api/vibrant-extraction";
+import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 
 const AssetPage = ({
   asset,
   assetid,
   list,
   assetInfo,
-  market,
   singleAssetMatch,
   marketChart,
   palette,
   paletteExtended,
 }) => {
-  const [showList, setShowList] = useState(false);
   const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
   const title = `${assetInfo[0].name} (${assetid.toUpperCase()}) All-Time High`;
 
@@ -113,6 +112,25 @@ const AssetPage = ({
   const chartData = { labels, datasets };
 
   const pc = parseFloat(assetInfo[0].ath_change_percentage);
+
+  const [market, setMarket] = useState([]);
+  const [marketLoading, setMarketLoading] = useState([]);
+
+  useEffect(() => {
+    const getMarketData = async () => {
+      setMarketLoading(true);
+      const marketRes = await fetch(
+        "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=250"
+      );
+      const marketUnsorted = await marketRes.json();
+      const market = marketUnsorted.sort((a, b) => {
+        return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0;
+      });
+      setMarket(market);
+      setMarketLoading(false);
+    };
+    getMarketData();
+  }, []);
 
   return (
     <Layout assetColors={assetColors} rgb={[r, g, b]} assetList={list}>
@@ -591,12 +609,26 @@ const AssetPage = ({
       </div>
       <div className="w-full bg-white">
         <div className="p-5 mx-auto max-w-4xl">
-          <p className="font-ath text-base md:text-xl font-bold mt-20 mb-2 text-gray-400">
+          <p className="font-ath text-base md:text-xl font-bold mt-10 mb-2 text-gray-400">
             All-time highs of other assets
           </p>
-          {market.map((asset, index) => (
-            <AssetListItem asset={asset} index={index} showTimeSince />
-          ))}
+          {!marketLoading ? (
+            <>
+              {market.map((asset, index) => {
+                if (index < 100)
+                  return (
+                    <AssetListItem asset={asset} index={index} showTimeSince />
+                  );
+              })}
+            </>
+          ) : (
+            <SkeletonTheme
+              color={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085)}
+              highlightColor={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.25)}
+            >
+              <Skeleton count={10} height={97} />
+            </SkeletonTheme>
+          )}
           {/* <button
             className="mt-20 bg-gray-200 p-2 rounded-lg"
             onClick={() => setShowList(!showList)}
@@ -669,20 +701,8 @@ export async function getServerSideProps({ params }) {
   props.assetid = assetid;
 
   const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
-
-  const marketRes = await fetch(
-    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=50"
-  );
-
   const list = await res.json();
   props.list = list;
-
-  const marketUnsorted = await marketRes.json();
-
-  const market = marketUnsorted.sort((a, b) => {
-    return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0;
-  });
-  props.market = market;
 
   const asset = list.find((x) => {
     return x.symbol.toLowerCase() === assetid.toLowerCase();

@@ -11,7 +11,7 @@ const Footer = ({ assetColors, rgb }) => {
     [r, g, b] = rgb;
   }
   return (
-    <div className="w-full h-40 md:h-20 footer">
+    <div className="w-full h-14 footer">
       <div
         className="mt-px h-1 w-full"
         style={{
@@ -21,8 +21,8 @@ const Footer = ({ assetColors, rgb }) => {
               : "#00FFBA",
         }}
       />
-      <div className="max-w-4xl mx-auto h-full">
-        <div className="flex flex-col md:flex-row items-center justify-center h-full md:space-x-10 space-y-5 md:space-y-0">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex flex-col md:flex-row items-center justify-center md:space-x-10 space-y-5 md:space-y-0">
           <Link href="/about">
             <a className="font-ath text-base footer-text">About</a>
           </Link>
@@ -44,10 +44,14 @@ const Footer = ({ assetColors, rgb }) => {
       </div>
       <style jsx>{`
         .footer {
-          background-color: rgba(${r}, ${g}, ${b}, 0.25);
+          background-color: rgba(${r}, ${g}, ${b}, 0.0825);
+        }
+        .footer-text:hover {
+          background-color: rgba(${r}, ${g}, ${b}, 0.125);
         }
         .footer-text {
-          color: rgba(${r}, ${g}, ${b}, 1);
+          padding: 12px 18px;
+          color: #888;
         }
       `}</style>
     </div>
