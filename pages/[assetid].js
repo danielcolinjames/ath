@@ -298,7 +298,7 @@ const AssetPage = ({
                         className={`${
                           ath.length > 6
                             ? "text-5xl md:text-7xl pt-1"
-                            : "text-8xl md:text-9xl"
+                            : "text-7xl md:text-9xl"
                         } text-black font-ath font-black inline-block mt-3 pl-4 break-all ${
                           assetInfo[0]?.ath < assetInfo[0].current_price
                             ? "line-through"
