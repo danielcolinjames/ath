@@ -296,7 +296,7 @@ const AssetPage = ({
                       />
                       <h3
                         className={`${
-                          ath.length > 7
+                          ath.length > 6
                             ? "text-5xl md:text-7xl pt-1"
                             : "text-8xl md:text-9xl"
                         } text-black font-ath font-black inline-block mt-3 pl-4 break-all ${
