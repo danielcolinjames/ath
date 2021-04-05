@@ -134,8 +134,10 @@ const AssetPage = ({
   // console.log(assetInfoExtended);
 
   const descArray = assetInfoExtended.description.en.split("\n");
+  let charCount = 0;
   const descArrayAsHtml = descArray
     .map((p) => {
+      charCount += p.length;
       const pWithA = p.replace("a href=", "a class='desc-a' href=");
       return `<p class='desc-p'>${pWithA}</p>`;
     })
@@ -147,6 +149,12 @@ const AssetPage = ({
       console.log(p.length);
       return p.length === 0;
     }) !== -1;
+
+  const [
+    showDescriptionExpandOption,
+    setShowDescriptionExpandOption,
+  ] = useState(charCount > 500);
+  const [descriptionIsExpanded, setDescriptionIsExpanded] = useState(false);
 
   return (
     <Layout assetColors={assetColors} rgb={[r, g, b]} assetList={list}>
@@ -275,7 +283,7 @@ const AssetPage = ({
         className="w-full pb-2 md:pb-4"
         style={{
           backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
-          borderBottom: `${assetColors.vibrant} 3px solid`,
+          // borderBottom: `${assetColors.vibrant} 3px solid`,
         }}
       >
         <div className="p-5 pt-2 mx-auto max-w-4xl">
@@ -448,7 +456,7 @@ const AssetPage = ({
                     <a
                       target="_blank"
                       href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
-                      className="p-3 inline-block sm:hidden border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-md border-px coingecko-link transition-all"
+                      className="p-3 inline-block sm:hidden border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-sm border-px coingecko-link transition-all"
                     >
                       <p className="font-ath font-light text-sm text-gray-700 sm:text-right">
                         Data accurate as of {lastUpdated.fromNow()}
@@ -544,7 +552,7 @@ const AssetPage = ({
                       <a
                         target="_blank"
                         href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
-                        className="p-3 inline-block border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-md border-px mt-0 sm:ml-4 coingecko-link transition-all"
+                        className="p-3 inline-block border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-sm border-px mt-0 sm:ml-4 coingecko-link transition-all"
                       >
                         <p className="font-ath font-light text-sm text-gray-700 sm:text-right">
                           Data accurate as of {lastUpdated.fromNow()}
@@ -570,7 +578,7 @@ const AssetPage = ({
                 <a
                   target="_blank"
                   href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
-                  className="hidden mt-4 sm:flex p-3 border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-md border-px coingecko-link transition-all flex-row justify-between items-center px-4"
+                  className="hidden max-w-xl mt-4 sm:flex p-3 border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-sm border-px coingecko-link transition-all flex-row justify-between items-center px-4"
                 >
                   <p className="font-ath font-light text-sm text-gray-700 sm:text-right">
                     Data accurate as of {lastUpdated.fromNow()}
@@ -625,12 +633,50 @@ const AssetPage = ({
           </div>
         </div>
       </div>
-      <div className="w-full bg-white">
+      <div
+        className="w-full bg-white pb-2 md:pb-4"
+        style={{
+          backgroundImage: `linear-gradient(${rgbaStringFromRGBObj(
+            palette.Vibrant.rgb,
+            0.085
+          )}, rgba(255,255,255,0))`,
+          // borderBottom: `${assetColors.vibrant} 3px solid`,
+        }}
+      >
         <div className="p-5 mx-auto max-w-4xl">
-          <h2 className="text-2xl md:text-3xl font-ath font-black pt-4">
+          <h2 className="text-2xl md:text-3xl font-ath font-black pt-4 pb-2">
             About {assetInfo[0].name}
           </h2>
-          {parse(descArrayAsHtml)}
+          {!descIsEmpty && (
+            <div className="max-w-xl">
+              <h3 className="text-gray-500 pb-2">Description</h3>
+              <div
+                className={`${
+                  descriptionIsExpanded ? "h-auto" : "h-20 overflow-hidden"
+                }`}
+              >
+                {parse(descArrayAsHtml)}
+              </div>
+              <button
+                className="w-full bg-gray-200 opacity-50 mt-2 text-gray-500 font-ath text-sm px-2 py-2"
+                onClick={() => {
+                  setDescriptionIsExpanded((current) => !current);
+                }}
+              >
+                {descriptionIsExpanded ? "Show less" : "Show more"}
+              </button>
+            </div>
+          )}
+          <div>
+            <h3 className="text-gray-500 pb-1 pt-5">Market Cap</h3>
+            <div className={`max-w-xl`}>
+              <p className="font-ath text-xl font-black">
+                ${formatNumber(assetInfo[0].market_cap)}
+              </p>
+            </div>
+            {console.log(assetInfoExtended)}
+            {console.log(assetInfo[0])}
+          </div>
         </div>
       </div>
       <div className="w-full bg-white">
@@ -834,7 +880,7 @@ const AssetPage = ({
           border-left-color: ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)};
         }
         .coingecko-link:hover {
-          background-color: ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.15)};
+          background-color: ${rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.075)};
         }
         .desc-p {
           @apply text-gray-500 py-0.5 font-ath font-light;
