@@ -4,7 +4,10 @@ import Layout from "../components/Layout";
 const Error = ({ statusCode }) => {
   return (
     <Layout>
-      <div className="p-5 mx-auto max-w-4xl">
+      <div
+        className="p-5 mx-auto max-w-4xl"
+        style={{ minHeight: "calc(100vh - 113px)" }}
+      >
         <MetaTags pageTitle={`ATH.ooo — ${statusCode}`} noIndex />
         <div className="flex flex-col max-w-xl break-words">
           <p className="font-black font-ath text-lg text-red-400 mt-20">

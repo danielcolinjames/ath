@@ -5,7 +5,10 @@ import Link from "next/link";
 const NotFoundPage = ({ assetid }) => {
   return (
     <Layout>
-      <div className="p-5 mx-auto max-w-4xl">
+      <div
+        className="p-5 mx-auto max-w-4xl"
+        style={{ minHeight: "calc(100vh - 113px)" }}
+      >
         <MetaTags
           title={"ATH.ooo — 404: Not Found"}
           description={`See the all-time highs of crypto assets`}
