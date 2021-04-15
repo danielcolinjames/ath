@@ -12,7 +12,7 @@ const Error = ({ statusCode }) => {
         <MetaTags pageTitle={`ATH.ooo — Error`} noIndex />
         <div className="flex flex-col max-w-xl break-words">
           <p className="font-black font-ath text-lg text-red-400 mt-20">
-            Error
+            Error{statusCode ? ` ${statusCode}` : ""}
           </p>
           <h1 className="text-xl md:text-3xl font-ath font-semibold mt-2 mb-2">
             An error occurred.
