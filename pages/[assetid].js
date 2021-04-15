@@ -116,16 +116,20 @@ const AssetPage = ({
 
   useEffect(() => {
     const getMarketData = async () => {
-      setMarketLoading(true);
-      const marketRes = await fetch(
-        "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=250"
-      );
-      const marketUnsorted = await marketRes.json();
-      const market = marketUnsorted.sort((a, b) => {
-        return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0;
-      });
-      setMarket(market);
-      setMarketLoading(false);
+      try {
+        setMarketLoading(true);
+        const marketRes = await fetch(
+          "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=250"
+        );
+        const marketUnsorted = await marketRes.json();
+        const market = marketUnsorted.sort((a, b) => {
+          return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0;
+        });
+        setMarket(market);
+        setMarketLoading(false);
+      } catch (e) {
+        console.error(e);
+      }
     };
     getMarketData();
   }, []);
