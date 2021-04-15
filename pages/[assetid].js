@@ -144,8 +144,8 @@ const AssetPage = ({
 
   const descIsEmpty =
     descArray.findIndex((p) => {
-      console.log(p);
-      console.log(p.length);
+      // console.log(p);
+      // console.log(p.length);
       return p.length === 0;
     }) !== -1;
 
@@ -673,8 +673,8 @@ const AssetPage = ({
                 ${formatNumber(assetInfo[0].market_cap)}
               </p>
             </div>
-            {console.log(assetInfoExtended)}
-            {console.log(assetInfo[0])}
+            {/* {console.log(assetInfoExtended)}
+            {console.log(assetInfo[0])} */}
           </div>
         </div>
       </div>
