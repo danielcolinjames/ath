@@ -1,8 +1,8 @@
-import MetaTags from "../components/MetaTags";
+import MetaTags from "./MetaTags";
 import Link from "next/link";
-import Layout from "../components/Layout";
+import Layout from "./Layout";
 
-const Error = ({ statusCode }) => {
+const Error = () => {
   return (
     <Layout>
       <div
