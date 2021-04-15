@@ -2,7 +2,7 @@ import MetaTags from "../components/MetaTags";
 import Link from "next/link";
 import Layout from "../components/Layout";
 
-const Error = ({ statusCode }) => {
+const Error = () => {
   return (
     <Layout>
       <div
@@ -25,8 +25,8 @@ const Error = ({ statusCode }) => {
             target="_blank"
             className="font-ath text-gray-500 mt-3"
           >
-            Try checking CoinGecko's status page to see if there might be an
-            outage right now.
+            Try checking the CoinGecko API status page to see if there might be
+            an outage right now.
           </a>
           <p className="text-md md:text-md font-ath text-gray-500 mt-3">
             Otherwise it's probably my fault. Sorry. It might be that the site
@@ -47,9 +47,9 @@ const Error = ({ statusCode }) => {
   );
 };
 
-Error.getInitialProps = ({ res, err }) => {
-  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
-  return { statusCode };
-};
+// Error.getInitialProps = ({ res, err }) => {
+//   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
+//   return { statusCode };
+// };
 
 export default Error;
