@@ -1,6 +1,6 @@
 import MetaTags from "../components/MetaTags";
 import Link from "next/link";
-import Layout from "../components/Layout"; //"../components/Layout";
+import Layout from "../components/Layout";
 
 const Error = () => {
   return (

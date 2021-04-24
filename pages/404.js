@@ -22,7 +22,7 @@ const NotFoundPage = ({ assetid }) => {
           </p>
           <h1 className="text-xl md:text-3xl font-ath font-semibold mt-2 mb-2">
             {assetid
-              ? `There doesn't appear to be an asset called "{assetid?.toUpperCase()}
+              ? `There doesn't appear to be an asset called "${assetid?.toUpperCase()}
             " in CoinGecko's database`
               : `That page doesn't appear to exist.`}
           </h1>

@@ -223,18 +223,12 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
       </div>
       <div
         className="mt-0 h-1 w-full blur-effect"
-        // style={{
-        //   backgroundColor:
-        //     assetColors !== undefined
-        //       ? hexToRgba(assetColors.vibrant, 0.5)
-        //       : "#00FFBA",
-        // }}
         style={{
-          backgroundImage: `linear-gradient(${hexToRgba(
-            assetColors.vibrant,
-            0.25
-          )}, rgba(255,255,255,0))`,
-          // borderBottom: `${assetColors.vibrant} 3px solid`,
+          backgroundImage: `linear-gradient(${
+            assetColors !== undefined
+              ? hexToRgba(assetColors.vibrant, 0.25)
+              : "#00FFBA"
+          }, rgba(255,255,255,0))`,
         }}
       />
       <style jsx global>{`
