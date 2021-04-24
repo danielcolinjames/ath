@@ -14,6 +14,8 @@ import {
 import { getImg } from "./api/vibrant-extraction";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import parse from "html-react-parser";
+import { SocialIcon } from "react-social-icons";
+import { generateSocialLinks, generateOtherLinks } from "../utils/links";
 
 const AssetPage = ({
   asset,
@@ -158,6 +160,10 @@ const AssetPage = ({
     setShowDescriptionExpandOption,
   ] = useState(charCount > 500);
   const [descriptionIsExpanded, setDescriptionIsExpanded] = useState(false);
+
+  const socialLinks = generateSocialLinks(assetInfoExtended.links);
+  const otherLinks = generateOtherLinks(assetInfoExtended.links);
+  const SOCIAL_LINK_SIZE = 30;
 
   return (
     <Layout assetColors={assetColors} rgb={[r, g, b]} assetList={list}>
@@ -674,11 +680,116 @@ const AssetPage = ({
             <h3 className="text-gray-500 pb-1 pt-5">Market Cap</h3>
             <div className={`max-w-xl`}>
               <p className="font-ath text-xl font-black">
-                ${formatNumber(assetInfo[0].market_cap)}
+                {assetInfo[0].market_cap === 0
+                  ? "?"
+                  : `$${formatNumber(assetInfo[0].market_cap)}`}
               </p>
             </div>
             {console.log(assetInfoExtended)}
             {console.log(assetInfo[0])}
+          </div>
+          <div>
+            <h3 className="text-gray-500 pb-1 pt-5">Links</h3>
+            <div className={`max-w-xl inline-block`}>
+              <div className={`flex flex-row space-x-2`}>
+                {otherLinks.map((link) => {
+                  return (
+                    <a
+                      href={link.url}
+                      className="rounded-full bg-gray-100 flex items-center justify-center"
+                      target="_blank"
+                      style={{
+                        backgroundColor: rgbaStringFromRGBObj(
+                          palette.DarkVibrant.rgb,
+                          0.085
+                        ),
+                        color: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.75),
+                        width: SOCIAL_LINK_SIZE,
+                        height: SOCIAL_LINK_SIZE,
+                      }}
+                    >
+                      {link.icon === "block" ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          style={{
+                            width: SOCIAL_LINK_SIZE - 10,
+                            height: SOCIAL_LINK_SIZE - 10,
+                          }}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+                          />
+                        </svg>
+                      ) : link.icon === "explorer" ? (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          style={{
+                            width: SOCIAL_LINK_SIZE - 10,
+                            height: SOCIAL_LINK_SIZE - 10,
+                          }}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"
+                          />
+                        </svg>
+                      ) : (
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-6 w-6"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          style={{
+                            width: SOCIAL_LINK_SIZE - 10,
+                            height: SOCIAL_LINK_SIZE - 10,
+                          }}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"
+                          />
+                        </svg>
+                      )}
+                    </a>
+                  );
+                })}
+              </div>
+              <div className={`flex flex-row space-x-2 mt-2`}>
+                {socialLinks.map((link, i) => {
+                  return (
+                    <SocialIcon
+                      url={link}
+                      bgColor={rgbaStringFromRGBObj(
+                        palette.DarkVibrant.rgb,
+                        0.1
+                      )}
+                      fgColor={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.75)}
+                      target="_blank"
+                      style={{
+                        width: SOCIAL_LINK_SIZE,
+                        height: SOCIAL_LINK_SIZE,
+                      }}
+                    />
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -816,27 +927,32 @@ const AssetPage = ({
           }}
         />
         <div className="max-w-4xl mx-auto">
-          <p className="font-ath text-base md:text-xl font-bold mt-10 mb-2 text-gray-400">
-            All-time highs of other assets
-          </p>
-          {!marketLoading ? (
-            <>
-              {market.map((asset, index) => {
-                if (index < 100)
-                  return (
-                    <AssetListItem asset={asset} index={index} showTimeSince />
-                  );
-              })}
-            </>
-          ) : (
-            <SkeletonTheme
-              color={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085)}
-              highlightColor={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.25)}
-            >
-              <Skeleton count={10} height={97} />
-            </SkeletonTheme>
-          )}
-          {/* <button
+          <div className="p-5">
+            <p className="font-ath text-base md:text-xl font-bold mt-10 mb-2 text-gray-400">
+              All-time highs of other assets
+            </p>
+            {!marketLoading ? (
+              <>
+                {market.map((asset, index) => {
+                  if (index < 100)
+                    return (
+                      <AssetListItem
+                        asset={asset}
+                        index={index}
+                        showTimeSince
+                      />
+                    );
+                })}
+              </>
+            ) : (
+              <SkeletonTheme
+                color={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085)}
+                highlightColor={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.25)}
+              >
+                <Skeleton count={10} height={97} />
+              </SkeletonTheme>
+            )}
+            {/* <button
             className="mt-20 bg-gray-200 p-2 rounded-lg"
             onClick={() => setShowList(!showList)}
           >
@@ -860,6 +976,7 @@ const AssetPage = ({
               ))}
             </ul>
           )} */}
+          </div>
         </div>
       </div>
       <style jsx global>{`
