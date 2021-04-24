@@ -685,8 +685,6 @@ const AssetPage = ({
                   : `$${formatNumber(assetInfo[0].market_cap)}`}
               </p>
             </div>
-            {console.log(assetInfoExtended)}
-            {console.log(assetInfo[0])}
           </div>
           <div>
             <h3 className="text-gray-500 pb-1 pt-5">Links</h3>
