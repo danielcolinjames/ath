@@ -794,6 +794,15 @@ const AssetPage = ({
         </div>
       </div>
       <div className="w-full bg-white">
+        <div
+          className="mt-px h-1 w-full"
+          style={{
+            backgroundColor:
+              assetColors !== undefined
+                ? rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.5)
+                : "#00FFBA",
+          }}
+        />
         <div className="p-5 mx-auto max-w-4xl">
           {!singleAssetMatch && (
             <div className="bg-white border border-px border-solid border-gray-300 mt-10 p-5">
@@ -917,15 +926,6 @@ const AssetPage = ({
             </div>
           )}
         </div>
-        <div
-          className="mt-px h-1 w-full"
-          style={{
-            backgroundColor:
-              assetColors !== undefined
-                ? rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.5)
-                : "#00FFBA",
-          }}
-        />
         <div className="max-w-4xl mx-auto">
           <div className="p-5">
             <p className="font-ath text-base md:text-xl font-bold mt-10 mb-2 text-gray-400">
