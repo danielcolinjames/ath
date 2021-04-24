@@ -73,7 +73,7 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
   const LOGO_WIDTH = 56;
 
   return (
-    <div className="w-full h-14 shadow-sm fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect">
+    <div className="w-full h-14 shadow-smz fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect">
       <div className="max-w-4xl mx-auto">
         <div className="rounded-full">
           <div className="flex justify-between items-center w-full max-w-4xl mx-auto px-5">
@@ -171,13 +171,10 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                     </div>
                   </div>
                 </div>
-                <div className="absolute max-w-md mt-7">
-                  <div className="grid grid-cols-1 mt-1.5">
+                <div className="absolute max-w-md mt-8 z-10 ml-0.5">
+                  <div className="grid grid-cols-1 mt-1">
                     {assetList?.map((asset, index) => {
-                      if (
-                        filterText.length > 1 &&
-                        asset.symbol.toUpperCase() === filterText
-                      ) {
+                      if (asset.symbol.toUpperCase() === filterText) {
                         resultCount++;
                         return (
                           <div className={`w-full`} key={`result-${index}`}>
@@ -194,7 +191,7 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                                   }`}
                                   id={`result-${index}`}
                                 >
-                                  <div className="bg-[rgba(255,255,255,0.75)] py-2 px-5 w-full">
+                                  <div className="bg-[rgba(255,255,255,0.75)] py-2 px-2.5 w-full">
                                     <span className="font-bold">
                                       {asset.symbol.toUpperCase()}
                                     </span>{" "}
@@ -222,12 +219,13 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
         </div>
       </div>
       <div
-        className="mt-px h-1 w-full"
+        className="mt-0 h-1 w-full blur-effect"
         style={{
-          backgroundColor:
+          backgroundImage: `linear-gradient(${
             assetColors !== undefined
-              ? hexToRgba(assetColors.vibrant, 0.5)
-              : "#00FFBA",
+              ? hexToRgba(assetColors.vibrant, 0.25)
+              : "#00FFBA"
+          }, rgba(255,255,255,0))`,
         }}
       />
       <style jsx global>{`
