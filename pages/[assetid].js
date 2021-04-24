@@ -677,8 +677,8 @@ const AssetPage = ({
                 ${formatNumber(assetInfo[0].market_cap)}
               </p>
             </div>
-            {/* {console.log(assetInfoExtended)}
-            {console.log(assetInfo[0])} */}
+            {console.log(assetInfoExtended)}
+            {console.log(assetInfo[0])}
           </div>
         </div>
       </div>
@@ -805,6 +805,17 @@ const AssetPage = ({
               )}
             </div>
           )}
+        </div>
+        <div
+          className="mt-px h-1 w-full"
+          style={{
+            backgroundColor:
+              assetColors !== undefined
+                ? rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.5)
+                : "#00FFBA",
+          }}
+        />
+        <div className="max-w-4xl mx-auto">
           <p className="font-ath text-base md:text-xl font-bold mt-10 mb-2 text-gray-400">
             All-time highs of other assets
           </p>

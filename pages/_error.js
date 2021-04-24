@@ -2,7 +2,7 @@ import MetaTags from "../components/MetaTags";
 import Link from "next/link";
 import Layout from "../components/Layout";
 
-const Error = () => {
+const Error = ({ statusCode }) => {
   return (
     <Layout>
       <div
@@ -12,7 +12,7 @@ const Error = () => {
         <MetaTags pageTitle={`ATH.ooo — Error`} noIndex />
         <div className="flex flex-col max-w-xl break-words">
           <p className="font-black font-ath text-lg text-red-400 mt-20">
-            Error
+            Error{statusCode ? ` ${statusCode}` : ""}
           </p>
           <h1 className="text-xl md:text-3xl font-ath font-semibold mt-2 mb-2">
             An error occurred.
@@ -25,31 +25,28 @@ const Error = () => {
             target="_blank"
             className="font-ath text-gray-500 mt-3"
           >
-            Try checking the CoinGecko API status page to see if there might be
-            an outage right now.
+            Try checking CoinGecko's status page to see if there might be an
+            outage right now.
           </a>
-          <p className="text-md md:text-md font-ath text-gray-500 mt-3">
-            Otherwise it's probably my fault. Sorry. It might be that the site
-            is getting rate limited by CoinGecko. I'm planning some
-            optimizations soon that should help with that.
-          </p>
           <p className="text-md md:text-md font-ath text-gray-500 mt-3">
             Feel free to follow the GitHub link in the footer to file an issue.
           </p>
-          <Link href="/">
-            <a className="text-gray-500 mt-3 p-4 bg-gray-100 rounded-lg">
-              Here's the home page
-            </a>
-          </Link>
+          <span className="flex">
+            <Link href="/">
+              <a className="text-gray-500 p-4 bg-gray-100 mt-8 hover:bg-gray-200 transition-all duration-75 rounded-lg text-sm">
+                Go back to the home page
+              </a>
+            </Link>
+          </span>
         </div>
       </div>
     </Layout>
   );
 };
 
-// Error.getInitialProps = ({ res, err }) => {
-//   const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
-//   return { statusCode };
-// };
+Error.getInitialProps = ({ res, err }) => {
+  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
+  return { statusCode };
+};
 
 export default Error;
