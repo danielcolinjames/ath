@@ -793,11 +793,11 @@ const AssetPage = ({
       </div>
       <div className="w-full bg-white">
         <div
-          className="mt-px h-1 w-full"
+          className="mt-5 h-1 w-full"
           style={{
             backgroundColor:
               assetColors !== undefined
-                ? rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.5)
+                ? rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.25)
                 : "#00FFBA",
           }}
         />
