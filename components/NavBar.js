@@ -227,7 +227,7 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
           backgroundImage: `linear-gradient(${
             assetColors !== undefined
               ? hexToRgba(assetColors.vibrant, 0.1)
-              : "#00FFBA"
+              : "rgba(0,255,186,0.1)"
           }, ${
             assetColors !== undefined
               ? hexToRgba(assetColors.vibrant, 0.0)
