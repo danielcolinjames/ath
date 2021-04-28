@@ -174,7 +174,10 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                 <div className="absolute max-w-md mt-8 z-10 ml-0.5">
                   <div className="grid grid-cols-1 mt-1">
                     {assetList?.map((asset, index) => {
-                      if (asset.symbol.toUpperCase() === filterText) {
+                      if (
+                        asset.symbol.length > 0 &&
+                        asset.symbol.toUpperCase() === filterText
+                      ) {
                         resultCount++;
                         return (
                           <div className={`w-full`} key={`result-${index}`}>
