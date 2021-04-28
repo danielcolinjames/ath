@@ -1144,26 +1144,26 @@ export async function getServerSideProps({ params }) {
       `);
       props.assetInfoExtended = await assetInfoExtended.json();
 
-      const athTimestampMoment = moment.utc(assetInfo[0]?.ath_date);
-      const daysBetweenNowAndAth = differenceInDays(
-        new Date(),
-        parseISO(assetInfo[0]?.ath_date)
-      );
+      // const athTimestampMoment = moment.utc(assetInfo[0]?.ath_date);
+      // const daysBetweenNowAndAth = differenceInDays(
+      //   new Date(),
+      //   parseISO(assetInfo[0]?.ath_date)
+      // );
 
-      const athTimestamp = athTimestampMoment
-        .subtract(daysBetweenNowAndAth + 3, "days")
-        .format("X");
+      // const athTimestamp = athTimestampMoment
+      //   .subtract(daysBetweenNowAndAth + 3, "days")
+      //   .format("X");
 
-      const marketChartResponse = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${
-          assetInfo[0].id
-        }/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
-          Date.now() / 1000
-        )}`
-      );
-      const marketChart = marketChartResponse.ok
-        ? await marketChartResponse.json()
-        : [];
+      // const marketChartResponse = await fetch(
+      //   `https://api.coingecko.com/api/v3/coins/${
+      //     assetInfo[0].id
+      //   }/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
+      //     Date.now() / 1000
+      //   )}`
+      // );
+      // const marketChart = marketChartResponse.ok
+      //   ? await marketChartResponse.json()
+      //   : [];
 
       let palette;
       if (singleAssetMatch) {
