@@ -50,11 +50,11 @@ a {
 
 #nprogress .bar {
   height: 5px !important;
-  background: #00ffba !important;
+  background: rgba(45, 254, 193, 1) !important;
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px rgba(45, 254, 193, 1), 0 0 5px rgba(45, 254, 193, 1);
+  box-shadow: 0 0 10px #00ffba, 0 0 5px #00ffba;
 }
 #nprogress .spinner-icon {
   border-top-color: rgba(45, 254, 193, 1);

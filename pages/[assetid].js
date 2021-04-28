@@ -24,10 +24,12 @@ const AssetPage = ({
   list,
   assetInfo,
   singleAssetMatch,
-  marketChart,
+  // marketChart,
+  athDays,
   palette,
   paletteExtended,
 }) => {
+  console.log(assetInfo);
   const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
   const title = `${assetInfo[0].name} (${assetid.toUpperCase()}) All-Time High`;
 
@@ -86,35 +88,39 @@ const AssetPage = ({
     });
   }
 
-  const data = marketChart?.prices;
-  const labels = data?.map((p) => {
-    return format(fromUnixTime(p[0] / 1000), "MMMM do, yyyy");
-  });
-  const prices = data?.map((p) => {
-    return p[1];
-  });
-
-  const datasets = [
-    {
-      label: `${assetInfo[0].symbol.toUpperCase()} price`,
-      data: prices,
-      backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
-      borderColor: assetColors.vibrant,
-      borderJoinStyle: "round",
-      borderCapStyle: "round",
-      borderWidth: 3,
-      pointRadius: 0,
-      pointHitRadius: 10,
-      lineTension: 0.2,
-    },
-  ];
-
-  const chartData = { labels, datasets };
-
   const pc = parseFloat(assetInfo[0].ath_change_percentage);
 
   const [market, setMarket] = useState([]);
-  const [marketLoading, setMarketLoading] = useState([]);
+  const [marketLoading, setMarketLoading] = useState(true);
+
+  // const [marketChart, setMarketChart] = useState([]);
+  const [marketChartLoading, setMarketChartLoading] = useState(true);
+
+  const dataDefault = [];
+  const labelsDefault = [];
+
+  for (let i = 0; i < 1000; i++) {
+    dataDefault.push(assetInfo[0].ath ? assetInfo[0].ath : 1);
+    labelsDefault.push("ATH");
+  }
+
+  const [chartData, setChartData] = useState({
+    labels: labelsDefault,
+    datasets: [
+      {
+        label: `${assetInfo[0].symbol.toUpperCase()} price`,
+        data: dataDefault,
+        backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
+        borderColor: assetColors.vibrant,
+        borderJoinStyle: "round",
+        borderCapStyle: "round",
+        borderWidth: 3,
+        pointRadius: 0,
+        pointHitRadius: 10,
+        lineTension: 0.2,
+      },
+    ],
+  });
 
   useEffect(() => {
     const getMarketData = async () => {
@@ -133,10 +139,72 @@ const AssetPage = ({
         console.error(e);
       }
     };
+
+    const getAssetMarketData = async () => {
+      try {
+        setMarketChartLoading(true);
+
+        const athTimestampMoment = moment.utc(assetInfo[0]?.ath_date);
+        const daysBetweenNowAndAth = differenceInDays(
+          new Date(),
+          parseISO(assetInfo[0]?.ath_date)
+        );
+
+        const athTimestamp = athTimestampMoment
+          .subtract(daysBetweenNowAndAth + 3, "days")
+          .format("X");
+
+        const marketChartResponse = await fetch(
+          `https://api.coingecko.com/api/v3/coins/${
+            assetInfo[0].id
+          }/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
+            Date.now() / 1000
+          )}`
+        );
+        const marketChart = marketChartResponse.ok
+          ? await marketChartResponse.json()
+          : [];
+        // setAssetChartData(marketChart);
+
+        const data = marketChart?.prices;
+        const labels = data?.map((p) => {
+          return format(fromUnixTime(p[0] / 1000), "MMMM do, yyyy");
+        });
+        const prices = data?.map((p) => {
+          return p[1];
+        });
+
+        const datasets = [
+          {
+            label: `${assetInfo[0].symbol.toUpperCase()} price`,
+            data: prices,
+            backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
+            borderColor: assetColors.vibrant,
+            borderJoinStyle: "round",
+            borderCapStyle: "round",
+            borderWidth: 3,
+            pointRadius: 0,
+            pointHitRadius: 10,
+            lineTension: 0.2,
+          },
+        ];
+
+        const chartDataCalculated = { labels, datasets };
+
+        // console.log(assetInfoExtended)
+
+        console.log(chartDataCalculated);
+
+        setChartData(chartDataCalculated);
+        setMarketChartLoading(false);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+
+    getAssetMarketData();
     getMarketData();
   }, []);
-
-  // console.log(assetInfoExtended);
 
   const descArray = assetInfoExtended.description.en.split("\n");
   let charCount = 0;
@@ -198,95 +266,96 @@ const AssetPage = ({
           </div>
         </div>
       </div>
-      {data?.length > 0 ? (
-        <div className="max-h-[30vh]">
-          <Line
-            data={chartData}
-            className="z-10"
-            height={600}
-            options={{
-              hover: { intersect: false },
-              legend: {
-                position: "bottom",
-                align: "center",
-                display: false,
+      {/* {chartData?.datasets[0]?.data?.length > 0 && ( */}
+      <div className="max-h-[30vh]">
+        <Line
+          data={chartData}
+          className="z-10"
+          height={600}
+          options={{
+            hover: { intersect: false },
+            legend: {
+              position: "bottom",
+              align: "center",
+              display: false,
+            },
+            tooltips: {
+              intersect: false,
+              // mode: "y",
+              mode: "index",
+              callbacks: {
+                //This removes the tooltip title
+                // title: function () {},
+                label: ({ yLabel }, data) => `$${formatNumber(yLabel)}`,
               },
-              tooltips: {
-                intersect: false,
-                // mode: "y",
-                mode: "index",
-                callbacks: {
-                  //This removes the tooltip title
-                  // title: function () {},
-                  label: ({ yLabel }, data) => `$${formatNumber(yLabel)}`,
-                },
-                //this removes legend color
-                displayColors: false,
-                yPadding: 15,
-                xPadding: 15,
-                position: "average",
-                pointHitRadius: 20,
-                pointRadius: 30,
-                caretSize: 10,
-                backgroundColor: "rgba(255,255,255,.9)",
-                bodyFontSize: 18,
-                borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
-                borderWidth: 2,
-                bodyFontFamily: "Satoshi",
-                titleFontFamily: "Satoshi",
-                titleFontColor: "#000000",
-                bodyFontColor: "#303030",
-              },
-              scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      display: false,
-                    },
-                    stacked: false,
-                    gridLines: {
-                      drawTicks: false,
-                      color: "rgba(0, 0, 0, 0)",
-                      zeroLineColor: "rgba(0, 0, 0, 0)",
-                    },
-                    drawBorder: false,
-                    drawTicks: false,
+              //this removes legend color
+              displayColors: false,
+              yPadding: 15,
+              xPadding: 15,
+              position: "average",
+              pointHitRadius: 20,
+              pointRadius: 30,
+              caretSize: 10,
+              backgroundColor: "rgba(255,255,255,.9)",
+              bodyFontSize: 18,
+              borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
+              borderWidth: 2,
+              bodyFontFamily: "Satoshi",
+              titleFontFamily: "Satoshi",
+              titleFontColor: "#000000",
+              bodyFontColor: "#303030",
+            },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    display: false,
                   },
-                ],
-                xAxes: [
-                  {
+                  stacked: false,
+                  gridLines: {
+                    drawTicks: false,
+                    color: "rgba(0, 0, 0, 0)",
+                    zeroLineColor: "rgba(0, 0, 0, 0)",
+                  },
+                  drawBorder: false,
+                  drawTicks: false,
+                },
+              ],
+              xAxes: [
+                {
+                  padding: 0,
+                  backdropPaddingX: 0,
+                  backdropPaddingY: 0,
+                  ticks: {
+                    display: false,
                     padding: 0,
+                    mirror: true,
                     backdropPaddingX: 0,
                     backdropPaddingY: 0,
-                    ticks: {
-                      display: false,
-                      padding: 0,
-                      mirror: true,
-                      backdropPaddingX: 0,
-                      backdropPaddingY: 0,
-                    },
-                    padding: 0,
-                    gridLines: {
-                      drawTicks: false,
-                      color: "rgba(0, 0, 0, 0)",
-                      zeroLineColor: "rgba(0, 0, 0, 0)",
-                    },
-                    drawBorder: false,
-                    drawTicks: false,
                   },
-                ],
-              },
-              maintainAspectRatio: false,
-            }}
-          />
-        </div>
-      ) : (
+                  padding: 0,
+                  gridLines: {
+                    drawTicks: false,
+                    color: "rgba(0, 0, 0, 0)",
+                    zeroLineColor: "rgba(0, 0, 0, 0)",
+                  },
+                  drawBorder: false,
+                  drawTicks: false,
+                },
+              ],
+            },
+            maintainAspectRatio: false,
+          }}
+        />
+      </div>
+      {/* )} */}
+      {/* : (
         <div className="max-h-[30vh] max-w-4xl mx-auto px-5 py-1">
           <p className="text-xs text-gray-200 font-ath">
             Normally there would be a price chart here, but an error occured
           </p>
         </div>
-      )}
+      )} */}
 
       <div
         className="w-full pb-2 md:pb-4"
@@ -1123,7 +1192,9 @@ export async function getServerSideProps({ params }) {
 
       props.palette = JSON.parse(JSON.stringify(palette));
 
-      props.marketChart = marketChart;
+      // props.marketChart = marketChart;
+      props.athDays = daysBetweenNowAndAth + 3;
+      props.key = assetInfo[0].symbol;
     } catch (e) {
       console.log(e);
       return {
