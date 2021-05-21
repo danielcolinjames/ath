@@ -104,23 +104,25 @@ const AssetPage = ({
     labelsDefault.push("ATH");
   }
 
-  const [chartData, setChartData] = useState({
-    labels: labelsDefault,
-    datasets: [
-      {
-        label: `${assetInfo[0].symbol.toUpperCase()} price`,
-        data: dataDefault,
-        backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
-        borderColor: assetColors.vibrant,
-        borderJoinStyle: "round",
-        borderCapStyle: "round",
-        borderWidth: 3,
-        pointRadius: 0,
-        pointHitRadius: 10,
-        lineTension: 0.2,
-      },
-    ],
-  });
+  const [chartData, setChartData] = useState();
+
+  // {
+  // labels: labelsDefault,
+  // datasets: [
+  //   {
+  //     label: `${assetInfo[0].symbol.toUpperCase()} price`,
+  //     data: dataDefault,
+  //     backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
+  //     borderColor: assetColors.vibrant,
+  //     borderJoinStyle: "round",
+  //     borderCapStyle: "round",
+  //     borderWidth: 3,
+  //     pointRadius: 0,
+  //     pointHitRadius: 10,
+  //     lineTension: 0.2,
+  //   },
+  // ],
+  // }
 
   useEffect(() => {
     const getMarketData = async () => {
@@ -223,10 +225,8 @@ const AssetPage = ({
       return p.length === 0;
     }) !== -1;
 
-  const [
-    showDescriptionExpandOption,
-    setShowDescriptionExpandOption,
-  ] = useState(charCount > 500);
+  const [showDescriptionExpandOption, setShowDescriptionExpandOption] =
+    useState(charCount > 500);
   const [descriptionIsExpanded, setDescriptionIsExpanded] = useState(false);
 
   const socialLinks = generateSocialLinks(assetInfoExtended.links);
@@ -268,85 +268,102 @@ const AssetPage = ({
       </div>
       {/* {chartData?.datasets[0]?.data?.length > 0 && ( */}
       <div className="max-h-[30vh]">
-        <Line
-          data={chartData}
-          className="z-10"
-          height={600}
-          options={{
-            hover: { intersect: false },
-            legend: {
-              position: "bottom",
-              align: "center",
-              display: false,
-            },
-            tooltips: {
-              intersect: false,
-              // mode: "y",
-              mode: "index",
-              callbacks: {
-                //This removes the tooltip title
-                // title: function () {},
-                label: ({ yLabel }, data) => `$${formatNumber(yLabel)}`,
+        {chartData ? (
+          <Line
+            data={chartData}
+            className="z-10"
+            height={600}
+            options={{
+              hover: { intersect: false },
+              legend: {
+                position: "bottom",
+                align: "center",
+                display: false,
               },
-              //this removes legend color
-              displayColors: false,
-              yPadding: 15,
-              xPadding: 15,
-              position: "average",
-              pointHitRadius: 20,
-              pointRadius: 30,
-              caretSize: 10,
-              backgroundColor: "rgba(255,255,255,.9)",
-              bodyFontSize: 18,
-              borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
-              borderWidth: 2,
-              bodyFontFamily: "Satoshi",
-              titleFontFamily: "Satoshi",
-              titleFontColor: "#000000",
-              bodyFontColor: "#303030",
-            },
-            scales: {
-              yAxes: [
-                {
-                  ticks: {
-                    display: false,
-                  },
-                  stacked: false,
-                  gridLines: {
-                    drawTicks: false,
-                    color: "rgba(0, 0, 0, 0)",
-                    zeroLineColor: "rgba(0, 0, 0, 0)",
-                  },
-                  drawBorder: false,
-                  drawTicks: false,
+              tooltips: {
+                intersect: false,
+                // mode: "y",
+                mode: "index",
+                callbacks: {
+                  //This removes the tooltip title
+                  // title: function () {},
+                  label: ({ yLabel }, data) => `$${formatNumber(yLabel)}`,
                 },
-              ],
-              xAxes: [
-                {
-                  padding: 0,
-                  backdropPaddingX: 0,
-                  backdropPaddingY: 0,
-                  ticks: {
-                    display: false,
+                //this removes legend color
+                displayColors: false,
+                yPadding: 15,
+                xPadding: 15,
+                position: "average",
+                pointHitRadius: 20,
+                pointRadius: 30,
+                caretSize: 10,
+                backgroundColor: "rgba(255,255,255,.9)",
+                bodyFontSize: 18,
+                borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
+                borderWidth: 2,
+                bodyFontFamily: "Satoshi",
+                titleFontFamily: "Satoshi",
+                titleFontColor: "#000000",
+                bodyFontColor: "#303030",
+              },
+              scales: {
+                yAxes: [
+                  {
+                    ticks: {
+                      display: false,
+                    },
+                    stacked: false,
+                    gridLines: {
+                      drawTicks: false,
+                      color: "rgba(0, 0, 0, 0)",
+                      zeroLineColor: "rgba(0, 0, 0, 0)",
+                    },
+                    drawBorder: false,
+                    drawTicks: false,
+                  },
+                ],
+                xAxes: [
+                  {
                     padding: 0,
-                    mirror: true,
                     backdropPaddingX: 0,
                     backdropPaddingY: 0,
-                  },
-                  padding: 0,
-                  gridLines: {
+                    ticks: {
+                      display: false,
+                      padding: 0,
+                      mirror: true,
+                      backdropPaddingX: 0,
+                      backdropPaddingY: 0,
+                    },
+                    padding: 0,
+                    gridLines: {
+                      drawTicks: false,
+                      color: "rgba(0, 0, 0, 0)",
+                      zeroLineColor: "rgba(0, 0, 0, 0)",
+                    },
+                    drawBorder: false,
                     drawTicks: false,
-                    color: "rgba(0, 0, 0, 0)",
-                    zeroLineColor: "rgba(0, 0, 0, 0)",
                   },
-                  drawBorder: false,
-                  drawTicks: false,
-                },
-              ],
-            },
-            maintainAspectRatio: false,
-          }}
-        />
+                ],
+              },
+              maintainAspectRatio: false,
+            }}
+          />
+        ) : (
+          <div
+            className="flex flex-col items-center justify-between"
+            style={{ height: 350 }}
+          >
+            <div className="h-full flex-1 flex items-center justify-center">
+              <p className="text-md text-gray-400">Loading market chart</p>
+            </div>
+            <div
+              className={`h-0.5 w-full`}
+              style={{
+                backgroundColor: assetColors.vibrant,
+              }}
+            ></div>
+          </div>
+        )}
       </div>
       {/* )} */}
       {/* : (
@@ -1140,7 +1157,8 @@ export async function getServerSideProps({ params }) {
       const assetInfo = await assetsResponse.json();
       props.assetInfo = assetInfo;
 
-      const assetInfoExtended = await fetch(`https://api.coingecko.com/api/v3/coins/${assetInfo[0].id}?localization=en&tickers=true&market_data=false&community_data=true&developer_data=true&sparkline=false
+      const assetInfoExtended =
+        await fetch(`https://api.coingecko.com/api/v3/coins/${assetInfo[0].id}?localization=en&tickers=true&market_data=false&community_data=true&developer_data=true&sparkline=false
       `);
       props.assetInfoExtended = await assetInfoExtended.json();
 
@@ -1193,7 +1211,7 @@ export async function getServerSideProps({ params }) {
       props.palette = JSON.parse(JSON.stringify(palette));
 
       // props.marketChart = marketChart;
-      props.athDays = daysBetweenNowAndAth + 3;
+      // props.athDays = daysBetweenNowAndAth + 3;
       props.key = assetInfo[0].symbol;
     } catch (e) {
       console.log(e);

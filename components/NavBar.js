@@ -160,6 +160,7 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                     ref={input}
                     onChange={handleFilterTextChange}
                     onKeyPress={handleKeyPress}
+                    autoFocus
                     placeholder={`${assetPlaceholder.toUpperCase()}`}
                     id="input"
                   ></input>
