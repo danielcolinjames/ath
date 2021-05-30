@@ -220,7 +220,7 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
         </div>
       </div>
       <div
-        className="mt-0 h-1 w-full blur-effect"
+        className="mt-0 h-1 w-full"
         style={{
           backgroundImage: `linear-gradient(${
             assetColors !== undefined

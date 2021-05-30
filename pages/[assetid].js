@@ -20,16 +20,18 @@ import { generateSocialLinks, generateOtherLinks } from "../utils/links";
 const AssetPage = ({
   asset,
   assetid,
-  assetInfoExtended,
   list,
   assetInfo,
+  assetInfoExtended,
   singleAssetMatch,
   // marketChart,
-  athDays,
+  // athDays,
   palette,
   paletteExtended,
 }) => {
   console.log(assetInfo);
+  console.log(assetInfo);
+  // console.log(assetInfo);
   const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
   const title = `${assetInfo[0].name} (${assetid.toUpperCase()}) All-Time High`;
 
@@ -96,13 +98,13 @@ const AssetPage = ({
   // const [marketChart, setMarketChart] = useState([]);
   const [marketChartLoading, setMarketChartLoading] = useState(true);
 
-  const dataDefault = [];
-  const labelsDefault = [];
+  // const dataDefault = [];
+  // const labelsDefault = [];
 
-  for (let i = 0; i < 1000; i++) {
-    dataDefault.push(assetInfo[0].ath ? assetInfo[0].ath : 1);
-    labelsDefault.push("ATH");
-  }
+  // for (let i = 0; i < 1000; i++) {
+  //   dataDefault.push(assetInfo[0].ath ? assetInfo[0].ath : 1);
+  //   labelsDefault.push("ATH");
+  // }
 
   const [chartData, setChartData] = useState();
 
@@ -123,6 +125,9 @@ const AssetPage = ({
   //   },
   // ],
   // }
+
+  const [freshAssetData, setFreshAssetData] = useState();
+  const [freshAssetDataLoading, setFreshAssetDataLoading] = useState();
 
   useEffect(() => {
     const getMarketData = async () => {
@@ -195,7 +200,7 @@ const AssetPage = ({
 
         // console.log(assetInfoExtended)
 
-        console.log(chartDataCalculated);
+        // console.log(chartDataCalculated);
 
         setChartData(chartDataCalculated);
         setMarketChartLoading(false);
@@ -204,8 +209,22 @@ const AssetPage = ({
       }
     };
 
+    const getFreshAssetData = async () => {
+      setFreshAssetDataLoading(true);
+
+      const assetResponse = await fetch(
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${assetInfo[0].id}`
+      );
+
+      const freshAsset = await assetResponse.json();
+
+      setFreshAssetData(freshAsset);
+      setFreshAssetDataLoading(true);
+    };
+
     getAssetMarketData();
     getMarketData();
+    getFreshAssetData();
   }, []);
 
   const descArray = assetInfoExtended.description.en.split("\n");
@@ -349,19 +368,43 @@ const AssetPage = ({
             }}
           />
         ) : (
-          <div
-            className="flex flex-col items-center justify-between"
-            style={{ height: 350 }}
-          >
-            <div className="h-full flex-1 flex items-center justify-center">
-              <p className="text-md text-gray-400">Loading market chart</p>
+          <div className="max-h-[30vh]" style={{ height: 600 }}>
+            <div className="flex flex-col items-center h-full justify-center">
+              <div className="h-full flex flex-col items-center justify-center">
+                <div className="ml-1">
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-10 w-10"
+                    style={{ color: assetColors.vibrant }}
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      stroke-width="4"
+                    ></circle>
+                    <path
+                      class="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                </div>
+                <p className="text-md text-gray-400 pt-2">
+                  Fetching chart data
+                </p>
+              </div>
+              <div
+                className={`h-0.5 w-full`}
+                style={{
+                  backgroundColor: assetColors.vibrant,
+                }}
+              ></div>
             </div>
-            <div
-              className={`h-0.5 w-full`}
-              style={{
-                backgroundColor: assetColors.vibrant,
-              }}
-            ></div>
           </div>
         )}
       </div>
@@ -406,12 +449,20 @@ const AssetPage = ({
                           assetInfo[0]?.ath < assetInfo[0].current_price
                             ? "line-through"
                             : ""
+                        } ${
+                          freshAssetData
+                            ? ""
+                            : "animate-pulse bg-black opacity-50"
                         }`}
                       >
                         <span className="font-bold text-2xl absolute mt-1.5 md:mt-4 -ml-4">
                           $
                         </span>
-                        {ath}
+                        {/* {ath} */}
+                        {freshAssetData !== undefined
+                          ? formatNumber(freshAssetData[0].ath)
+                          : "..."}
+                        {/* {console.log(freshAssetData)} */}
                       </h3>
                     </div>
                   </div>
@@ -1108,7 +1159,23 @@ const AssetPage = ({
   );
 };
 
-export async function getServerSideProps({ params }) {
+export async function getStaticPaths() {
+  const marketRes = await fetch(
+    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=250"
+  );
+  const marketUnsorted = await marketRes.json();
+  const market = marketUnsorted.sort((a, b) => {
+    return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0;
+  });
+  const paths = market.map((a) => ({ params: { assetid: a.symbol } }));
+
+  return {
+    paths,
+    fallback: "blocking", // See the "fallback" section below
+  };
+}
+
+export async function getStaticProps({ params }) {
   const props = {};
 
   const { assetid } = params;
