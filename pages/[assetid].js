@@ -21,7 +21,7 @@ const AssetPage = ({
   asset,
   assetid,
   list,
-  assetInfo,
+  assetInfoInitial,
   assetInfoExtended,
   singleAssetMatch,
   // marketChart,
@@ -29,8 +29,10 @@ const AssetPage = ({
   palette,
   paletteExtended,
 }) => {
-  console.log(assetInfo);
-  console.log(assetInfo);
+  const [assetInfo, setAssetInfo] = useState(assetInfoInitial);
+
+  // console.log(assetInfo);
+  // console.log(assetInfo);
   // console.log(assetInfo);
   const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
   const title = `${assetInfo[0].name} (${assetid.toUpperCase()}) All-Time High`;
@@ -218,6 +220,7 @@ const AssetPage = ({
 
       const freshAsset = await assetResponse.json();
 
+      setAssetInfo(freshAsset);
       setFreshAssetData(freshAsset);
       setFreshAssetDataLoading(true);
     };
@@ -452,7 +455,7 @@ const AssetPage = ({
                         } ${
                           freshAssetData
                             ? ""
-                            : "animate-pulse bg-black opacity-50"
+                            : "animate-pulse bg-black h-10 opacity-50"
                         }`}
                       >
                         <span className="font-bold text-2xl absolute mt-1.5 md:mt-4 -ml-4">
@@ -1161,7 +1164,7 @@ const AssetPage = ({
 
 export async function getStaticPaths() {
   const marketRes = await fetch(
-    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=250"
+    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=25"
   );
   const marketUnsorted = await marketRes.json();
   const market = marketUnsorted.sort((a, b) => {
@@ -1171,6 +1174,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
+    // : [],
     fallback: "blocking", // See the "fallback" section below
   };
 }
@@ -1180,6 +1184,12 @@ export async function getStaticProps({ params }) {
 
   const { assetid } = params;
   props.assetid = assetid;
+
+  function sleep(ms) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
+
+  await sleep(15000);
 
   const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
   const list = await res.json();
@@ -1222,7 +1232,7 @@ export async function getStaticProps({ params }) {
       );
 
       const assetInfo = await assetsResponse.json();
-      props.assetInfo = assetInfo;
+      props.assetInfoInitial = assetInfo;
 
       const assetInfoExtended =
         await fetch(`https://api.coingecko.com/api/v3/coins/${assetInfo[0].id}?localization=en&tickers=true&market_data=false&community_data=true&developer_data=true&sparkline=false
