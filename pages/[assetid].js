@@ -61,6 +61,8 @@ const AssetPage = ({
   const athTimestamp = moment.utc(assetInfo[0]?.ath_date);
   const lastUpdated = moment.utc(assetInfo[0].last_updated);
 
+  const [athClientSide, setAthClientSide] = useState("...");
+
   const descriptionText = hasAth
     ? `The all-time high price of ${
         assetInfo[0].name
@@ -222,6 +224,7 @@ const AssetPage = ({
 
       setAssetInfo(freshAsset);
       setFreshAssetData(freshAsset);
+      // setAthClientSide(freshAsset)
       setFreshAssetDataLoading(true);
     };
 
@@ -452,20 +455,29 @@ const AssetPage = ({
                           assetInfo[0]?.ath < assetInfo[0].current_price
                             ? "line-through"
                             : ""
-                        } ${
-                          freshAssetData
-                            ? ""
-                            : "animate-pulse bg-black h-10 opacity-50"
-                        }`}
+                        } `}
+                        // ${
+                        // freshAssetData
+                        // ? ""
+                        // : "animate-pulse bg-black h-10 opacity-50"
+                        // }
                       >
+                        {/* <span
+                          className={`${
+                            !freshAssetData || true
+                              ? "animate-pulse bg-black h-10 opacity-30"
+                              : ""
+                          }`}
+                        > */}
                         <span className="font-bold text-2xl absolute mt-1.5 md:mt-4 -ml-4">
                           $
                         </span>
                         {/* {ath} */}
                         {freshAssetData !== undefined
-                          ? formatNumber(freshAssetData[0].ath)
+                          ? formatNumber(freshAssetData[0]?.ath)
                           : "..."}
                         {/* {console.log(freshAssetData)} */}
+                        {/* </span> */}
                       </h3>
                     </div>
                   </div>
@@ -1163,18 +1175,17 @@ const AssetPage = ({
 };
 
 export async function getStaticPaths() {
-  const marketRes = await fetch(
-    "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=25"
-  );
-  const marketUnsorted = await marketRes.json();
-  const market = marketUnsorted.sort((a, b) => {
-    return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0;
-  });
-  const paths = market.map((a) => ({ params: { assetid: a.symbol } }));
+  // const marketRes = await fetch(
+  //   "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=25"
+  // );
+  // const marketUnsorted = await marketRes.json();
+  // const market = marketUnsorted.sort((a, b) => {
+  //   return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0;
+  // });
+  // const paths = market.map((a) => ({ params: { assetid: a.symbol } }));
 
   return {
-    paths,
-    // : [],
+    paths: [],
     fallback: "blocking", // See the "fallback" section below
   };
 }
