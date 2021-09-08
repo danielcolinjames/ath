@@ -17,6 +17,8 @@ import parse from "html-react-parser";
 import { SocialIcon } from "react-social-icons";
 import { generateSocialLinks, generateOtherLinks } from "../utils/links";
 
+import cache from "../utils/cache";
+
 const AssetPage = ({
   asset,
   assetid,
@@ -155,10 +157,8 @@ const AssetPage = ({
       return p.length === 0;
     }) !== -1;
 
-  const [
-    showDescriptionExpandOption,
-    setShowDescriptionExpandOption,
-  ] = useState(charCount > 500);
+  const [showDescriptionExpandOption, setShowDescriptionExpandOption] =
+    useState(charCount > 500);
   const [descriptionIsExpanded, setDescriptionIsExpanded] = useState(false);
 
   const socialLinks = generateSocialLinks(assetInfoExtended.links);
@@ -1028,8 +1028,14 @@ export async function getServerSideProps({ params }) {
   const { assetid } = params;
   props.assetid = assetid;
 
-  const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
-  const list = await res.json();
+  const fetchList = async () => {
+    const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
+    const list = await res.json();
+    return list;
+  };
+
+  const list = await cache.fetch("ath:full-list", fetchList, 60 * 60 * 24);
+
   props.list = list;
 
   const asset = list.find((x) => {
@@ -1071,7 +1077,8 @@ export async function getServerSideProps({ params }) {
       const assetInfo = await assetsResponse.json();
       props.assetInfo = assetInfo;
 
-      const assetInfoExtended = await fetch(`https://api.coingecko.com/api/v3/coins/${assetInfo[0].id}?localization=en&tickers=true&market_data=false&community_data=true&developer_data=true&sparkline=false
+      const assetInfoExtended =
+        await fetch(`https://api.coingecko.com/api/v3/coins/${assetInfo[0].id}?localization=en&tickers=true&market_data=false&community_data=true&developer_data=true&sparkline=false
       `);
       props.assetInfoExtended = await assetInfoExtended.json();
 
