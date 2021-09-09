@@ -28,6 +28,7 @@ const Footer = ({ assetColors, rgb }) => {
           </Link>
           <a
             href="https://twitter.com/athdotooo"
+            rel="noopener noreferrer"
             target="_blank"
             className="font-ath text-base footer-text"
           >
@@ -35,6 +36,7 @@ const Footer = ({ assetColors, rgb }) => {
           </a>
           <a
             href="https://github.com/danielcolinjames/ath"
+            rel="noopener noreferrer"
             target="_blank"
             className="font-ath text-base footer-text"
           >

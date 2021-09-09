@@ -53,6 +53,7 @@ const AboutPage = ({ list }) => {
             <a
               href="https://github.com/danielcolinjames/ath"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-green-500"
             >
               the site's code on GitHub
@@ -61,6 +62,7 @@ const AboutPage = ({ list }) => {
             <a
               href="https://github.com/danielcolinjames/ath/issues"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-green-500"
             >
               take on an issue or two!
@@ -71,6 +73,7 @@ const AboutPage = ({ list }) => {
             <a
               href="mailto:hey@ath.ooo?subject=Hey!"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-green-500"
             >
               reach out{" "}
@@ -82,6 +85,7 @@ const AboutPage = ({ list }) => {
             <a
               href="https://twitter.com/dcwj"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-blue-500"
             >
               follow me{" "}

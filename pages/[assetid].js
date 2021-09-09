@@ -1,11 +1,17 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import MetaTags from "../components/MetaTags";
-import moment from "moment";
 import Layout from "../components/Layout";
 import AssetListItem from "../components/AssetListItem";
 import { Line } from "react-chartjs-2";
-import { fromUnixTime, format, parseISO, differenceInDays } from "date-fns";
+import {
+  fromUnixTime,
+  format,
+  parseISO,
+  differenceInDays,
+  getUnixTime,
+  sub,
+} from "date-fns";
 import { formatNumber } from "../utils/numbers";
 import {
   getAssetColorsFromVibrantObj,
@@ -18,6 +24,8 @@ import { SocialIcon } from "react-social-icons";
 import { generateSocialLinks, generateOtherLinks } from "../utils/links";
 
 import cache from "../utils/cache";
+import { formatInTimeZone } from "../utils/timestamps";
+import TimeAgo from "../components/TimeAgo";
 import { fetchList } from "../utils/coingecko";
 
 const AssetPage = ({
@@ -43,6 +51,8 @@ const AssetPage = ({
     }`
   )}.png`;
 
+  console.log(assetInfo);
+
   url.searchParams.append("assetName", assetInfo[0].name);
   url.searchParams.append("assetSymbol", assetid.toUpperCase());
   url.searchParams.append("image", assetInfo[0].image);
@@ -55,17 +65,24 @@ const AssetPage = ({
 
   const ath = hasAth ? formatNumber(assetInfo[0].ath) : "unknown";
 
-  const athTimestamp = moment.utc(assetInfo[0]?.ath_date);
-  const lastUpdated = moment.utc(assetInfo[0].last_updated);
+  const hasValidDate = assetInfo[0].ath_date !== null;
+
+  const athTimestamp = hasValidDate ? parseISO(assetInfo[0]?.ath_date) : null;
+  const athTimestampFormatted = hasValidDate
+    ? formatInTimeZone(athTimestamp, "h:mm:ss a", "UTC")
+    : "an unknown date";
+  const lastUpdated = parseISO(assetInfo[0].last_updated);
+
+  const athDate = hasValidDate
+    ? format(athTimestamp, "MMMM do, yyyy")
+    : "an unknown date";
 
   const descriptionText = hasAth
     ? `The all-time high price of ${
         assetInfo[0].name
       } (${assetid.toUpperCase()}) was $${formatNumber(
         assetInfo[0]?.ath
-      )}, set on ${moment(athTimestamp).format("MMMM Do, YYYY")} at ${moment(
-        athTimestamp
-      ).format("h:mm A (UTC)")}`
+      )}, set on ${athDate} at ${athTimestampFormatted} (UTC)`
     : `The all-time high price of ${
         assetInfo[0].name
       } (${assetid.toUpperCase()}) is unknown.`;
@@ -465,13 +482,13 @@ const AssetPage = ({
                     </span>
                     <a
                       target="_blank"
+                      rel="noopener noreferrer"
                       href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
                       className="p-3 inline-block sm:hidden border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-sm border-px coingecko-link transition-all"
                     >
                       <p className="font-ath font-light text-sm text-gray-700 sm:text-right">
-                        Data accurate as of {lastUpdated.fromNow()}
+                        Data accurate as of <TimeAgo date={lastUpdated} />
                       </p>
-                      {/* <div className="h-px bg-gray-300 mt-2" /> */}
                       <div className="flex flex-row items-center justify-start pt-2">
                         <Image
                           src="/cglogo.svg"
@@ -489,11 +506,10 @@ const AssetPage = ({
                   <div className="flex flex-col sm:flex-row items-start justify-between">
                     <div>
                       <p className="font-ath font-light text-2xl md:text-3xl py-1 text-gray-900">
-                        Set {athTimestamp.fromNow()}
+                        Set <TimeAgo date={athTimestamp} />
                       </p>
                       <p className="font-ath font-light text-sm md:text-md text-gray-600">
-                        on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
-                        {moment(athTimestamp).format("h:mm:ss A UTC")}
+                        on {athDate} at {athTimestampFormatted} UTC
                       </p>
                     </div>
                     <div
@@ -561,11 +577,12 @@ const AssetPage = ({
                       </div>
                       <a
                         target="_blank"
+                        rel="noopener noreferrer"
                         href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
                         className="p-3 inline-block border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-sm border-px mt-0 sm:ml-4 coingecko-link transition-all"
                       >
                         <p className="font-ath font-light text-sm text-gray-700 sm:text-right">
-                          Data accurate as of {lastUpdated.fromNow()}
+                          Data accurate as of <TimeAgo date={lastUpdated} />
                         </p>
                         {/* <div className="h-px bg-gray-300 mt-2" /> */}
                         <div className="flex flex-row items-center justify-start pt-2">
@@ -587,11 +604,12 @@ const AssetPage = ({
                 {/* <div className="pt-5 w-full"></div> */}
                 <a
                   target="_blank"
+                  rel="noopener noreferrer"
                   href={`https://www.coingecko.com/en/coins/${assetInfo[0].id}/usd`}
                   className="hidden max-w-xl mt-4 sm:flex p-3 border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-sm border-px coingecko-link transition-all flex-row justify-between items-center px-4"
                 >
                   <p className="font-ath font-light text-sm text-gray-700 sm:text-right">
-                    Data accurate as of {lastUpdated.fromNow()}
+                    Data accurate as of <TimeAgo date={lastUpdated} />
                   </p>
                   {/* <div className="h-px bg-gray-300 mt-2" /> */}
                   <div className="flex flex-row items-center justify-start">
@@ -611,9 +629,7 @@ const AssetPage = ({
                     assetInfo[0].name
                   } (${assetid.toUpperCase()}) was ${formatNumber(
                     ath
-                  )} USD, set on ${moment(athTimestamp).format(
-                    "MMMM Do, YYYY"
-                  )}.`}
+                  )} USD, set on ${athDate}.`}
                 </p>
               </>
             ) : (
@@ -631,6 +647,7 @@ const AssetPage = ({
                     />
                     <a
                       target="_blank"
+                      rel="noopener noreferrer"
                       href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
                       className="font-ath font-light text-xs text-gray-700 leading-none px-2"
                     >
@@ -694,9 +711,11 @@ const AssetPage = ({
                 {otherLinks.map((link) => {
                   return (
                     <a
+                      key={link.url}
                       href={link.url}
                       className="rounded-full bg-gray-100 flex items-center justify-center"
                       target="_blank"
+                      rel="noopener noreferrer"
                       style={{
                         backgroundColor: rgbaStringFromRGBObj(
                           palette.DarkVibrant.rgb,
@@ -773,6 +792,7 @@ const AssetPage = ({
                 {socialLinks.map((link, i) => {
                   return (
                     <SocialIcon
+                      key={`link-${i}`}
                       url={link}
                       bgColor={rgbaStringFromRGBObj(
                         palette.DarkVibrant.rgb,
@@ -780,6 +800,7 @@ const AssetPage = ({
                       )}
                       fgColor={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.75)}
                       target="_blank"
+                      rel="noopener noreferrer"
                       style={{
                         width: SOCIAL_LINK_SIZE,
                         height: SOCIAL_LINK_SIZE,
@@ -857,10 +878,14 @@ const AssetPage = ({
               {showSymbolSharerAssets && (
                 <>
                   {assetInfo.map((asset, index) => {
-                    const athTimestamp = moment.utc(assetInfo[index]?.ath_date);
-                    const lastUpdated = moment.utc(
-                      assetInfo[index].last_updated
+                    const athTimestamp = parseISO(assetInfo[index]?.ath_date);
+                    const athDate = format(athTimestamp, "MMMM do, yyyy");
+                    const athTimestampFormatted = formatInTimeZone(
+                      athTimestamp,
+                      "h:mm:ss a",
+                      "UTC"
                     );
+                    const lastUpdated = parseISO(assetInfo[index].last_updated);
                     if (index !== 0)
                       return (
                         <div className="pt-4" key={`shared-${index}`}>
@@ -894,11 +919,10 @@ const AssetPage = ({
                             </h3>
                           </div>
                           <p className="font-ath font-light text-lg text-gray-600">
-                            Set {athTimestamp.fromNow()}
+                            Set <TimeAgo date={athTimestamp} />
                           </p>
                           <p className="font-ath font-light text-xs text-gray-600">
-                            on {moment(athTimestamp).format("MMMM Do, YYYY")} at{" "}
-                            {moment(athTimestamp).format("h:mm:ss A UTC")}
+                            on {athDate} at {athTimestampFormatted}
                           </p>
                           <div className="bg-white p-3 inline-block mt-4 border border-dotted border-gray-100">
                             <div className="flex flex-row items-center justify-start">
@@ -910,10 +934,12 @@ const AssetPage = ({
                               />
                               <a
                                 target="_blank"
+                                rel="noopener noreferrer"
                                 href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
                                 className="font-ath font-light text-xs text-gray-800 leading-none px-2"
                               >
-                                Data accurate as of {lastUpdated.fromNow()}
+                                Data accurate as of{" "}
+                                <TimeAgo date={lastUpdated} />
                               </a>
                             </div>
                           </div>
@@ -951,30 +977,6 @@ const AssetPage = ({
                 <Skeleton count={10} height={97} />
               </SkeletonTheme>
             )}
-            {/* <button
-            className="mt-20 bg-gray-200 p-2 rounded-lg"
-            onClick={() => setShowList(!showList)}
-          >
-            <span className="text-gray-800">
-              {showList ? "Hide" : "Show"} all assets{" "}
-            </span>
-          </button>
-          {showList && (
-            <ul className="text-gray-400">
-              {list.map((asset, index) => (
-                <li
-                  className="list-disc ml-8 pt-2"
-                  key={`${asset.symbol}-${index}`}
-                >
-                  <Link href={`/${asset.symbol}`}>
-                    <a>
-                      {asset.symbol.toUpperCase()} ({asset.name})
-                    </a>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          )} */}
           </div>
         </div>
       </div>
@@ -1077,15 +1079,13 @@ export async function getServerSideProps({ params }) {
       `);
       props.assetInfoExtended = await assetInfoExtended.json();
 
-      const athTimestampMoment = moment.utc(assetInfo[0]?.ath_date);
-      const daysBetweenNowAndAth = differenceInDays(
-        new Date(),
-        parseISO(assetInfo[0]?.ath_date)
-      );
+      const athDate = parseISO(assetInfo[0]?.ath_date);
 
-      const athTimestamp = athTimestampMoment
-        .subtract(daysBetweenNowAndAth + 3, "days")
-        .format("X");
+      const daysBetweenNowAndAth = differenceInDays(new Date(), athDate);
+
+      const athTimestamp = getUnixTime(
+        sub(athDate, { days: daysBetweenNowAndAth + 3 })
+      );
 
       const marketChartResponse = await fetch(
         `https://api.coingecko.com/api/v3/coins/${
