@@ -1,10 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import moment from "moment";
 import { formatNumber } from "../utils/numbers";
+import { parseISO } from "date-fns";
+import TimeAgo from "./TimeAgo";
 
 const AssetListItem = ({ asset, index, showGreenLine, showTimeSince }) => {
-  const athTimestamp = moment.utc(asset.ath_date);
+  const athTimestamp = parseISO(asset.ath_date);
 
   return (
     <Link href={`/${asset.symbol.toUpperCase()}`} key={`${asset.id}-${index}`}>
@@ -37,7 +38,7 @@ const AssetListItem = ({ asset, index, showGreenLine, showTimeSince }) => {
           </span>
           {showTimeSince && (
             <span className="text-gray-400 font-normal">
-              {athTimestamp.fromNow()}
+              <TimeAgo date={athTimestamp} />
             </span>
           )}
         </span>

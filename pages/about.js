@@ -1,11 +1,6 @@
-import { Fragment } from "react";
-import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import moment from "moment";
 import MetaTags from "../components/MetaTags";
 import Layout from "../components/Layout";
-import AssetListItem from "../components/AssetListItem";
 
 const AboutPage = ({ list }) => {
   const NameOfCrypto = ({ name, bracketText }) => {
@@ -56,6 +51,7 @@ const AboutPage = ({ list }) => {
             <a
               href="https://github.com/danielcolinjames/ath"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-green-500"
             >
               the site's code on GitHub
@@ -64,6 +60,7 @@ const AboutPage = ({ list }) => {
             <a
               href="https://github.com/danielcolinjames/ath/issues"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-green-500"
             >
               take on an issue or two!
@@ -74,6 +71,7 @@ const AboutPage = ({ list }) => {
             <a
               href="mailto:hey@ath.ooo?subject=Hey!"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-green-500"
             >
               reach out{" "}
@@ -85,6 +83,7 @@ const AboutPage = ({ list }) => {
             <a
               href="https://twitter.com/dcwj"
               target="_blank"
+              rel="noopener noreferrer"
               className="text-blue-500"
             >
               follow me{" "}
