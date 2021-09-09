@@ -1,11 +1,8 @@
-import { Fragment } from "react";
-import { useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
-import moment from "moment";
 import MetaTags from "../components/MetaTags";
 import Layout from "../components/Layout";
-import AssetListItem from "../components/AssetListItem";
+import cache from "../utils/cache";
+import { fetchList } from "../utils/coingecko";
 
 const AboutPage = ({ list }) => {
   const NameOfCrypto = ({ name, bracketText }) => {
@@ -122,8 +119,7 @@ const AboutPage = ({ list }) => {
 };
 
 export async function getServerSideProps() {
-  const listRes = await fetch("https://api.coingecko.com/api/v3/coins/list");
-  const list = await listRes.json();
+  const list = await cache.fetch("ath:full-list", fetchList, 60 * 60 * 24);
   return {
     props: { list },
   };

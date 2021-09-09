@@ -1,12 +1,11 @@
-import { Fragment, useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import moment from "moment";
 import MetaTags from "../components/MetaTags";
 import Layout from "../components/Layout";
 import AssetListItem from "../components/AssetListItem";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
+import cache from "../utils/cache";
+import { fetchList } from "../utils/coingecko";
 
 const HomePage = ({ list }) => {
   const [marketLoading, setMarketLoading] = useState(false);
@@ -78,8 +77,7 @@ const HomePage = ({ list }) => {
 };
 
 export async function getServerSideProps() {
-  const listRes = await fetch("https://api.coingecko.com/api/v3/coins/list");
-  const list = await listRes.json();
+  const list = await cache.fetch("ath:full-list", fetchList, 60 * 60 * 24);
 
   return {
     props: { list },
