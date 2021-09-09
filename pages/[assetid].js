@@ -64,21 +64,18 @@ const AssetPage = ({
   const hasAth = assetInfo[0].ath !== null;
 
   const ath = hasAth ? formatNumber(assetInfo[0].ath) : "unknown";
-  console.log(assetInfo[0]?.ath_date);
 
   const hasValidDate = assetInfo[0].ath_date !== null;
 
-  const athTimestamp = hasValidDate
-    ? parseISO(assetInfo[0]?.ath_date)
-    : "unknown date";
+  const athTimestamp = hasValidDate ? parseISO(assetInfo[0]?.ath_date) : null;
   const athTimestampFormatted = hasValidDate
-    ? formatInTimeZone(athTimestamp, "hh:mm:ss a", "UTC")
-    : "unknown date";
+    ? formatInTimeZone(athTimestamp, "h:mm:ss a", "UTC")
+    : "an unknown date";
   const lastUpdated = parseISO(assetInfo[0].last_updated);
 
   const athDate = hasValidDate
     ? format(athTimestamp, "MMMM do, yyyy")
-    : "unknown date";
+    : "an unknown date";
 
   const descriptionText = hasAth
     ? `The all-time high price of ${
@@ -885,7 +882,7 @@ const AssetPage = ({
                     const athDate = format(athTimestamp, "MMMM do, yyyy");
                     const athTimestampFormatted = formatInTimeZone(
                       athTimestamp,
-                      "hh:mm:ss a",
+                      "h:mm:ss a",
                       "UTC"
                     );
                     const lastUpdated = parseISO(assetInfo[index].last_updated);
