@@ -26,6 +26,7 @@ import { generateSocialLinks, generateOtherLinks } from "../utils/links";
 import cache from "../utils/cache";
 import { formatInTimeZone } from "../utils/timestamps";
 import TimeAgo from "../components/TimeAgo";
+import { fetchList } from "../utils/coingecko";
 
 const AssetPage = ({
   asset,
@@ -1032,12 +1033,6 @@ export async function getServerSideProps({ params }) {
 
   const { assetid } = params;
   props.assetid = assetid;
-
-  const fetchList = async () => {
-    const res = await fetch("https://api.coingecko.com/api/v3/coins/list");
-    const list = await res.json();
-    return list;
-  };
 
   const list = await cache.fetch("ath:full-list", fetchList, 60 * 60 * 24);
 
