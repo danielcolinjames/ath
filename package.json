@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "autoprefixer": "^10.2.0",
-    "axios": "^0.21.1",
+    "axios": "^0.21.2",
     "chart.js": "^2.9.4",
     "chartjs-plugin-datalabels": "^1.0.0",
     "date-fns": "^2.19.0",
