@@ -584,7 +584,6 @@ const AssetPage = ({
                         <p className="font-ath font-light text-sm text-gray-700 sm:text-right">
                           Data accurate as of <TimeAgo date={lastUpdated} />
                         </p>
-                        {/* <div className="h-px bg-gray-300 mt-2" /> */}
                         <div className="flex flex-row items-center justify-start pt-2">
                           <Image
                             src="/cglogo.svg"
@@ -598,10 +597,8 @@ const AssetPage = ({
                         </div>
                       </a>
                     </div>
-                    {/* </div> */}
                   </div>
                 )}
-                {/* <div className="pt-5 w-full"></div> */}
                 <a
                   target="_blank"
                   rel="noopener noreferrer"
@@ -611,7 +608,6 @@ const AssetPage = ({
                   <p className="font-ath font-light text-sm text-gray-700 sm:text-right">
                     Data accurate as of <TimeAgo date={lastUpdated} />
                   </p>
-                  {/* <div className="h-px bg-gray-300 mt-2" /> */}
                   <div className="flex flex-row items-center justify-start">
                     <Image
                       src="/cglogo.svg"
@@ -627,9 +623,7 @@ const AssetPage = ({
                 <p className="pt-8 pb-5 text-lg md:text-2xl font-ath font-normal text-black max-w-md md:max-w-xl">
                   {`The highest price ever paid for ${
                     assetInfo[0].name
-                  } (${assetid.toUpperCase()}) was ${formatNumber(
-                    ath
-                  )} USD, set on ${athDate}.`}
+                  } was ${formatNumber(ath)} USD, set on ${athDate}.`}
                 </p>
               </>
             ) : (
