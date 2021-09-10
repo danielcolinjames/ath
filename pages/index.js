@@ -6,14 +6,18 @@ import AssetListItem from "../components/AssetListItem";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import cache from "../utils/cache";
 import { fetchList } from "../utils/coingecko";
+import AssetCard from "../components/AssetCard";
 
 const HomePage = ({ list }) => {
-  const [marketLoading, setMarketLoading] = useState(false);
-  const [market, setMarket] = useState([]);
+  const [marketByRecencyLoading, setMarketByRecencyLoading] = useState(false);
+  const [marketByRecency, setMarketByRecency] = useState([]);
+
+  const [marketByTopLoading, setMarketByTopLoading] = useState(false);
+  const [marketByTop, setMarketByTop] = useState([]);
 
   useEffect(() => {
-    const getMarketData = async () => {
-      setMarketLoading(true);
+    const getMarketRecencyData = async () => {
+      setMarketByRecencyLoading(true);
       const marketRes = await fetch(
         "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=250"
       );
@@ -21,10 +25,22 @@ const HomePage = ({ list }) => {
       const market = marketUnsorted.sort((a, b) => {
         return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0;
       });
-      setMarket(market);
-      setMarketLoading(false);
+      setMarketByRecency(market);
+      setMarketByRecencyLoading(false);
     };
-    getMarketData();
+
+    const getMarketTopData = async () => {
+      setMarketByTopLoading(true);
+      const marketRes = await fetch(
+        "https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=10"
+      );
+      const marketUnsorted = await marketRes.json();
+      setMarketByTop(marketUnsorted);
+      setMarketByTopLoading(false);
+    };
+
+    getMarketRecencyData();
+    getMarketTopData();
   }, []);
 
   return (
@@ -52,9 +68,20 @@ const HomePage = ({ list }) => {
             is powered by CoinGecko's API.
           </p>
         </div>
-        {!marketLoading ? (
+        {!marketByTopLoading ? (
+          <ul className="grid grid-cols-1 md:grid-cols-3 gap-2">
+            {marketByTop.map((asset, i) => (
+              <AssetCard asset={asset} index={i} showTimeSince />
+            ))}
+          </ul>
+        ) : (
+          <SkeletonTheme color="#efefef" highlightColor="white">
+            <Skeleton count={10} height={97} />
+          </SkeletonTheme>
+        )}
+        {!marketByRecencyLoading ? (
           <ul className="flex flex-col">
-            {market.map((asset, i) => {
+            {marketByRecency.map((asset, i) => {
               if (i < 200)
                 return (
                   <AssetListItem

@@ -621,9 +621,9 @@ const AssetPage = ({
                   </div>
                 </a>
                 <p className="pt-8 pb-5 text-lg md:text-2xl font-ath font-normal text-black max-w-md md:max-w-xl">
-                  {`The highest price ever paid for ${
+                  {`The all-time high price of ${
                     assetInfo[0].name
-                  } was ${formatNumber(ath)} USD, set on ${athDate}.`}
+                  } is ${formatNumber(ath)} USD, set on ${athDate}.`}
                 </p>
               </>
             ) : (
