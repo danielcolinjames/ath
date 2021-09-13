@@ -54,11 +54,13 @@ a {
 }
 
 #nprogress .peg {
-  box-shadow: 0 0 10px rgba(45, 254, 193, 1), 0 0 5px rgba(45, 254, 193, 1);
+  display: none !important;
+  background: transparent !important;
 }
+
 #nprogress .spinner-icon {
-  border-top-color: rgba(45, 254, 193, 1);
-  border-left-color: rgba(45, 254, 193, 1);
+  border-top-color: rgba(45, 254, 193, 1) !important;
+  border-left-color: rgba(45, 254, 193, 1) !important;
 }
 
 input {
