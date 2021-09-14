@@ -27,6 +27,8 @@ import cache from "../utils/cache";
 import { formatInTimeZone } from "../utils/timestamps";
 import TimeAgo from "../components/TimeAgo";
 import { fetchList } from "../utils/coingecko";
+import Router from "next/router";
+import NavBar from "../components/NavBar";
 
 const AssetPage = ({
   asset,
@@ -50,8 +52,6 @@ const AssetPage = ({
       assetInfo[0].ath ? assetInfo[0].ath : "undefined"
     }`
   )}.png`;
-
-  console.log(assetInfo);
 
   url.searchParams.append("assetName", assetInfo[0].name);
   url.searchParams.append("assetSymbol", assetid.toUpperCase());
@@ -80,7 +80,7 @@ const AssetPage = ({
   const descriptionText = hasAth
     ? `The all-time high price of ${
         assetInfo[0].name
-      } (${assetid.toUpperCase()}) was $${formatNumber(
+      } (${assetid.toUpperCase()}) is $${formatNumber(
         assetInfo[0]?.ath
       )}, set on ${athDate} at ${athTimestampFormatted} (UTC)`
     : `The all-time high price of ${
@@ -130,6 +130,34 @@ const AssetPage = ({
   ];
 
   const chartData = { labels, datasets };
+
+  let randomChartData = [];
+
+  for (let i = 0; i < 50; i++) {
+    if (i === 10) {
+      randomChartData.push(Math.random() * 100);
+    } else {
+      randomChartData.push(Math.random());
+    }
+  }
+
+  const loadingChartData = {
+    labels: randomChartData.map(() => "Loading"),
+    datasets: [
+      {
+        label: "Loading",
+        data: randomChartData,
+        backgroundColor: "rgba(128,128,128,0.086)",
+        borderColor: "rgba(127, 127, 127,0.25)",
+        borderJoinStyle: "round",
+        borderCapStyle: "round",
+        borderWidth: 3,
+        pointRadius: 0,
+        pointHitRadius: 10,
+        lineTension: 0.2,
+      },
+    ],
+  };
 
   const pc = parseFloat(assetInfo[0].ath_change_percentage);
 
@@ -183,8 +211,35 @@ const AssetPage = ({
   const otherLinks = generateOtherLinks(assetInfoExtended.links);
   const SOCIAL_LINK_SIZE = 30;
 
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const start = () => {
+      setLoading(true);
+    };
+
+    const end = () => {
+      setLoading(false);
+    };
+
+    Router.events.on("routeChangeStart", start);
+    Router.events.on("routeChangeComplete", end);
+    Router.events.on("routeChangeError", end);
+
+    return () => {
+      Router.events.on("routeChangeStart", start);
+      Router.events.on("routeChangeComplete", end);
+      Router.events.on("routeChangeError", end);
+    };
+  });
+
   return (
-    <Layout assetColors={assetColors} rgb={[r, g, b]} assetList={list}>
+    <Layout
+      assetColors={assetColors}
+      rgb={[r, g, b]}
+      assetList={list}
+      loading={loading}
+    >
       <MetaTags
         title={title}
         description={descriptionText}
@@ -197,12 +252,19 @@ const AssetPage = ({
           <div className="p-5">
             <div className="w-full inline-block px-5 z-10 relative blur-effect bg-[rgba(255,255,255,0.5)] py-3 -ml-5 -mt-20">
               <div className="flex flex-row items-center">
-                <Image
-                  src={assetInfo[0].image}
-                  height={50}
-                  width={50}
-                  alt={`${assetInfo[0].name} logo`}
-                />
+                {loading ? (
+                  <div
+                    style={{ height: 50, width: 50 }}
+                    className="bg-gray200 animate-pulse"
+                  />
+                ) : (
+                  <Image
+                    src={assetInfo[0].image}
+                    height={50}
+                    width={50}
+                    alt={`${assetInfo[0].name} logo`}
+                  />
+                )}
                 <h1
                   className={`font-ath ml-2.5 md:ml-4 -mt-0.5 font-bold text-xl md:text-2xl text-gray-800`}
                 >
@@ -216,10 +278,11 @@ const AssetPage = ({
           </div>
         </div>
       </div>
+
       {data?.length > 0 ? (
         <div className="max-h-[30vh]">
           <Line
-            data={chartData}
+            data={loading ? loadingChartData : chartData}
             className="z-10"
             height={600}
             options={{
@@ -343,7 +406,7 @@ const AssetPage = ({
                         <span className="font-bold text-2xl absolute mt-1.5 md:mt-4 -ml-4">
                           $
                         </span>
-                        {ath}
+                        {loading ? "..." : ath}
                       </h3>
                     </div>
                   </div>
@@ -366,7 +429,10 @@ const AssetPage = ({
                           <h3
                             className={`text-3xl text-black font-ath font-black`}
                           >
-                            ${formatNumber(assetInfo[0]?.current_price)}
+                            $
+                            {loading
+                              ? "..."
+                              : formatNumber(assetInfo[0]?.current_price)}
                           </h3>
                           <p
                             className={`text-sm font-ath font-black rounded-full ${
@@ -621,9 +687,11 @@ const AssetPage = ({
                   </div>
                 </a>
                 <p className="pt-8 pb-5 text-lg md:text-2xl font-ath font-normal text-black max-w-md md:max-w-xl">
-                  {`The highest price ever paid for ${
+                  {`${
                     assetInfo[0].name
-                  } was ${formatNumber(ath)} USD, set on ${athDate}.`}
+                  }'s all-time high price (the highest price ever paid for it) is $${formatNumber(
+                    ath
+                  )} USD, set on ${athDate}.`}
                 </p>
               </>
             ) : (
