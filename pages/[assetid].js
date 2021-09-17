@@ -136,10 +136,16 @@ const AssetPage = ({
   let randomChartData = [];
 
   for (let i = 0; i < 50; i++) {
-    if (i === 10) {
-      randomChartData.push(1);
+    if (i === 20) {
+      randomChartData.push(10);
+      if (Math.random() > 0.5) {
+        randomChartData.push(7.5);
+        randomChartData.push(5);
+        randomChartData.push(15);
+        randomChartData.push(3);
+      }
     } else {
-      randomChartData.push(1);
+      randomChartData.push(Math.random());
     }
   }
 
