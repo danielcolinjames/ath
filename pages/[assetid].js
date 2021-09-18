@@ -120,6 +120,7 @@ const AssetPage = ({
     {
       label: `${assetInfo[0].symbol.toUpperCase()} price`,
       data: prices,
+      fill: true,
       backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
       borderColor: assetColors.vibrant,
       borderJoinStyle: "round",
@@ -155,6 +156,7 @@ const AssetPage = ({
       {
         label: "Loading",
         data: randomChartData,
+        fill: true,
         backgroundColor: "rgba(128,128,128,0.086)",
         borderColor: "rgba(127, 127, 127,0.25)",
         borderJoinStyle: "round",
@@ -317,75 +319,80 @@ const AssetPage = ({
             height={600}
             options={{
               hover: { intersect: false },
-              legend: {
-                position: "bottom",
-                align: "center",
-                display: false,
-              },
-              tooltips: {
-                intersect: false,
-                // mode: "y",
-                mode: "index",
-                callbacks: {
-                  //This removes the tooltip title
-                  // title: function () {},
-                  label: ({ yLabel }, data) => `$${formatNumber(yLabel)}`,
+              borderWidth: 0,
+              clip: 0,
+              plugins: {
+                legend: {
+                  position: "bottom",
+                  align: "center",
+                  display: false,
                 },
-                //this removes legend color
-                displayColors: false,
-                yPadding: 15,
-                xPadding: 15,
-                position: "average",
-                pointHitRadius: 20,
-                pointRadius: 30,
-                caretSize: 10,
-                backgroundColor: "rgba(255,255,255,.9)",
-                bodyFontSize: 18,
-                borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
-                borderWidth: 2,
-                bodyFontFamily: "Satoshi",
-                titleFontFamily: "Satoshi",
-                titleFontColor: "#000000",
-                bodyFontColor: "#303030",
+                tooltip: {
+                  intersect: false,
+                  mode: "index",
+                  callbacks: {
+                    //This removes the tooltip title
+                    // title: function () {},
+                    label: ({ raw }) => {
+                      return `$${formatNumber(raw)}`;
+                    },
+                  },
+                  //this removes legend color
+                  displayColors: false,
+                  padding: 15,
+                  position: "average",
+                  pointHitRadius: 20,
+                  pointRadius: 30,
+                  caretSize: 10,
+                  backgroundColor: "rgba(255,255,255,.9)",
+                  borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
+                  borderWidth: 2,
+                  bodyFont: {
+                    family: "Satoshi",
+                    size: 18,
+                  },
+                  bodyColor: "#303030",
+                  titleFont: {
+                    family: "Satoshi",
+                  },
+                  titleColor: "rgba(0,0,0,0.6)",
+                },
               },
               scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      display: false,
-                    },
-                    stacked: false,
-                    gridLines: {
-                      drawTicks: false,
-                      color: "rgba(0, 0, 0, 0)",
-                      zeroLineColor: "rgba(0, 0, 0, 0)",
-                    },
+                y: {
+                  ticks: {
+                    backdropPadding: 0,
+                    display: false,
+                  },
+                  stacked: false,
+                  grid: {
+                    drawBorder: false,
+                    borderWidth: 0,
+                    drawTicks: false,
+                    color: "transparent",
+                    width: 0,
+                    backdropPadding: 0,
+                  },
+                  drawBorder: false,
+                  drawTicks: false,
+                },
+                x: {
+                  padding: 0,
+                  ticks: {
+                    display: false,
+                    padding: 0,
+                    mirror: true,
+                    backdropPadding: 0,
+                  },
+                  grid: {
                     drawBorder: false,
                     drawTicks: false,
+                    display: false,
+                    backdropPadding: 0,
                   },
-                ],
-                xAxes: [
-                  {
-                    padding: 0,
-                    backdropPaddingX: 0,
-                    backdropPaddingY: 0,
-                    ticks: {
-                      display: false,
-                      padding: 0,
-                      mirror: true,
-                      backdropPaddingX: 0,
-                      backdropPaddingY: 0,
-                    },
-                    padding: 0,
-                    gridLines: {
-                      drawTicks: false,
-                      color: "rgba(0, 0, 0, 0)",
-                      zeroLineColor: "rgba(0, 0, 0, 0)",
-                    },
-                    drawBorder: false,
-                    drawTicks: false,
-                  },
-                ],
+                  drawBorder: false,
+                  drawTicks: false,
+                },
               },
               maintainAspectRatio: false,
             }}
