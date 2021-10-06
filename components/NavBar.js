@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { useState, useRef, useEffect } from "react";
 import hexToRgba from "hex-to-rgba";
 
-const NavBar = ({ assetList, assetColors, rgb, loading }) => {
+const NavBar = ({ assetList, assetColors, rgb }) => {
   const router = useRouter();
 
   const [assetPlaceholder, setAssetPlaceholder] = useState("BTC");
@@ -150,7 +150,7 @@ const NavBar = ({ assetList, assetColors, rgb, loading }) => {
               </div>
             </Link>
             {/* Search bar */}
-            {assetList ? (
+            {assetList && (
               <div className="w-full mx-auto max-w-screen-sm flex pl-2 pr-2">
                 <div className="flex relative w-full">
                   <input
@@ -210,14 +210,6 @@ const NavBar = ({ assetList, assetColors, rgb, loading }) => {
                   </div>
                 </div>
               </div>
-            ) : (
-              <input
-                className="w-full relative px-2 py-1 placeholder-opacity-25 rounded-md border-solid border-2 focus:outline-none border-opacity-50 focus:border-opacity-100 text-md font-ath font-light bg-gray-200"
-                value={"Type a ticker"}
-                disabled={true}
-                type="search"
-                id="input"
-              ></input>
             )}
             <div className="w-auto flex items-center justify-end pr-4 sm:pr-0">
               <Link href="/about">
