@@ -31,6 +31,7 @@ import Router from "next/router";
 import NavBar from "../components/NavBar";
 import SkeletonComponent from "../components/Skeleton";
 import classNames from "classnames";
+import AssetChart from "../components/AssetChart";
 
 const AssetPage = ({
   asset,
@@ -50,9 +51,7 @@ const AssetPage = ({
 
   const url = new URL("https://og.ath.ooo");
   url.pathname = `${encodeURIComponent(
-    `${assetInfo[0].name}-${assetInfo[0].symbol}-${
-      assetInfo[0].ath ? assetInfo[0].ath : "undefined"
-    }`
+    `${assetInfo[0].symbol}`
   )}.png`;
 
   url.searchParams.append("assetName", assetInfo[0].name);
@@ -312,92 +311,12 @@ const AssetPage = ({
       </div>
 
       {data?.length > 0 ? (
-        <div className="max-h-[30vh]">
-          <Line
-            data={loading ? loadingChartData : chartData}
-            className="z-10"
-            height={600}
-            options={{
-              hover: { intersect: false },
-              borderWidth: 0,
-              clip: 0,
-              plugins: {
-                legend: {
-                  position: "bottom",
-                  align: "center",
-                  display: false,
-                },
-                tooltip: {
-                  intersect: false,
-                  mode: "index",
-                  callbacks: {
-                    //This removes the tooltip title
-                    // title: function () {},
-                    label: ({ raw }) => {
-                      return `$${formatNumber(raw)}`;
-                    },
-                  },
-                  //this removes legend color
-                  displayColors: false,
-                  padding: 15,
-                  position: "average",
-                  pointHitRadius: 20,
-                  pointRadius: 30,
-                  caretSize: 10,
-                  backgroundColor: "rgba(255,255,255,.9)",
-                  borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
-                  borderWidth: 2,
-                  bodyFont: {
-                    family: "Satoshi",
-                    size: 18,
-                  },
-                  bodyColor: "#303030",
-                  titleFont: {
-                    family: "Satoshi",
-                  },
-                  titleColor: "rgba(0,0,0,0.6)",
-                },
-              },
-              scales: {
-                y: {
-                  ticks: {
-                    backdropPadding: 0,
-                    display: false,
-                  },
-                  stacked: false,
-                  grid: {
-                    drawBorder: false,
-                    borderWidth: 0,
-                    drawTicks: false,
-                    color: "transparent",
-                    width: 0,
-                    backdropPadding: 0,
-                  },
-                  drawBorder: false,
-                  drawTicks: false,
-                },
-                x: {
-                  padding: 0,
-                  ticks: {
-                    display: false,
-                    padding: 0,
-                    mirror: true,
-                    backdropPadding: 0,
-                  },
-                  grid: {
-                    drawBorder: false,
-                    drawTicks: false,
-                    display: false,
-                    backdropPadding: 0,
-                  },
-                  drawBorder: false,
-                  drawTicks: false,
-                },
-              },
-              maintainAspectRatio: false,
-            }}
-          />
-        </div>
+        <AssetChart
+          data={loading ? loadingChartData : chartData}
+          palette={palette}
+          className="z-10"
+          wrapperClassName="max-h-[30vh]"
+        />
       ) : (
         <div className="max-h-[30vh] max-w-4xl mx-auto px-5 py-1">
           <p className="text-xs text-gray-200 font-ath">
