@@ -49,11 +49,7 @@ const AssetPage = ({
   const [r, g, b] = palette.Vibrant.rgb;
 
   const url = new URL("https://og.ath.ooo");
-  url.pathname = `${encodeURIComponent(
-    `${assetInfo[0].name}-${assetInfo[0].symbol}-${
-      assetInfo[0].ath ? assetInfo[0].ath : "undefined"
-    }`
-  )}.png`;
+  url.pathname = `${encodeURIComponent(`${assetInfo[0].symbol}`)}.png`;
 
   url.searchParams.append("assetName", assetInfo[0].name);
   url.searchParams.append("assetSymbol", assetid.toUpperCase());
