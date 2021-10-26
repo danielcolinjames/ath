@@ -26,7 +26,7 @@ import cache from "../utils/cache";
 import { formatInTimeZone } from "../utils/timestamps";
 import TimeAgo from "../components/TimeAgo";
 import { fetchList } from "../utils/coingecko";
-import AssetChart from '../components/AssetChart'
+import AssetChart from "../components/AssetChart";
 
 const AssetPage = ({
   asset,
@@ -35,7 +35,7 @@ const AssetPage = ({
   list,
   assetInfo,
   singleAssetMatch,
-  marketChart,
+  // marketChart,
   palette,
   paletteExtended,
 }) => {
@@ -100,10 +100,44 @@ const AssetPage = ({
     });
   }
 
-  const data = marketChart?.prices;
-  const labels = data?.map((p) => {
-    return format(fromUnixTime(p[0] / 1000), "MMMM do, yyyy");
-  });
+  const [marketChartLoading, setMarketChartLoading] = useState(true);
+  const [marketChart, setMarketChart] = useState([]);
+
+  useEffect(() => {
+    const fetchMarketChart = async () => {
+      setMarketChartLoading(true);
+      const athDate = parseISO(assetInfo[0]?.ath_date);
+
+      const daysBetweenNowAndAth = differenceInDays(new Date(), athDate);
+
+      const athTimestamp = getUnixTime(
+        sub(athDate, { days: daysBetweenNowAndAth + 3 })
+      );
+
+      const marketChartResponse = await fetch(
+        `https://api.coingecko.com/api/v3/coins/${
+          assetInfo[0].id
+        }/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
+          Date.now() / 1000
+        )}`
+      );
+      const marketChartData = marketChartResponse.ok
+        ? await marketChartResponse.json()
+        : [];
+
+      setMarketChart(marketChartData);
+      setMarketChartLoading(false);
+    };
+
+    fetchMarketChart();
+  }, [assetInfo]);
+
+  const data = marketChartLoading ? [0, 0] : marketChart?.prices;
+  const labels = marketChartLoading
+    ? ["", ""]
+    : data?.map((p) => {
+        return format(fromUnixTime(p[0] / 1000), "MMMM do, yyyy");
+      });
   const prices = data?.map((p) => {
     return p[1];
   });
@@ -219,7 +253,10 @@ const AssetPage = ({
           wrapperClassName="max-h-[30vh]"
         />
       ) : (
-        <div className="max-h-[30vh] max-w-4xl mx-auto px-5 py-1">
+        <div
+          className="max-h-[30vh] max-w-4xl mx-auto px-5 py-1"
+          style={{ height: 600 }}
+        >
           <p className="text-xs text-gray-200 font-ath">
             Normally there would be a price chart here, but an error occured
           </p>
@@ -993,25 +1030,6 @@ export async function getServerSideProps({ params }) {
       `);
       props.assetInfoExtended = await assetInfoExtended.json();
 
-      const athDate = parseISO(assetInfo[0]?.ath_date);
-
-      const daysBetweenNowAndAth = differenceInDays(new Date(), athDate);
-
-      const athTimestamp = getUnixTime(
-        sub(athDate, { days: daysBetweenNowAndAth + 3 })
-      );
-
-      const marketChartResponse = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${
-          assetInfo[0].id
-        }/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
-          Date.now() / 1000
-        )}`
-      );
-      const marketChart = marketChartResponse.ok
-        ? await marketChartResponse.json()
-        : [];
-
       let palette;
       if (singleAssetMatch) {
         palette = await getImg(assetInfo[0].image);
@@ -1038,8 +1056,6 @@ export async function getServerSideProps({ params }) {
         palette.LightMuted = { rgb: [125, 125, 125] };
 
       props.palette = JSON.parse(JSON.stringify(palette));
-
-      props.marketChart = marketChart;
     } catch (e) {
       console.log(e);
       return {
