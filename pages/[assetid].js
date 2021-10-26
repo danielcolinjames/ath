@@ -3,7 +3,6 @@ import Image from "next/image";
 import MetaTags from "../components/MetaTags";
 import Layout from "../components/Layout";
 import AssetListItem from "../components/AssetListItem";
-import { Line } from "react-chartjs-2";
 import {
   fromUnixTime,
   format,
@@ -27,11 +26,7 @@ import cache from "../utils/cache";
 import { formatInTimeZone } from "../utils/timestamps";
 import TimeAgo from "../components/TimeAgo";
 import { fetchList } from "../utils/coingecko";
-import Router from "next/router";
-import NavBar from "../components/NavBar";
-import SkeletonComponent from "../components/Skeleton";
-import classNames from "classnames";
-import AssetChart from "../components/AssetChart";
+import AssetChart from '../components/AssetChart'
 
 const AssetPage = ({
   asset,
@@ -50,9 +45,7 @@ const AssetPage = ({
   const [r, g, b] = palette.Vibrant.rgb;
 
   const url = new URL("https://og.ath.ooo");
-  url.pathname = `${encodeURIComponent(
-    `${assetInfo[0].symbol}`
-  )}.png`;
+  url.pathname = `${encodeURIComponent(`${assetInfo[0].symbol}`)}.png`;
 
   url.searchParams.append("assetName", assetInfo[0].name);
   url.searchParams.append("assetSymbol", assetid.toUpperCase());
@@ -81,7 +74,7 @@ const AssetPage = ({
   const descriptionText = hasAth
     ? `The all-time high price of ${
         assetInfo[0].name
-      } (${assetid.toUpperCase()}) is $${formatNumber(
+      } (${assetid.toUpperCase()}) was $${formatNumber(
         assetInfo[0]?.ath
       )}, set on ${athDate} at ${athTimestampFormatted} (UTC)`
     : `The all-time high price of ${
@@ -132,41 +125,6 @@ const AssetPage = ({
   ];
 
   const chartData = { labels, datasets };
-
-  let randomChartData = [];
-
-  for (let i = 0; i < 50; i++) {
-    if (i === 20) {
-      randomChartData.push(10);
-      if (Math.random() > 0.5) {
-        randomChartData.push(7.5);
-        randomChartData.push(5);
-        randomChartData.push(15);
-        randomChartData.push(3);
-      }
-    } else {
-      randomChartData.push(Math.random());
-    }
-  }
-
-  const loadingChartData = {
-    labels: randomChartData.map(() => "Loading"),
-    datasets: [
-      {
-        label: "Loading",
-        data: randomChartData,
-        fill: true,
-        backgroundColor: "rgba(128,128,128,0.086)",
-        borderColor: "rgba(127, 127, 127,0.25)",
-        borderJoinStyle: "round",
-        borderCapStyle: "round",
-        borderWidth: 3,
-        pointRadius: 0,
-        pointHitRadius: 10,
-        lineTension: 0.2,
-      },
-    ],
-  };
 
   const pc = parseFloat(assetInfo[0].ath_change_percentage);
 
@@ -220,35 +178,8 @@ const AssetPage = ({
   const otherLinks = generateOtherLinks(assetInfoExtended.links);
   const SOCIAL_LINK_SIZE = 30;
 
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const start = () => {
-      setLoading(true);
-    };
-
-    const end = () => {
-      setLoading(false);
-    };
-
-    Router.events.on("routeChangeStart", start);
-    Router.events.on("routeChangeComplete", end);
-    Router.events.on("routeChangeError", end);
-
-    return () => {
-      Router.events.on("routeChangeStart", start);
-      Router.events.on("routeChangeComplete", end);
-      Router.events.on("routeChangeError", end);
-    };
-  });
-
   return (
-    <Layout
-      assetColors={assetColors}
-      rgb={[r, g, b]}
-      assetList={list}
-      loading={loading}
-    >
+    <Layout assetColors={assetColors} rgb={[r, g, b]} assetList={list}>
       <MetaTags
         title={title}
         description={descriptionText}
@@ -256,52 +187,23 @@ const AssetPage = ({
         url={`https://ath.ooo/${assetid}`}
         rgb={[r, g, b]}
       />
-      <div className="w-full pointer-events-none pt-2 md:pt-8 z-10">
+      <div className="w-full pointer-events-none pt-7 md:pt-14 z-10">
         <div className="max-w-4xl mx-auto">
           <div className="p-5">
-            <div className="w-full inline-block px-5 z-10 relative pb-3 -ml-5">
+            <div className="w-full inline-block px-5 z-10 relative blur-effect bg-[rgba(255,255,255,0.5)] py-3 -ml-5 -mt-20">
               <div className="flex flex-row items-center">
-                {loading || false ? (
-                  <Skeleton
-                    style={{
-                      margin: "inherit",
-                      backgroundColor: "rgba(127, 127, 127,0.25)",
-                    }}
-                    height={50}
-                    width={50}
-                  />
-                ) : (
-                  <Image
-                    src={assetInfo[0].image}
-                    height={50}
-                    width={50}
-                    alt={`${assetInfo[0].name} logo`}
-                  />
-                )}
+                <Image
+                  src={assetInfo[0].image}
+                  height={50}
+                  width={50}
+                  alt={`${assetInfo[0].name} logo`}
+                />
                 <h1
                   className={`font-ath ml-2.5 md:ml-4 -mt-0.5 font-bold text-xl md:text-2xl text-gray-800`}
                 >
-                  {loading ? (
-                    <Skeleton
-                      style={{
-                        backgroundColor: "rgba(127, 127, 127,0.25)",
-                      }}
-                      width={100}
-                    />
-                  ) : (
-                    assetid.toUpperCase()
-                  )}{" "}
+                  {assetid.toUpperCase()}{" "}
                   <p className="font-normal text-gray-500 -mt-1 pr-2">
-                    {loading ? (
-                      <Skeleton
-                        style={{
-                          backgroundColor: "rgba(127, 127, 127,0.25)",
-                        }}
-                        width={200}
-                      />
-                    ) : (
-                      assetInfo[0].name
-                    )}
+                    {assetInfo[0].name}
                   </p>
                 </h1>
               </div>
@@ -309,10 +211,9 @@ const AssetPage = ({
           </div>
         </div>
       </div>
-
       {data?.length > 0 ? (
         <AssetChart
-          data={loading ? loadingChartData : chartData}
+          data={chartData}
           palette={palette}
           className="z-10"
           wrapperClassName="max-h-[30vh]"
@@ -328,9 +229,7 @@ const AssetPage = ({
       <div
         className="w-full pb-2 md:pb-4"
         style={{
-          backgroundColor: loading
-            ? "rgba(128,128,128,0.086)"
-            : rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
+          backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
           // borderBottom: `${assetColors.vibrant} 3px solid`,
         }}
       >
@@ -341,61 +240,30 @@ const AssetPage = ({
                 <div className="flex items-end justify-between mb-1 md:mb-4">
                   <div>
                     <h2 className="text-2xl md:text-3xl font-ath font-black pt-4">
-                      {loading ? (
-                        <Skeleton
-                          style={{
-                            backgroundColor: "rgba(127, 127, 127,0.25)",
-                          }}
-                          width={200}
-                        />
-                      ) : (
-                        "All-time high price"
-                      )}
+                      All-time high price
                     </h2>
                     <div className="inline-block relative">
                       <div
-                        className="h-2.5 md:h-4 w-full mt-2 md:mt-3 duration-500 transition-opacity opacity-100 -mb-4 md:-mb-5"
+                        className={`h-2.5 md:h-4 w-full -mb-4 md:-mb-5 mt-2 md:mt-3 duration-500 transition-opacity opacity-100`}
                         style={{
-                          backgroundColor: loading
-                            ? "transparent"
-                            : assetColors.vibrant,
+                          backgroundColor: assetColors.vibrant,
                         }}
                       />
                       <h3
-                        className={classNames(
-                          `${
-                            ath.length > 6
-                              ? "text-5xl md:text-7xl pt-1"
-                              : "text-7xl md:text-9xl"
-                          } text-black font-ath font-black inline-block mt-3 pl-4 break-all ${
-                            assetInfo[0]?.ath < assetInfo[0].current_price
-                              ? "line-through"
-                              : ""
-                          }`
-                        )}
+                        className={`${
+                          ath.length > 6
+                            ? "text-5xl md:text-7xl pt-1"
+                            : "text-7xl md:text-9xl"
+                        } text-black font-ath font-black inline-block mt-3 pl-4 break-all ${
+                          assetInfo[0]?.ath < assetInfo[0].current_price
+                            ? "line-through"
+                            : ""
+                        }`}
                       >
                         <span className="font-bold text-2xl absolute mt-1.5 md:mt-4 -ml-4">
-                          {loading ? (
-                            <Skeleton
-                              style={{
-                                backgroundColor: "rgba(127, 127, 127,0.25)",
-                              }}
-                              width={14.22}
-                            />
-                          ) : (
-                            "$"
-                          )}
+                          $
                         </span>
-                        {loading ? (
-                          <Skeleton
-                            style={{
-                              backgroundColor: "rgba(127, 127, 127,0.25)",
-                            }}
-                            width={200}
-                          />
-                        ) : (
-                          ath
-                        )}
+                        {ath}
                       </h3>
                     </div>
                   </div>
@@ -405,50 +273,20 @@ const AssetPage = ({
                       className={`h-full flex-col items-end justify-end text-right`}
                     >
                       <h2 className={`text-sm sm:text-lg font-ath font-bold`}>
-                        {loading ? (
-                          <Skeleton
-                            style={{
-                              backgroundColor: "rgba(127, 127, 127,0.25)",
-                            }}
-                            width={120}
-                          />
-                        ) : (
-                          "Current price"
-                        )}
+                        Current price
                       </h2>
                       <div className="inline-block">
                         <div
                           className={`h-1 sm:h-2.5 w-full duration-500 transition-opacity opacity-100`}
                           style={{
-                            backgroundColor: loading
-                              ? "transparent"
-                              : assetColors.vibrant,
+                            backgroundColor: assetColors.vibrant,
                           }}
                         />
                         <div className="">
                           <h3
                             className={`text-3xl text-black font-ath font-black`}
                           >
-                            {loading ? (
-                              <Skeleton
-                                style={{
-                                  backgroundColor: "rgba(127, 127, 127,0.25)",
-                                }}
-                                width={18.28}
-                              />
-                            ) : (
-                              "$"
-                            )}
-                            {loading ? (
-                              <Skeleton
-                                style={{
-                                  backgroundColor: "rgba(127, 127, 127,0.25)",
-                                }}
-                                width={100}
-                              />
-                            ) : (
-                              formatNumber(assetInfo[0]?.current_price)
-                            )}
+                            ${formatNumber(assetInfo[0]?.current_price)}
                           </h3>
                           <p
                             className={`text-sm font-ath font-black rounded-full ${
@@ -473,23 +311,14 @@ const AssetPage = ({
                                 : "text-gray-400"
                             }`}
                           >
-                            {loading ? (
-                              <Skeleton
-                                style={{
-                                  backgroundColor: "rgba(127, 127, 127,0.25)",
-                                }}
-                                width={50}
-                              />
-                            ) : (
-                              `${assetInfo[0].ath_change_percentage?.toLocaleString(
-                                undefined,
-                                {
-                                  minimumFractionDigits: 2,
-                                  maximumFractionDigits: 2,
-                                }
-                              )}
-                            %`
+                            {assetInfo[0].ath_change_percentage?.toLocaleString(
+                              undefined,
+                              {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              }
                             )}
+                            %
                           </p>
                         </div>
                       </div>
@@ -597,32 +426,10 @@ const AssetPage = ({
                   <div className="flex flex-col sm:flex-row items-start justify-between">
                     <div>
                       <p className="font-ath font-light text-2xl md:text-3xl py-1 text-gray-900">
-                        {loading ? (
-                          <Skeleton
-                            style={{
-                              backgroundColor: "rgba(127, 127, 127,0.25)",
-                            }}
-                            width={250}
-                          />
-                        ) : (
-                          <>
-                            Set <TimeAgo date={athTimestamp} />
-                          </>
-                        )}
+                        Set <TimeAgo date={athTimestamp} />
                       </p>
                       <p className="font-ath font-light text-sm md:text-md text-gray-600">
-                        {loading ? (
-                          <Skeleton
-                            style={{
-                              backgroundColor: "rgba(127, 127, 127,0.25)",
-                            }}
-                            width={300}
-                          />
-                        ) : (
-                          <>
-                            on {athDate} at {athTimestampFormatted} UTC
-                          </>
-                        )}
+                        on {athDate} at {athTimestampFormatted} UTC
                       </p>
                     </div>
                     <div
@@ -638,50 +445,20 @@ const AssetPage = ({
                     <div className="flex sm:hidden flex-col justify-between w-full">
                       <div className="text-right">
                         <h2 className={`text-sm sm:text-lg font-ath font-bold`}>
-                          {loading ? (
-                            <Skeleton
-                              style={{
-                                backgroundColor: "rgba(127, 127, 127,0.25)",
-                              }}
-                              width={50}
-                            />
-                          ) : (
-                            "Current price"
-                          )}
+                          Current price
                         </h2>
                         <div className="inline-block">
                           <div
                             className={`h-2 sm:h-2.5 w-full duration-500 transition-opacity opacity-100`}
                             style={{
-                              backgroundColor: loading
-                                ? "transparent"
-                                : assetColors.vibrant,
+                              backgroundColor: assetColors.vibrant,
                             }}
                           />
                           <div className="">
                             <h3
                               className={`text-5xl text-black font-ath font-black`}
                             >
-                              {loading ? (
-                                <Skeleton
-                                  style={{
-                                    backgroundColor: "rgba(127, 127, 127,0.25)",
-                                  }}
-                                  width={18.28}
-                                />
-                              ) : (
-                                "$"
-                              )}
-                              {loading ? (
-                                <Skeleton
-                                  style={{
-                                    backgroundColor: "rgba(127, 127, 127,0.25)",
-                                  }}
-                                  width={100}
-                                />
-                              ) : (
-                                formatNumber(assetInfo[0]?.current_price)
-                              )}
+                              ${formatNumber(assetInfo[0]?.current_price)}
                             </h3>
                             <p
                               className={`text-md font-ath font-black rounded-full mb-4 ${
@@ -706,23 +483,14 @@ const AssetPage = ({
                                   : "text-gray-400"
                               }`}
                             >
-                              {loading ? (
-                                <Skeleton
-                                  style={{
-                                    backgroundColor: "rgba(127, 127, 127,0.25)",
-                                  }}
-                                  width={50}
-                                />
-                              ) : (
-                                `${assetInfo[0].ath_change_percentage?.toLocaleString(
-                                  undefined,
-                                  {
-                                    minimumFractionDigits: 2,
-                                    maximumFractionDigits: 2,
-                                  }
-                                )}
-                              %`
+                              {assetInfo[0].ath_change_percentage?.toLocaleString(
+                                undefined,
+                                {
+                                  minimumFractionDigits: 2,
+                                  maximumFractionDigits: 2,
+                                }
                               )}
+                              %
                             </p>
                           </div>
                         </div>
@@ -758,18 +526,7 @@ const AssetPage = ({
                   className="hidden max-w-xl mt-4 sm:flex p-3 border bg-[rgba(255,255,255,0.6)] rounded-md border-solid border-gray-300 shadow-sm border-px coingecko-link transition-all flex-row justify-between items-center px-4"
                 >
                   <p className="font-ath font-light text-sm text-gray-700 sm:text-right">
-                    {loading ? (
-                      <Skeleton
-                        width={300}
-                        style={{
-                          backgroundColor: "rgba(127, 127, 127,0.25)",
-                        }}
-                      />
-                    ) : (
-                      <>
-                        Data accurate as of <TimeAgo date={lastUpdated} />
-                      </>
-                    )}
+                    Data accurate as of <TimeAgo date={lastUpdated} />
                   </p>
                   <div className="flex flex-row items-center justify-start">
                     <Image
@@ -784,20 +541,9 @@ const AssetPage = ({
                   </div>
                 </a>
                 <p className="pt-8 pb-5 text-lg md:text-2xl font-ath font-normal text-black max-w-md md:max-w-xl">
-                  {loading ? (
-                    <Skeleton
-                      width={500}
-                      style={{
-                        backgroundColor: "rgba(127, 127, 127,0.25)",
-                      }}
-                    />
-                  ) : (
-                    `${
-                      assetInfo[0].name
-                    }'s all-time high price (the highest price ever paid for it) is $${formatNumber(
-                      ath
-                    )} USD, set on ${athDate}.`
-                  )}
+                  {`The highest price ever paid for ${
+                    assetInfo[0].name
+                  } was ${formatNumber(ath)} USD, set on ${athDate}.`}
                 </p>
               </>
             ) : (
@@ -831,11 +577,10 @@ const AssetPage = ({
       <div
         className="w-full bg-white pb-2 md:pb-4"
         style={{
-          backgroundImage: `linear-gradient(${
-            loading
-              ? "rgba(128,128,128,0.086)"
-              : rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085)
-          }, rgba(255,255,255,0))`,
+          backgroundImage: `linear-gradient(${rgbaStringFromRGBObj(
+            palette.Vibrant.rgb,
+            0.085
+          )}, rgba(255,255,255,0))`,
           // borderBottom: `${assetColors.vibrant} 3px solid`,
         }}
       >
