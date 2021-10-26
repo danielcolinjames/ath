@@ -8,6 +8,8 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
   const router = useRouter();
 
   const [assetPlaceholder, setAssetPlaceholder] = useState("BTC");
+  const [assetPlaceholderRandomButton, setAssetPlaceholderRandomButton] =
+    useState("HNT");
 
   useEffect(() => {
     if (assetList) {
@@ -16,6 +18,17 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
         const randomNumber = Math.floor(Math.random() * (max - 1));
         setAssetPlaceholder(assetList[randomNumber]?.symbol);
       }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (assetList) {
+      const interval = setInterval(() => {
+        const max = Math.floor(assetList?.length);
+        const randomNumber = Math.floor(Math.random() * (max - 1));
+        setAssetPlaceholderRandomButton(assetList[randomNumber]?.symbol);
+      }, 2000);
       return () => clearInterval(interval);
     }
   }, []);
@@ -211,12 +224,38 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                 </div>
               </div>
             )}
-            <div className="w-auto flex items-center justify-end pr-4 sm:pr-0">
-              <Link href="/about">
-                <a className="text-gray-500 font-ath font-light about-link py-1 px-2 rounded-md transition-all">
-                  About
+            <div className="flex flex-row items-center justify-between space-x-4">
+              <Link href={`/${assetPlaceholderRandomButton?.toUpperCase()}`}>
+                <a className="about-link p-1 rounded-md transition-all duration-200">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6"
+                    style={{
+                      color:
+                        assetColors !== undefined
+                          ? hexToRgba(assetColors.vibrant, 1)
+                          : "rgba(0,255,186,1)",
+                    }}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
                 </a>
               </Link>
+              <div className="w-auto flex items-center justify-end pr-4 sm:pr-0">
+                <Link href="/about">
+                  <a className="text-gray-500 font-ath font-light about-link py-1 px-2 rounded-md transition-all">
+                    About
+                  </a>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
