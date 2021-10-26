@@ -35,7 +35,6 @@ const AssetPage = ({
   list,
   assetInfo,
   singleAssetMatch,
-  // marketChart,
   palette,
   paletteExtended,
 }) => {
