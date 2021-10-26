@@ -35,6 +35,6 @@
     "request": "^2.88.2",
     "rgb-hex": "^4.0.0",
     "styled-jsx-plugin-postcss": "^4.0.1",
-    "tailwindcss": "^2.2.16"
+    "tailwindcss": "^2.2.17"
   }
 }
