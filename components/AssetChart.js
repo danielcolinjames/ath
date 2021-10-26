@@ -1,4 +1,5 @@
 import { Line } from "react-chartjs-2";
+import 'chartjs-adapter-date-fns';
 import { rgbaStringFromRGBObj } from "../utils/colors";
 import { formatNumber } from "../utils/numbers";
 
@@ -10,6 +11,7 @@ const AssetChart = ({ data, palette, className, wrapperClassName }) => {
         className={className}
         height={600}
         options={{
+          layout:{ autoPadding: false,},
           hover: { intersect: false },
           borderWidth: 100,
           backdropPadding: 0,
