@@ -3,7 +3,6 @@ import Image from "next/image";
 import MetaTags from "../components/MetaTags";
 import Layout from "../components/Layout";
 import AssetListItem from "../components/AssetListItem";
-import { Line } from "react-chartjs-2";
 import {
   fromUnixTime,
   format,
@@ -27,6 +26,7 @@ import cache from "../utils/cache";
 import { formatInTimeZone } from "../utils/timestamps";
 import TimeAgo from "../components/TimeAgo";
 import { fetchList } from "../utils/coingecko";
+import AssetChart from '../components/AssetChart'
 
 const AssetPage = ({
   asset,
@@ -46,8 +46,6 @@ const AssetPage = ({
 
   const url = new URL("https://og.ath.ooo");
   url.pathname = `${encodeURIComponent(`${assetInfo[0].symbol}`)}.png`;
-
-  console.log(assetInfo);
 
   url.searchParams.append("assetName", assetInfo[0].name);
   url.searchParams.append("assetSymbol", assetid.toUpperCase());
@@ -114,6 +112,7 @@ const AssetPage = ({
     {
       label: `${assetInfo[0].symbol.toUpperCase()} price`,
       data: prices,
+      fill: true,
       backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
       borderColor: assetColors.vibrant,
       borderJoinStyle: "round",
@@ -213,87 +212,12 @@ const AssetPage = ({
         </div>
       </div>
       {data?.length > 0 ? (
-        <div className="max-h-[30vh]">
-          <Line
-            data={chartData}
-            className="z-10"
-            height={600}
-            options={{
-              hover: { intersect: false },
-              legend: {
-                position: "bottom",
-                align: "center",
-                display: false,
-              },
-              tooltips: {
-                intersect: false,
-                // mode: "y",
-                mode: "index",
-                callbacks: {
-                  //This removes the tooltip title
-                  // title: function () {},
-                  label: ({ yLabel }, data) => `$${formatNumber(yLabel)}`,
-                },
-                //this removes legend color
-                displayColors: false,
-                yPadding: 15,
-                xPadding: 15,
-                position: "average",
-                pointHitRadius: 20,
-                pointRadius: 30,
-                caretSize: 10,
-                backgroundColor: "rgba(255,255,255,.9)",
-                bodyFontSize: 18,
-                borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
-                borderWidth: 2,
-                bodyFontFamily: "Satoshi",
-                titleFontFamily: "Satoshi",
-                titleFontColor: "#000000",
-                bodyFontColor: "#303030",
-              },
-              scales: {
-                yAxes: [
-                  {
-                    ticks: {
-                      display: false,
-                    },
-                    stacked: false,
-                    gridLines: {
-                      drawTicks: false,
-                      color: "rgba(0, 0, 0, 0)",
-                      zeroLineColor: "rgba(0, 0, 0, 0)",
-                    },
-                    drawBorder: false,
-                    drawTicks: false,
-                  },
-                ],
-                xAxes: [
-                  {
-                    padding: 0,
-                    backdropPaddingX: 0,
-                    backdropPaddingY: 0,
-                    ticks: {
-                      display: false,
-                      padding: 0,
-                      mirror: true,
-                      backdropPaddingX: 0,
-                      backdropPaddingY: 0,
-                    },
-                    padding: 0,
-                    gridLines: {
-                      drawTicks: false,
-                      color: "rgba(0, 0, 0, 0)",
-                      zeroLineColor: "rgba(0, 0, 0, 0)",
-                    },
-                    drawBorder: false,
-                    drawTicks: false,
-                  },
-                ],
-              },
-              maintainAspectRatio: false,
-            }}
-          />
-        </div>
+        <AssetChart
+          data={chartData}
+          palette={palette}
+          className="z-10"
+          wrapperClassName="max-h-[30vh]"
+        />
       ) : (
         <div className="max-h-[30vh] max-w-4xl mx-auto px-5 py-1">
           <p className="text-xs text-gray-200 font-ath">
