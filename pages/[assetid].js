@@ -52,7 +52,6 @@ const AssetPage = ({
   url.searchParams.append("r", r);
   url.searchParams.append("g", g);
   url.searchParams.append("b", b);
-  url.searchParams.append("ath", formatNumber(assetInfo[0].ath));
 
   const hasAth = assetInfo[0].ath !== null;
 
