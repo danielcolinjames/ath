@@ -1,0 +1,29 @@
+{
+  "name": "@vibrant/worker",
+  "version": "3.2.1-alpha.1",
+  "description": "Web worker utilities",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "author": {
+    "name": "akfish",
+    "email": "akfish@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/akfish/node-vibrant/issues"
+  },
+  "homepage": "https://github.com/akfish/node-vibrant",
+  "license": "MIT",
+  "dependencies": {
+    "@vibrant/types": "^3.2.1-alpha.1"
+  },
+  "devDependencies": {
+    "typescript": "^3.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "e667d4c12e1de66e251d451710b093e9cb4630c2"
+}

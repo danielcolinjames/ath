@@ -1,0 +1,33 @@
+{
+  "name": "@vibrant/image-node",
+  "version": "3.2.1-alpha.1",
+  "description": "Node.js vibrant ImageClass implementation",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "author": {
+    "name": "akfish",
+    "email": "akfish@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/akfish/node-vibrant/issues"
+  },
+  "homepage": "https://github.com/akfish/node-vibrant",
+  "license": "MIT",
+  "dependencies": {
+    "@jimp/custom": "^0.16.1",
+    "@jimp/plugin-resize": "^0.16.1",
+    "@jimp/types": "^0.16.1",
+    "@vibrant/image": "^3.2.1-alpha.1"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "typescript": "^3.7.2"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "gitHead": "e667d4c12e1de66e251d451710b093e9cb4630c2"
+}

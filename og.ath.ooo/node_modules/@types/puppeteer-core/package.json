@@ -1,0 +1,26 @@
+{
+    "name": "@types/puppeteer-core",
+    "version": "2.0.0",
+    "description": "TypeScript definitions for puppeteer-core",
+    "license": "MIT",
+    "contributors": [
+        {
+            "name": "Fumiaki Matsushima",
+            "url": "https://github.com/mtsmfm",
+            "githubUsername": "mtsmfm"
+        }
+    ],
+    "main": "",
+    "types": "index.d.ts",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/DefinitelyTyped/DefinitelyTyped.git",
+        "directory": "types/puppeteer-core"
+    },
+    "scripts": {},
+    "dependencies": {
+        "@types/puppeteer": "*"
+    },
+    "typesPublisherContentHash": "11202ed78897c571cd7167b32150c96a107e1de9f532fdf9a917dcc185eb1a88",
+    "typeScriptVersion": "3.0"
+}
