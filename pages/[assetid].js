@@ -53,7 +53,13 @@ const AssetPage = ({
   url.searchParams.append("g", g);
   url.searchParams.append("b", b);
 
+  // console.log(
+  //   `http://localhost:3000${url.pathname}${decodeURIComponent(url.search)}`
+  // );
+
   const hasAth = assetInfo[0].ath !== null;
+
+  const rank = assetInfo[0]?.market_cap_rank;
 
   const ath = hasAth ? formatNumber(assetInfo[0].ath) : "unknown";
 
@@ -230,14 +236,34 @@ const AssetPage = ({
                   width={50}
                   alt={`${assetInfo[0].name} logo`}
                 />
-                <h1
-                  className={`font-ath ml-2.5 md:ml-4 -mt-0.5 font-bold text-xl md:text-2xl text-gray-800`}
-                >
-                  {assetid.toUpperCase()}{" "}
+                <div className="flex items-start justify-start flex-col ml-2.5 md:ml-4 -mt-0.5 ">
+                  <div className="flex items-center justify-center">
+                    <p className="font-ath font-bold text-xl md:text-2xl text-gray-800">
+                      {assetid.toUpperCase()}{" "}
+                    </p>
+                    {rank && (
+                      <div
+                        className="rounded-xl px-2 py-0.5 mt-0.5 ml-2.5 bg-opacity-50 backdrop-filter backdrop-blur-md flex flex-row items-center justify-center"
+                        style={{
+                          backgroundColor: rgbaStringFromRGBObj(
+                            palette.Vibrant.rgb,
+                            0.5
+                          ),
+                        }}
+                      >
+                        <p className="text-xs text-white font-sans font-light">
+                          #
+                        </p>
+                        <p className="text-xs font-sans text-white font-semibold">
+                          {rank}
+                        </p>
+                      </div>
+                    )}
+                  </div>
                   <p className="font-normal text-gray-500 -mt-1 pr-2">
                     {assetInfo[0].name}
                   </p>
-                </h1>
+                </div>
               </div>
             </div>
           </div>
