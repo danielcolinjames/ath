@@ -16,7 +16,7 @@ import {
   getAssetColorsFromVibrantObj,
   rgbaStringFromRGBObj,
 } from "../utils/colors";
-import { getImg } from "./api/vibrant-extraction";
+import { getImg } from "./api/vibes";
 import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import parse from "html-react-parser";
 import { SocialIcon } from "react-social-icons";
@@ -974,13 +974,17 @@ const AssetPage = ({
   );
 };
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps(context) {
+  const { params } = context;
   const props = {};
 
+  const numberOfSlashes = context?.req?.url?.split("/")?.length - 1;
+
   const { assetid } = params;
+
   props.assetid = assetid;
 
-  const list = await cache.fetch("ath:full-list", fetchList, 60 * 60 * 24);
+  const list = await cache.fetch("ath:full-list", fetchList, 60 * 60 * 12);
 
   props.list = list;
 
@@ -992,7 +996,11 @@ export async function getServerSideProps({ params }) {
     return x.symbol.toLowerCase() === assetid.toLowerCase();
   });
 
-  if (matchingAssets.length === 0) {
+  if (
+    matchingAssets.length === 0 ||
+    // for when a token with the ticker API inevitably gets listed on coingecko
+    (assetid?.toLowerCase() === "api" && !(numberOfSlashes > 1))
+  ) {
     return {
       notFound: true,
     };
