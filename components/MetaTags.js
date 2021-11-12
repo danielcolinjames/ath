@@ -1,5 +1,5 @@
 import Head from "next/head";
-import useSystemTheme from "react-use-system-theme";
+import { useSystemColorMode } from "react-use-system-color-mode";
 
 const MetaTags = ({
   title,
@@ -23,7 +23,7 @@ const MetaTags = ({
   let r, g, b;
 
   if (rgb) [r, g, b] = rgb;
-  const systemTheme = useSystemTheme();
+  const systemTheme = useSystemColorMode();
 
   return (
     <>
