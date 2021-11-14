@@ -36,8 +36,5 @@
     "rgb-hex": "^4.0.0",
     "styled-jsx-plugin-postcss": "^4.0.1",
     "tailwindcss": "^2.2.17"
-  },
-  "engines": {
-    "node": ">=16.13.0"
   }
 }
