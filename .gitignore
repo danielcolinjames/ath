@@ -37,3 +37,18 @@ yarn-error.log*
 
 # vercel - force build via yarn by removing package-lock.json
 package-lock.json
+
+/ath.ooo/.next/
+/ath.ooo/node_modules
+/ath.ooo/.DS_Store
+/ath.ooo/.env
+
+/@athdotooo/node_modules
+/@athdotooo/.DS_Store
+/@athdotooo/.env
+
+/og.ath.ooo/.next
+/og.ath.ooo/.vercel
+/og.ath.ooo/node_modules
+/og.ath.ooo/.DS_Store
+/og.ath.ooo/.env
