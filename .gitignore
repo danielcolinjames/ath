@@ -34,3 +34,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# vercel - force build via yarn by removing package-lock.json
+package-lock.json
