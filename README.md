@@ -1,4 +1,4 @@
-## About
+## About ATH
 
 Welcome! This is a [Next.js](https://nextjs.org/) project, so if you're new to Next.js I recommend checking out their [documentation](https://nextjs.org/docs).
 
