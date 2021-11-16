@@ -38,14 +38,14 @@ yarn-error.log*
 /ath.ooo/.next/
 /ath.ooo/node_modules
 /ath.ooo/.DS_Store
-# /ath.ooo/.env
+/ath.ooo/.env
 
 /@athdotooo/node_modules
 /@athdotooo/.DS_Store
-# /@athdotooo/.env
+/@athdotooo/.env
 
 /og.ath.ooo/.next
 /og.ath.ooo/.vercel
 /og.ath.ooo/node_modules
 /og.ath.ooo/.DS_Store
-# /og.ath.ooo/.env
+/og.ath.ooo/.env
