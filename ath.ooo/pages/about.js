@@ -35,7 +35,7 @@ const AboutPage = ({ list }) => {
         style={{ minHeight: "calc(100vh - 113px)" }}
       >
         <MetaTags
-          title={"ATH.ooo — About"}
+          title={"ath.ooo — About"}
           description={`See the all-time highs of crypto assets`}
           openGraphImageAbsoluteUrl={`https://ath.ooo/logo/2/og.png`}
           url={`https://ath.ooo/about`}

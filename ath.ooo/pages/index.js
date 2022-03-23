@@ -34,7 +34,7 @@ const HomePage = ({ list }) => {
         style={{ minHeight: "calc(100vh - 113px)" }}
       >
         <MetaTags
-          title={"ATH.ooo — All-Time Highs"}
+          title={"ath.ooo — All-Time Highs"}
           description={`See the all-time highs of crypto assets`}
           openGraphImageAbsoluteUrl={`https://ath.ooo/logo/2/og.png`}
           url={`https://ath.ooo/`}

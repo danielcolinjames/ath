@@ -10,12 +10,12 @@ const MetaTags = ({
   noIndex,
   rgb,
 }) => {
-  const metaTitle = title ? title : "ATH.ooo";
+  const metaTitle = title ? title : "ath.ooo";
   // allow the option to set the <title> tag of a page separately from the one that shows up for its meta tags
   const titleTag = pageTitle ? pageTitle : metaTitle;
   const metaDescription = description
     ? description
-    : "ATH.ooo is the fastest way to check the all-time high price of any crypto asset";
+    : "ath.ooo is the fastest way to check the all-time high price of any crypto asset";
   const metaImage = openGraphImageAbsoluteUrl
     ? openGraphImageAbsoluteUrl
     : "https://og.ath.ooo/logo/2/og.png";

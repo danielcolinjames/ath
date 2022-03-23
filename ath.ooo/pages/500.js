@@ -9,7 +9,7 @@ const Error = () => {
         className="p-5 mx-auto max-w-4xl"
         style={{ minHeight: "calc(100vh - 113px)" }}
       >
-        <MetaTags pageTitle={`ATH.ooo — Error`} noIndex />
+        <MetaTags pageTitle={`ath.ooo — Error`} noIndex />
         <div className="flex flex-col max-w-xl break-words">
           <p className="font-black font-ath text-lg text-red-400 mt-20">
             500 — Internal Server Error

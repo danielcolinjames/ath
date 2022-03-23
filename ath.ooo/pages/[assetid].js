@@ -38,8 +38,16 @@ const AssetPage = ({
   palette,
   paletteExtended,
 }) => {
+  const hasAth = assetInfo[0].ath !== null;
+
+  const rank = assetInfo[0]?.market_cap_rank;
+
+  const ath = hasAth ? formatNumber(assetInfo[0].ath) : "unknown";
+
   const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
-  const title = `${assetInfo[0].name} (${assetid.toUpperCase()}) All-Time High`;
+  const title = `${
+    assetInfo[0].name
+  } (${assetid.toUpperCase()}) ATH: $${ath} | ath.ooo`;
 
   const [r, g, b] = palette.Vibrant.rgb;
 
@@ -56,12 +64,6 @@ const AssetPage = ({
   // console.log(
   //   `http://localhost:3000${url.pathname}${decodeURIComponent(url.search)}`
   // );
-
-  const hasAth = assetInfo[0].ath !== null;
-
-  const rank = assetInfo[0]?.market_cap_rank;
-
-  const ath = hasAth ? formatNumber(assetInfo[0].ath) : "unknown";
 
   const hasValidDate = assetInfo[0].ath_date !== null;
 

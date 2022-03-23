@@ -10,7 +10,7 @@ const NotFoundPage = ({ assetid }) => {
         style={{ minHeight: "calc(100vh - 113px)" }}
       >
         <MetaTags
-          title={"ATH.ooo — 404: Not Found"}
+          title={"ath.ooo — 404: Not Found"}
           description={`See the all-time highs of crypto assets`}
           openGraphImageAbsoluteUrl={`https://ath.ooo/images/og/404.png`}
           url={`https://ath.ooo/404`}
