@@ -1,10 +1,17 @@
 import rgbHex from "rgb-hex";
+import { hex } from 'wcag-contrast'
 
 export const getHexFromRGB = (rgbObject) => {
   const [r, g, b] = rgbObject;
   const hex = rgbHex(r, g, b);
   return `#${hex}`;
 };
+
+export const rgbToHex = (r, g, b) => {
+  const hex = rgbHex(r, g, b);
+  return `${hex}`;
+}
+
 export const rgbaStringFromRGBObj = (rgbObject, a) => {
   const [r, g, b] = rgbObject;
   return `rgba(${r},${g},${b},${a})`;
@@ -31,3 +38,10 @@ export const getAssetColorsRGBFromVibrantObj = (obj) => {
 
   return { vibrant, darkVibrant, lightVibrant, muted, darkMuted, lightMuted };
 };
+
+export function shouldBeWhiteText(backgroundColor, contrastThreshold = 2) {
+  if (hex("#FFFFFF", backgroundColor) >= contrastThreshold) {
+    return true
+  }
+  return false
+}
