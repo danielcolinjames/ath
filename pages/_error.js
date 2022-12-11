@@ -2,17 +2,17 @@ import MetaTags from "../components/MetaTags";
 import Link from "next/link";
 import Layout from "../components/Layout";
 
-const Error = () => {
+const Error = ({ statusCode }) => {
   return (
     <Layout>
       <div
         className="p-5 mx-auto max-w-4xl"
         style={{ minHeight: "calc(100vh - 113px)" }}
       >
-        <MetaTags pageTitle={`ath.ooo — Error`} noIndex />
+        <MetaTags pageTitle={`ATH.ooo — Error`} noIndex />
         <div className="flex flex-col max-w-xl break-words">
           <p className="font-black font-ath text-lg text-red-400 mt-20">
-            500 — Internal Server Error
+            Error{statusCode ? ` ${statusCode}` : ""}
           </p>
           <h1 className="text-xl md:text-3xl font-ath font-semibold mt-2 mb-2">
             An error occurred.
@@ -32,16 +32,19 @@ const Error = () => {
             Feel free to follow the GitHub link in the footer to file an issue.
           </p>
           <span className="flex">
-            <Link href="/">
-              <a className="text-gray-500 p-4 bg-gray-100 mt-8 hover:bg-gray-200 transition-all duration-75 rounded-lg text-sm">
-                Go back to the home page
-              </a>
+            <Link href="/" className="text-gray-500 p-4 bg-gray-100 mt-8 hover:bg-gray-200 transition-all duration-75 rounded-lg text-sm">
+              Go back to the home page
             </Link>
           </span>
         </div>
       </div>
     </Layout>
   );
+};
+
+Error.getInitialProps = ({ res, err }) => {
+  const statusCode = res ? res.statusCode : err ? err.statusCode : 404;
+  return { statusCode };
 };
 
 export default Error;

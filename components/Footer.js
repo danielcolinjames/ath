@@ -23,8 +23,8 @@ const Footer = ({ assetColors, rgb }) => {
       />
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-row items-center justify-center">
-          <Link href="/about">
-            <a className="font-ath text-base footer-text">About</a>
+          <Link href="/about" className="font-ath text-base footer-text">
+            About
           </Link>
           <a
             href="https://twitter.com/athdotooo"

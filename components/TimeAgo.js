@@ -1,6 +1,7 @@
 import { formatDistanceToNowStrict } from "date-fns";
+import { memo } from "react";
 
 const TimeAgo = ({ date, addSuffix = true }) =>
   formatDistanceToNowStrict(date, { addSuffix });
 
-export default TimeAgo;
+export default memo(TimeAgo);

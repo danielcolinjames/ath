@@ -1,7 +1,9 @@
 import { Line } from "react-chartjs-2";
-import 'chartjs-adapter-date-fns';
+// import 'chartjs-adapter-date-fns';
 import { rgbaStringFromRGBObj } from "../utils/colors";
 import { formatNumber } from "../utils/numbers";
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 const AssetChart = ({ data, palette, className, wrapperClassName }) => {
   return (

@@ -90,76 +90,74 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
       <div className="max-w-4xl mx-auto">
         <div className="rounded-full">
           <div className="flex justify-between items-center w-full max-w-4xl mx-auto px-5">
-            <Link href="/">
+            <Link href="/" className="w-14 p-0 m-0 -mb-2 flex flex-row cursor-pointer">
               <div className="flex flex-row align-start justify-start">
-                <a className="w-14 p-0 m-0 -mb-2 flex flex-row cursor-pointer">
-                  <div className="block">
-                    <Image
-                      className="image-override logo-pulse"
-                      src="/logo/2/ath_0.svg"
-                      width={LOGO_WIDTH}
-                      height={LOGO_WIDTH}
-                      alt="ATH.ooo logo"
-                    />
-                  </div>
-                  <div className={`block`} style={{ marginLeft: -LOGO_WIDTH }}>
-                    <Image
-                      className="image-override"
-                      src="/logo/2/ath_1.svg"
-                      width={LOGO_WIDTH}
-                      height={LOGO_WIDTH}
-                      alt="ATH.ooo logo"
-                    />
-                  </div>
-                  <div
-                    className="block"
+                <div className="block">
+                  <Image
+                    className="image-override logo-pulse"
+                    src="/logo/2/ath_0.svg"
+                    width={LOGO_WIDTH}
+                    height={LOGO_WIDTH}
+                    alt="ATH.ooo logo"
+                  />
+                </div>
+                <div className="block" style={{ marginLeft: -LOGO_WIDTH }}>
+                  <Image
+                    className="image-override"
+                    src="/logo/2/ath_1.svg"
+                    width={LOGO_WIDTH}
+                    height={LOGO_WIDTH}
+                    alt="ATH.ooo logo"
+                  />
+                </div>
+                <div
+                  className="block"
+                  style={{
+                    marginLeft: -LOGO_WIDTH,
+                    width: LOGO_WIDTH,
+                    height: LOGO_WIDTH,
+                  }}
+                >
+                  <svg
+                    width="100%"
+                    height="100%"
+                    viewBox="0 0 2778 2778"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
                     style={{
-                      marginLeft: -LOGO_WIDTH,
-                      width: LOGO_WIDTH,
-                      height: LOGO_WIDTH,
+                      fillRule: "evenodd",
+                      clipRule: "evenodd",
+                      strokeLinejoin: "round",
+                      strokeMiterlimit: 2,
                     }}
                   >
-                    <svg
-                      width="100%"
-                      height="100%"
-                      viewBox="0 0 2778 2778"
-                      version="1.1"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{
-                        fillRule: "evenodd",
-                        clipRule: "evenodd",
-                        strokeLinejoin: "round",
-                        strokeMiterlimit: 2,
-                      }}
-                    >
-                      <g transform="matrix(2.77778,0,0,2.77778,0,-47111.1)">
-                        <g
-                          id="ath_final_wordmark_light"
-                          transform="matrix(0.260417,0,0,0.462963,0,16960)"
-                        >
-                          <rect
-                            x="0"
-                            y="0"
-                            width="3840"
-                            height="2160"
-                            style={{ fill: "none" }}
-                          />
-                          <g transform="matrix(-3.03494,-2.09066e-16,3.17232e-16,-1.4571,9887.66,2081.78)">
-                            <g id="Logomark">
-                              <rect
-                                x="2353.03"
-                                y="1012.95"
-                                width="544.81"
-                                height="127.661"
-                                style={{ fill: `rgb(${r},${g},${b})` }}
-                              />
-                            </g>
+                    <g transform="matrix(2.77778,0,0,2.77778,0,-47111.1)">
+                      <g
+                        id="ath_final_wordmark_light"
+                        transform="matrix(0.260417,0,0,0.462963,0,16960)"
+                      >
+                        <rect
+                          x="0"
+                          y="0"
+                          width="3840"
+                          height="2160"
+                          style={{ fill: "none" }}
+                        />
+                        <g transform="matrix(-3.03494,-2.09066e-16,3.17232e-16,-1.4571,9887.66,2081.78)">
+                          <g id="Logomark">
+                            <rect
+                              x="2353.03"
+                              y="1012.95"
+                              width="544.81"
+                              height="127.661"
+                              style={{ fill: `rgb(${r},${g},${b})` }}
+                            />
                           </g>
                         </g>
                       </g>
-                    </svg>
-                  </div>
-                </a>
+                    </g>
+                  </svg>
+                </div>
               </div>
             </Link>
             {/* Search bar */}
@@ -195,9 +193,7 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                         return (
                           <div className={`w-full`} key={`result-${index}`}>
                             <div className="flex flex-row items-center justify-start">
-                              <Link href={`/${asset.symbol}`}>
-                                <a
-                                  onClick={() => {
+                              <Link href={`/${asset.symbol}`}  onClick={() => {
                                     setFilterText("");
                                   }}
                                   className={`search-result w-full ${
@@ -205,15 +201,13 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
                                       ? `blur-effect text-xs font-light`
                                       : ""
                                   }`}
-                                  id={`result-${index}`}
-                                >
+                                  id={`result-${index}`}>
                                   <div className="bg-[rgba(255,255,255,0.75)] py-2 px-2.5 w-full">
                                     <span className="font-bold">
                                       {asset.symbol.toUpperCase()}
                                     </span>{" "}
                                     ({asset.name})
                                   </div>
-                                </a>
                               </Link>
                             </div>
                           </div>
@@ -225,35 +219,31 @@ const NavBar = ({ assetList, assetColors, rgb }) => {
               </div>
             )}
             <div className="flex flex-row items-center justify-between space-x-4">
-              <Link href={`/${assetPlaceholderRandomButton?.toUpperCase()}`}>
-                <a className="about-link p-1 rounded-md transition-all duration-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="w-6 h-6"
-                    style={{
-                      color:
-                        assetColors !== undefined
-                          ? hexToRgba(assetColors.vibrant, 1)
-                          : "rgba(0,255,186,1)",
-                    }}
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </a>
+              <Link href={`/${assetPlaceholderRandomButton?.toUpperCase()}`}  className="about-link p-1 rounded-md transition-all duration-200">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="w-6 h-6"
+                  style={{
+                    color:
+                      assetColors !== undefined
+                        ? hexToRgba(assetColors.vibrant, 1)
+                        : "rgba(0,255,186,1)",
+                  }}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
               </Link>
               <div className="w-auto flex items-center justify-end pr-4 sm:pr-0">
-                <Link href="/about">
-                  <a className="text-gray-500 font-ath font-light about-link py-1 px-2 rounded-md transition-all">
-                    About
-                  </a>
+                <Link href="/about" className="text-gray-500 font-ath font-light about-link py-1 px-2 rounded-md transition-all">
+                  About
                 </Link>
               </div>
             </div>
