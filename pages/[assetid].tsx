@@ -208,8 +208,6 @@ const AssetPage = ({
 
   const descIsEmpty =
     descArray.findIndex((p: any) => {
-      // console.log(p);
-      // console.log(p.length);
       return p.length === 0
     }) !== -1
 

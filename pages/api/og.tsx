@@ -110,7 +110,11 @@ export default async function handler(req: NextRequest) {
                     y="0.262207"
                   />
                 </svg>
-                {imageUrl && <img src={imageUrl} tw="w-[300px] h-[300px]" />}
+
+                {imageUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img alt="" src={imageUrl} tw="w-[300px] h-[300px]" />
+                )}
               </div>
             </div>
           </div>

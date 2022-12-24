@@ -12,7 +12,7 @@ const MetaTags = ({
 }: {
   title?: string
   description?: string
-  openGraphImageAbsoluteUrl?: URL
+  openGraphImageAbsoluteUrl?: string
   url?: string
   pageTitle?: string
   noIndex?: boolean

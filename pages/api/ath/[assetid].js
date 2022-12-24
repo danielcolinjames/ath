@@ -50,6 +50,7 @@ export default async function handler(req, res) {
       }))
       res.status(200).json(arrayOfResults)
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error(e)
     }
   }
