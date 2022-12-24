@@ -219,7 +219,7 @@ const AssetPage = ({
     <Layout assetColors={assetColors} assetList={list} rgb={[r, g, b]}>
       <MetaTags
         description={descriptionText}
-        openGraphImageAbsoluteUrl={url}
+        openGraphImageAbsoluteUrl={url.toString()}
         rgb={[r, g, b]}
         title={title}
         url={`https://ath.ooo/${assetid}`}

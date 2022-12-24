@@ -18,7 +18,7 @@ const HomePage = ({ list }: { list: any }) => {
         'https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=250'
       )
       const marketUnsorted = await marketRes.json()
-      const market = marketUnsorted.sort((a, b) => {
+      const market = marketUnsorted.sort((a: any, b: any) => {
         return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0
       })
       setMarket(market)
@@ -55,7 +55,7 @@ const HomePage = ({ list }: { list: any }) => {
             })}
           </ul>
         ) : (
-          <SkeletonTheme color="#efefef" highlightColor="white">
+          <SkeletonTheme highlightColor="white">
             <Skeleton count={10} height={97} />
           </SkeletonTheme>
         )}
