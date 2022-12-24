@@ -1,81 +1,84 @@
-import { Line } from "react-chartjs-2";
-// import 'chartjs-adapter-date-fns';
-import { rgbaStringFromRGBObj } from "../utils/colors";
-import { formatNumber } from "../utils/numbers";
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
+import { Line } from 'react-chartjs-2'
+import { rgbaStringFromRGBObj } from '../utils/colors'
+import { formatNumber } from '../utils/numbers'
+import { Chart, registerables } from 'chart.js'
+Chart.register(...registerables)
 
-const AssetChart = ({ data, palette, className, wrapperClassName }) => {
+const AssetChart = ({
+  data,
+  palette,
+  className,
+  wrapperClassName,
+}: {
+  data: any
+  palette: any
+  className: string
+  wrapperClassName: string
+}) => {
   return (
     <div className={wrapperClassName}>
       <Line
-        data={data}
         className={className}
+        data={data}
         height={600}
         options={{
-          layout:{ autoPadding: false,},
+          layout: { autoPadding: false },
           hover: { intersect: false },
-          borderWidth: 100,
-          backdropPadding: 0,
-          padding: 0,
           plugins: {
             legend: {
               display: false,
             },
             tooltip: {
               intersect: false,
-              mode: "index",
+              mode: 'index',
               callbacks: {
                 //This removes the tooltip title
                 // title: function () {},
                 label: ({ raw }) => {
-                  return `$${formatNumber(raw)}`;
+                  return `$${formatNumber(raw)}`
                 },
               },
               //this removes legend color
               displayColors: false,
               padding: 15,
-              position: "average",
-              pointHitRadius: 20,
-              pointRadius: 30,
+              position: 'average',
               caretSize: 10,
-              backgroundColor: "rgba(255,255,255,.9)",
+              backgroundColor: 'rgba(255,255,255,.9)',
               borderColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.35),
               borderWidth: 2,
               bodyFont: {
-                family: "Satoshi",
+                family: 'Satoshi',
                 size: 18,
               },
-              bodyColor: "#303030",
+              bodyColor: '#303030',
               titleFont: {
-                family: "Satoshi",
+                family: 'Satoshi',
               },
-              titleColor: "rgba(0,0,0,0.6)",
+              titleColor: 'rgba(0,0,0,0.6)',
             },
           },
           scales: {
             y: {
+              border: {
+                display: false,
+              },
               ticks: {
                 display: false,
               },
               grid: {
-                drawBorder: false,
-                borderWidth: 0,
+                display: false,
                 drawTicks: false,
-                color: "transparent",
-                width: 0,
-                backdropPadding: 0,
+                color: 'transparent',
               },
-              drawBorder: false,
-              drawTicks: false,
             },
             x: {
+              border: {
+                display: false,
+              },
               ticks: {
                 display: false,
               },
               grid: {
-                drawBorder: false,
-                borderWidth: 0,
                 drawTicks: false,
                 display: false,
               },
@@ -85,6 +88,6 @@ const AssetChart = ({ data, palette, className, wrapperClassName }) => {
         }}
       />
     </div>
-  );
-};
-export default AssetChart;
+  )
+}
+export default AssetChart

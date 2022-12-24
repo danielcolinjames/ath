@@ -1,14 +1,14 @@
-import hexToRgba from "hex-to-rgba";
-import Link from "next/link";
+import hexToRgba from 'hex-to-rgba'
+import Link from 'next/link'
 
-const Footer = ({ assetColors, rgb }) => {
-  let r, g, b;
+const Footer = ({ assetColors, rgb }: { assetColors: any; rgb: any }) => {
+  let r, g, b
   if (rgb === undefined) {
-    r = 45;
-    g = 254;
-    b = 193;
+    r = 45
+    g = 254
+    b = 193
   } else {
-    [r, g, b] = rgb;
+    ;[r, g, b] = rgb
   }
   return (
     <div className="w-full h-14 footer">
@@ -16,30 +16,26 @@ const Footer = ({ assetColors, rgb }) => {
         className="mt-px h-1 w-full"
         style={{
           backgroundColor:
-            assetColors !== undefined
-              ? hexToRgba(assetColors.vibrant, 0.5)
-              : "#00FFBA",
+            assetColors !== undefined ? hexToRgba(assetColors.vibrant, 0.5) : '#00FFBA',
         }}
       />
       <div className="max-w-4xl mx-auto">
         <div className="flex flex-row items-center justify-center">
-          <Link href="/about" className="font-ath text-base footer-text">
+          <Link className="font-ath text-base footer-text" href="/about">
             About
           </Link>
           <a
+            className="font-ath text-base footer-text"
             href="https://twitter.com/athdotooo"
             rel="noopener noreferrer"
-            target="_blank"
-            className="font-ath text-base footer-text"
-          >
+            target="_blank">
             Twitter
           </a>
           <a
+            className="font-ath text-base footer-text"
             href="https://github.com/danielcolinjames/ath"
             rel="noopener noreferrer"
-            target="_blank"
-            className="font-ath text-base footer-text"
-          >
+            target="_blank">
             GitHub
           </a>
         </div>
@@ -57,7 +53,7 @@ const Footer = ({ assetColors, rgb }) => {
         }
       `}</style>
     </div>
-  );
-};
+  )
+}
 
-export default Footer;
+export default Footer

@@ -1,5 +1,6 @@
 module.exports = {
   root: true,
+  parser: '@typescript-eslint/parser',
   extends: ['next/core-web-vitals', 'plugin:prettier/recommended'],
   rules: {
     'no-eval': 'error',
@@ -8,22 +9,6 @@ module.exports = {
     'no-console': 'warn',
     // https://stackoverflow.com/questions/63961803/eslint-says-all-enums-in-typescript-app-are-already-declared-in-the-upper-scope
     'no-shadow': 'off',
-    '@typescript-eslint/no-shadow': 'error',
-    '@typescript-eslint/no-require-imports': 'warn',
-    '@typescript-eslint/no-unused-expressions': [
-      'error',
-      {
-        allowShortCircuit: true,
-        allowTernary: true,
-      },
-    ],
-    '@typescript-eslint/naming-convention': [
-      'error',
-      {
-        selector: 'enumMember',
-        format: ['PascalCase'],
-      },
-    ],
     // Required for e2e usecases
     'jest/no-export': 'off',
     'jest/valid-describe-callback': 'off',
@@ -39,13 +24,6 @@ module.exports = {
     // Required for exception catching tests
     'jest/no-conditional-expect': 'off',
     'jest/no-disabled-tests': 'off',
-    // TODO consider enabling these:
-    // '@typescript-eslint/no-floating-promises': 'error',
-    // 'import/no-self-import': 2,
-    // 'import/no-duplicates': 2,
-    // 'import/no-default-export': 1,
-    // 'react/jsx-uses-react': 'off',
-    // 'react/react-in-jsx-scope': 'off',
     'no-restricted-imports': [
       'error',
       {
@@ -114,7 +92,7 @@ module.exports = {
       },
     ],
   },
-  plugins: ['detox', 'jest', 'react', 'no-unsanitized', 'security'],
+  plugins: ['@typescript-eslint', 'detox', 'jest', 'react', 'no-unsanitized', 'security'],
   globals: {
     Address: 'readonly',
     AddressTo: 'readonly',

@@ -1,24 +1,31 @@
-import Link from "next/link";
-import Image from "next/image";
-import { formatNumber } from "../utils/numbers";
-import { parseISO } from "date-fns";
-import TimeAgo from "./TimeAgo";
+import Link from 'next/link'
+import Image from 'next/image'
+import { formatNumber } from '../utils/numbers'
+import { parseISO } from 'date-fns'
+import TimeAgo from './TimeAgo'
 
-const AssetListItem = ({ asset, index, showGreenLine, showTimeSince }) => {
-  const athTimestamp = parseISO(asset.ath_date);
+const AssetListItem = ({
+  asset,
+  index,
+  showGreenLine,
+  showTimeSince,
+}: {
+  asset: any
+  index: number
+  showGreenLine?: boolean
+  showTimeSince?: boolean
+}) => {
+  const athTimestamp = parseISO(asset.ath_date)
 
   return (
-    <Link href={`/${asset.symbol.toUpperCase()}`} key={`${asset.id}-${index}`} className={`py-5 group ${
-      index !== 0 ? "border-t" : ""
-    } border-gray-200 text-lg sm:text-lg text-gray-700 font-semibold flex flex-col sm:flex-row items-start sm:items-center sm:justify-between font-ath`}>
+    <Link
+      key={`${asset.id}-${index}`}
+      className={`py-5 group ${
+        index !== 0 ? 'border-t' : ''
+      } border-gray-200 text-lg sm:text-lg text-gray-700 font-semibold flex flex-col sm:flex-row items-start sm:items-center sm:justify-between font-ath`}
+      href={`/${asset.symbol.toUpperCase()}`}>
       <span className="flex flex-row items-center justify-center">
-        <Image
-          src={asset.image}
-          height={20}
-          width={20}
-          alt={`${asset.name} logo`}
-          className=""
-        />{" "}
+        <Image alt={`${asset.name} logo`} className="" height={20} src={asset.image} width={20} />{' '}
         <span className="pl-2 font-bold text-right">
           {asset.symbol.toUpperCase()}
           <span className="pl-2 text-gray-400 font-medium">{asset.name}</span>
@@ -35,11 +42,11 @@ const AssetListItem = ({ asset, index, showGreenLine, showTimeSince }) => {
         </span>
         {showTimeSince && (
           <span className="text-gray-400 font-normal">
-            <TimeAgo date={athTimestamp} suppressHydrationWarning />
+            <TimeAgo suppressHydrationWarning date={athTimestamp} />
           </span>
         )}
       </span>
     </Link>
-  );
-};
-export default AssetListItem;
+  )
+}
+export default AssetListItem
