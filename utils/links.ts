@@ -1,4 +1,4 @@
-export const generateSocialLinks = (la) => {
+export const generateSocialLinks = (la: any) => {
   const links = []
 
   if (la.subreddit_url) {
@@ -10,8 +10,8 @@ export const generateSocialLinks = (la) => {
   return links
 }
 
-export const generateOtherLinks = (la) => {
-  const links = []
+export const generateOtherLinks = (la: any) => {
+  const links: any = []
 
   if (la.homepage.length !== 0) {
     la.homepage.map((l) => {
@@ -19,7 +19,7 @@ export const generateOtherLinks = (la) => {
     })
   }
   if (la.blockchain_site.length !== 0) {
-    la.blockchain_site.map((l) => {
+    la.blockchain_site.map((l: any) => {
       if (l)
         links.push({
           url: l,

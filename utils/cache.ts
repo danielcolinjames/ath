@@ -1,6 +1,6 @@
 import { redis } from './redis'
 
-const fetch = async (key, fetcherFunction, expires) => {
+const fetch = async (key: string, fetcherFunction: any, expires: number) => {
   const existing = await get(key)
 
   if (existing) return existing
@@ -9,13 +9,13 @@ const fetch = async (key, fetcherFunction, expires) => {
   return set(key, fetcherFunction, expires)
 }
 
-const get = async (key) => {
+const get = async (key: string) => {
   const value = await redis.get(key)
   if (value === null) return null
   return JSON.parse(value)
 }
 
-const set = async (key, fetcherFunction, expires) => {
+const set = async (key: string, fetcherFunction: any, expires: number) => {
   const value = await fetcherFunction()
 
   await redis.set(key, JSON.stringify(value), 'EX', expires)

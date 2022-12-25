@@ -1,4 +1,4 @@
-export const formatNumber = (incomingNumber) => {
+export const formatNumber = (incomingNumber: number) => {
   if (incomingNumber > 1000) {
     return incomingNumber?.toLocaleString(undefined, {
       maximumFractionDigits: 0,

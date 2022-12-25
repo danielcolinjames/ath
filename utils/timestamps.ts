@@ -1,6 +1,6 @@
 import { format, utcToZonedTime } from 'date-fns-tz'
 
-export const formatInTimeZone = (date, fmt, tz) => {
+export const formatInTimeZone = (date: any, fmt: any, tz: any) => {
   let output
   try {
     output = format(utcToZonedTime(date, tz), fmt, { timeZone: tz })
