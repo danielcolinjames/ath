@@ -178,7 +178,8 @@ const AssetPage = ({
 
   const chartData = { labels, datasets }
 
-  const pc = parseFloat(assetData.ath_change_percentage)
+  const percentChange = parseFloat(assetData.ath_change_percentage)
+  const percentChangeColor = getPercentChangeColorClassName(percentChange)
 
   const [market, setMarket] = useState<any>([])
   const [marketLoading, setMarketLoading] = useState<boolean>(false)
@@ -299,9 +300,9 @@ const AssetPage = ({
                           <p
                             className={classNames(
                               'text-sm font-ath font-black rounded-full',
-                              getPercentChangeColorClassName(pc)
+                              percentChangeColor
                             )}>
-                            {assetData.ath_change_percentage?.toLocaleString(undefined, {
+                            {percentChange?.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             })}
@@ -331,7 +332,7 @@ const AssetPage = ({
                           <p
                             className={classNames(
                               'text-sm font-ath font-black rounded-full',
-                              getPercentChangeColorClassName(pc)
+                              percentChangeColor
                             )}>
                             {assetData.ath_change_percentage?.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
@@ -407,7 +408,7 @@ const AssetPage = ({
                             <p
                               className={classNames(
                                 'text-md font-ath font-black rounded-full mb-4',
-                                getPercentChangeColorClassName(pc)
+                                percentChangeColor
                               )}>
                               {assetData.ath_change_percentage?.toLocaleString(undefined, {
                                 minimumFractionDigits: 2,
