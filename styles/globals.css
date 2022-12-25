@@ -44,10 +44,6 @@ a {
   }
 }
 
-.blur-effect {
-  backdrop-filter: blur(15px);
-}
-
 #nprogress .bar {
   height: 5px !important;
   background: #00ffba !important;

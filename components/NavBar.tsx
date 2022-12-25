@@ -86,7 +86,7 @@ const NavBar = ({ assetList, assetColors, rgb }: any) => {
   const LOGO_WIDTH = 56
 
   return (
-    <div className="w-full h-14 shadow-smz fixed z-50 bg-[rgba(255,255,255,0.5)] blur-effect">
+    <div className="w-full h-14 -mt-14 fixed z-50 backdrop-blur-xl bg-opacity-75 bg-white">
       <div className="max-w-4xl mx-auto">
         <div className="rounded-full">
           <div className="flex justify-between items-center w-full max-w-4xl mx-auto px-5">
@@ -182,7 +182,7 @@ const NavBar = ({ assetList, assetColors, rgb }: any) => {
                             <div className="flex flex-row items-center justify-start">
                               <Link
                                 className={`search-result w-full ${
-                                  resultCount >= 1 ? `blur-effect text-xs font-light` : ''
+                                  resultCount >= 1 ? `backdrop-blur-lg text-xs font-light` : ''
                                 }`}
                                 href={`/${asset.symbol}`}
                                 id={`result-${index}`}
@@ -238,16 +238,7 @@ const NavBar = ({ assetList, assetColors, rgb }: any) => {
           </div>
         </div>
       </div>
-      <div
-        className="mt-0 h-2 w-full blur-effect"
-        style={{
-          backgroundImage: `linear-gradient(${
-            assetColors !== undefined ? hexToRgba(assetColors.vibrant, 0.1) : 'rgba(0,255,186,0.1)'
-          }, ${
-            assetColors !== undefined ? hexToRgba(assetColors.vibrant, 0.0) : 'rgba(255,255,255,0)'
-          }`,
-        }}
-      />
+      <div className="mt-0 h-2 w-full backdrop-blur-lg" />
       <style global jsx>{`
         .bg-dynamic {
           background-color: ${assetColors !== undefined

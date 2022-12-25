@@ -22,8 +22,7 @@ const Error = ({ statusCode }: { statusCode: any }) => {
             href="https://status.coingecko.com/"
             rel="noreferrer"
             target="_blank">
-            Try checking CoinGecko{`&apos;`}s status page to see if there might be an outage right
-            now.
+            Try checking CoinGecko’s status page to see if there might be an outage right now.
           </a>
           <p className="text-md md:text-md font-ath text-gray-500 mt-3">
             Feel free to follow the GitHub link in the footer to file an issue.

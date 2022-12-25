@@ -7,6 +7,7 @@ import { fromUnixTime, format, parseISO, differenceInDays, getUnixTime, sub } fr
 import { formatNumber } from '../utils/numbers'
 import {
   getAssetColorsFromVibrantObj,
+  getPercentChangeColorClassName,
   rgbaStringFromRGBObj,
   rgbToHex,
   shouldBeWhiteText,
@@ -21,6 +22,8 @@ import { fetchList } from '../utils/coingecko'
 import AssetChart from '../components/AssetChart'
 import LinksSection from '../components/LinksSection'
 import { getAssetData } from 'utils/common'
+import { AssetChartHeader } from 'components/AssetChartHeader'
+import classNames from 'classnames'
 
 const AssetPage = ({
   asset,
@@ -112,7 +115,7 @@ const AssetPage = ({
     })
   }
 
-  const [marketChartLoading, setMarketChartLoading] = useState(true)
+  const [marketChartLoading, setMarketChartLoading] = useState<boolean>(true)
   const [marketChart, setMarketChart] = useState<any>([])
 
   useEffect(() => {
@@ -137,7 +140,14 @@ const AssetPage = ({
       setMarketChartLoading(false)
     }
 
-    fetchMarketChart()
+    try {
+      fetchMarketChart()
+    } catch (e) {
+      setMarketChart([])
+      setMarketChartLoading(false)
+      // eslint-disable-next-line no-console
+      console.error(e)
+    }
   }, [assetData?.ath_date, assetData.id, assetInfo])
 
   const data = marketChartLoading ? [0, 0] : marketChart?.prices
@@ -170,31 +180,31 @@ const AssetPage = ({
 
   const pc = parseFloat(assetData.ath_change_percentage)
 
-  const [market, setMarket] = useState([])
-  const [marketLoading, setMarketLoading] = useState(false)
+  const [market, setMarket] = useState<any>([])
+  const [marketLoading, setMarketLoading] = useState<boolean>(false)
 
   useEffect(() => {
     const getMarketData = async () => {
-      try {
-        setMarketLoading(true)
-        const marketRes = await fetch(
-          'https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=250'
-        )
-        const marketUnsorted = await marketRes.json()
-        const market = marketUnsorted.sort((a: any, b: any) => {
-          return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0
-        })
-        setMarket(market)
-        setMarketLoading(false)
-      } catch (e) {
-        // eslint-disable-next-line no-console
-        console.error(e)
-      }
+      setMarketLoading(true)
+      const marketRes = await fetch(
+        'https://api.coingecko.com/api/v3/coins/markets?order_string=market_cap_desc&vs_currency=usd&per_page=250'
+      )
+      const marketUnsorted = await marketRes.json()
+      const market = marketUnsorted.sort((a: any, b: any) => {
+        return a.ath_date < b.ath_date ? 1 : b.ath_date < a.ath_date ? -1 : 0
+      })
+      setMarket(market)
+      setMarketLoading(false)
     }
-    getMarketData()
+    try {
+      getMarketData()
+    } catch (e) {
+      setMarket([])
+      setMarketLoading(false)
+      // eslint-disable-next-line no-console
+      console.error(e)
+    }
   }, [])
-
-  // console.log(assetInfoExtended);
 
   const descArray = assetInfoExtended.description.en.split('\n')
   let charCount = 0
@@ -224,40 +234,7 @@ const AssetPage = ({
         title={title}
         url={`https://ath.ooo/${assetid}`}
       />
-      <div className="w-full pointer-events-none pt-7 md:pt-14 z-10">
-        <div className="max-w-4xl mx-auto">
-          <div className="p-5">
-            <div className="w-full inline-block px-5 z-10 relative blur-effect bg-[rgba(255,255,255,0.5)] py-3 -ml-5 -mt-20">
-              <div className="flex flex-row items-center">
-                <Image
-                  alt={`${assetData.name} logo`}
-                  height={50}
-                  src={assetData.image}
-                  width={50}
-                />
-                <div className="flex items-start justify-start flex-col ml-2.5 md:ml-4 -mt-0.5 ">
-                  <div className="flex items-center justify-center">
-                    <p className="font-ath font-bold text-xl md:text-2xl text-gray-800">
-                      {assetid.toUpperCase()}{' '}
-                    </p>
-                    {rank && (
-                      <div
-                        className="rounded-xl px-2 py-0.5 mt-0.5 ml-2.5 bg-opacity-50 backdrop-filter backdrop-blur-md flex flex-row items-center justify-center"
-                        style={{
-                          backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.5),
-                        }}>
-                        <p className="text-xs text-white font-sans font-light">#</p>
-                        <p className="text-xs font-sans text-white font-semibold">{rank}</p>
-                      </div>
-                    )}
-                  </div>
-                  <p className="font-normal text-gray-500 -mt-1 pr-2">{assetData.name}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <AssetChartHeader assetData={assetData} assetid={assetid} palette={palette} rank={rank} />
       {data?.length > 0 ? (
         <AssetChart
           className="z-10"
@@ -272,12 +249,10 @@ const AssetPage = ({
           </p>
         </div>
       )}
-
       <div
         className="w-full pb-2 md:pb-4"
         style={{
           backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085),
-          // borderBottom: `${assetColors.vibrant} 3px solid`,
         }}>
         <div className="p-5 pt-2 mx-auto max-w-4xl">
           <div>
@@ -322,27 +297,10 @@ const AssetPage = ({
                             ${formatNumber(assetData?.current_price)}
                           </h3>
                           <p
-                            className={`text-sm font-ath font-black rounded-full ${
-                              pc < -95
-                                ? 'text-red-900'
-                                : pc < -75
-                                ? 'text-red-800'
-                                : pc < -60
-                                ? 'text-red-700'
-                                : pc < -45
-                                ? 'text-yellow-800'
-                                : pc < -30
-                                ? 'text-yellow-700'
-                                : pc < -15
-                                ? 'text-yellow-600'
-                                : pc < -10
-                                ? 'text-yellow-500'
-                                : pc < -5
-                                ? 'text-gray-500'
-                                : pc > 0
-                                ? 'text-green-500'
-                                : 'text-gray-400'
-                            }`}>
+                            className={classNames(
+                              'text-sm font-ath font-black rounded-full',
+                              getPercentChangeColorClassName(pc)
+                            )}>
                             {assetData.ath_change_percentage?.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
@@ -371,27 +329,10 @@ const AssetPage = ({
                             ${formatNumber(assetData?.current_price)}
                           </h3>
                           <p
-                            className={`text-sm font-ath font-black rounded-full ${
-                              pc < -95
-                                ? 'text-red-900'
-                                : pc < -75
-                                ? 'text-red-800'
-                                : pc < -60
-                                ? 'text-red-700'
-                                : pc < -45
-                                ? 'text-yellow-800'
-                                : pc < -30
-                                ? 'text-yellow-700'
-                                : pc < -15
-                                ? 'text-yellow-600'
-                                : pc < -10
-                                ? 'text-yellow-500'
-                                : pc < -5
-                                ? 'text-gray-500'
-                                : pc > 0
-                                ? 'text-green-500'
-                                : 'text-gray-400'
-                            }`}>
+                            className={classNames(
+                              'text-sm font-ath font-black rounded-full',
+                              getPercentChangeColorClassName(pc)
+                            )}>
                             {assetData.ath_change_percentage?.toLocaleString(undefined, {
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
@@ -464,27 +405,10 @@ const AssetPage = ({
                               ${formatNumber(assetData?.current_price)}
                             </h3>
                             <p
-                              className={`text-md font-ath font-black rounded-full mb-4 ${
-                                pc < -95
-                                  ? 'text-red-900'
-                                  : pc < -75
-                                  ? 'text-red-800'
-                                  : pc < -60
-                                  ? 'text-red-700'
-                                  : pc < -45
-                                  ? 'text-yellow-800'
-                                  : pc < -30
-                                  ? 'text-yellow-700'
-                                  : pc < -15
-                                  ? 'text-yellow-600'
-                                  : pc < -10
-                                  ? 'text-yellow-500'
-                                  : pc < -5
-                                  ? 'text-gray-500'
-                                  : pc > 0
-                                  ? 'text-green-500'
-                                  : 'text-gray-400'
-                              }`}>
+                              className={classNames(
+                                'text-md font-ath font-black rounded-full mb-4',
+                                getPercentChangeColorClassName(pc)
+                              )}>
                               {assetData.ath_change_percentage?.toLocaleString(undefined, {
                                 minimumFractionDigits: 2,
                                 maximumFractionDigits: 2,
@@ -623,9 +547,7 @@ const AssetPage = ({
                     />
                   </svg>
                   <p className="font-ath font-light text-lg text-gray-600">
-                    The ticker symbol {`&quot;`}
-                    <span className="font-bold">{assetid.toUpperCase()}</span>
-                    {`&quot;`}
+                    The ticker symbol ”<span className="font-bold">{assetid.toUpperCase()}</span>”
                     also represents other assets
                   </p>
                 </div>
@@ -731,7 +653,7 @@ const AssetPage = ({
             </p>
             {!marketLoading ? (
               <>
-                {market.map((asset, index) => {
+                {market.map((asset: any, index: number) => {
                   if (index < 100)
                     return <AssetListItem showTimeSince asset={asset} index={index} />
                 })}

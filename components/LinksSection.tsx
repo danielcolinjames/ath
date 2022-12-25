@@ -18,12 +18,12 @@ const LinkString = ({ url }: { url: string }) => {
 
   return (
     <p className="truncate text-sm text-ellipsis">
-      <span className="">{root}</span>
+      <span className="font-semibold">{root}</span>
       {rest.map((part, _i, { length }) => {
         return (
-          <span key={part} className="opacity-30">
-            {length > 0 ? '/' : ''}
-            {part}
+          <span key={part} className="">
+            <span className="px-1 font-medium opacity-30">{length > 0 ? '/' : ''}</span>
+            <span className="opacity-40 font-light">{part}</span>
           </span>
         )
       })}
@@ -72,24 +72,20 @@ const LinksSection = ({ palette, assetInfoExtended }: any) => {
     <div>
       <h3 className="text-gray-500 pb-1 pt-5">Website and Block Explorer Links</h3>
       <div className="inline-block overflow-auto w-full">
-        <div className="flex flex-col space-y-1 w-full">
+        <div className="flex flex-col space-y-1.5 w-full">
           {otherLinks.map((link) => {
             const icon = generateIcon(link)
             return (
               <a
                 key={link.url}
-                className="rounded-full flex items-center justify-start space-x-1 overflow-hidden w-full bg-gray-50 hover:bg-gray-100"
+                className="rounded-full flex items-center justify-start space-x-1 overflow-hidden w-full opacity-100 transition-all duration-150 hover:opacity-75"
                 href={link.url}
                 rel="noopener noreferrer"
-                style={{
-                  color: rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.75),
-                }}
+                style={{ color: 'white' }}
                 target="_blank">
                 <div
                   className="p-1 rounded-full"
-                  style={{
-                    backgroundColor: rgbaStringFromRGBObj(palette.DarkVibrant.rgb, 0.085),
-                  }}>
+                  style={{ backgroundColor: rgbaStringFromRGBObj(palette.Vibrant.rgb, 1) }}>
                   <svg
                     className="h-6 w-6"
                     fill="none"
@@ -103,7 +99,11 @@ const LinksSection = ({ palette, assetInfoExtended }: any) => {
                     {icon}
                   </svg>
                 </div>
-                <LinkString url={link.url} />
+                <span
+                  className="pl-1"
+                  style={{ color: rgbaStringFromRGBObj(palette.Vibrant.rgb, 1) }}>
+                  <LinkString url={link.url} />
+                </span>
               </a>
             )
           })}
@@ -112,18 +112,21 @@ const LinksSection = ({ palette, assetInfoExtended }: any) => {
         <div className="flex flex-row space-x-2 mt-2">
           {socialLinks.map((link, i) => {
             return (
-              <SocialIcon
+              <div
                 key={`link-${i}`}
-                bgColor={rgbaStringFromRGBObj(palette.DarkVibrant.rgb, 0.1)}
-                fgColor={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.75)}
-                rel="noopener noreferrer"
-                style={{
-                  width: SOCIAL_LINK_SIZE,
-                  height: SOCIAL_LINK_SIZE,
-                }}
-                target="_blank"
-                url={link}
-              />
+                className="opacity-100 hover:opacity-75 duration-150 transition-all">
+                <SocialIcon
+                  bgColor={rgbaStringFromRGBObj(palette.Vibrant.rgb, 1)}
+                  fgColor="white"
+                  rel="noopener noreferrer"
+                  style={{
+                    width: SOCIAL_LINK_SIZE,
+                    height: SOCIAL_LINK_SIZE,
+                  }}
+                  target="_blank"
+                  url={link}
+                />
+              </div>
             )
           })}
         </div>

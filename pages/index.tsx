@@ -43,8 +43,7 @@ const HomePage = ({ list }: { list: any }) => {
           </h2>
           <p className="text-md md:text-md font-ath text-gray-500">
             This website displays the highest ever recorded price in US Dollars that someone has
-            paid for any given crypto asset. Everything on here is powered by CoinGecko{`&apos;`}s
-            API.
+            paid for any given crypto asset. Everything on here is powered by CoinGecko’s API.
           </p>
         </div>
         {!marketLoading ? (

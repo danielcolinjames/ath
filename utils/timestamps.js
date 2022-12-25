@@ -1,12 +1,13 @@
-import { format, utcToZonedTime } from "date-fns-tz";
+import { format, utcToZonedTime } from 'date-fns-tz'
 
 export const formatInTimeZone = (date, fmt, tz) => {
-  let output;
+  let output
   try {
-    output = format(utcToZonedTime(date, tz), fmt, { timeZone: tz });
+    output = format(utcToZonedTime(date, tz), fmt, { timeZone: tz })
   } catch (e) {
-    console.error(e);
-    output = "Unknown Date";
+    // eslint-disable-next-line no-console
+    console.error(e)
+    output = 'Unknown Date'
   }
-  return output;
-};
+  return output
+}
