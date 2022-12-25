@@ -34,8 +34,9 @@ const AssetChart = ({
               callbacks: {
                 //This removes the tooltip title
                 // title: function () {},
-                label: ({ raw }) => {
-                  return `$${formatNumber(raw)}`
+                label: ({ raw }: { raw: unknown }) => {
+                  const number = parseFloat(raw as string)
+                  return `$${formatNumber(number)}`
                 },
               },
               //this removes legend color
