@@ -1,18 +1,18 @@
 import { fetchList } from '../../../utils/coingecko'
 import cache from '../../../utils/cache'
 
-export default async function handler(req, res) {
+export default async function handler(req: any, res: any) {
   const {
     query: { assetid },
   } = req
 
   const list = await cache.fetch('ath:full-list', fetchList, 60 * 60 * 12)
 
-  const asset = list.find((x) => {
+  const asset = list.find((x: any) => {
     return x.symbol.toLowerCase() === assetid.toLowerCase()
   })
 
-  const matchingAssets = list.filter((x) => {
+  const matchingAssets = list.filter((x: any) => {
     return x.symbol.toLowerCase() === assetid.toLowerCase()
   })
 
@@ -28,8 +28,8 @@ export default async function handler(req, res) {
         assetCoingeckoId = asset.id
       } else {
         // multiple found with same ticker symbol
-        const multipleAssetsArray = []
-        matchingAssets.map((matchingAssetObject) => {
+        const multipleAssetsArray: any = []
+        matchingAssets.map((matchingAssetObject: any) => {
           multipleAssetsArray.push(matchingAssetObject.id)
         })
         assetCoingeckoId = multipleAssetsArray.join(',')
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
       )
       const assetInfo = await assetsResponse.json()
 
-      const arrayOfResults = assetInfo.map((a) => ({
+      const arrayOfResults = assetInfo.map((a: any) => ({
         ticker: assetid.toUpperCase(),
         name: a.name,
         ath: a.ath,

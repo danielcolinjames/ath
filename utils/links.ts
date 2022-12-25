@@ -14,7 +14,7 @@ export const generateOtherLinks = (la: any) => {
   const links: any = []
 
   if (la.homepage.length !== 0) {
-    la.homepage.map((l) => {
+    la.homepage.map((l: any) => {
       if (l) links.push({ url: l, icon: 'web' })
     })
   }

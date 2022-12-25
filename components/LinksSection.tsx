@@ -73,7 +73,7 @@ const LinksSection = ({ palette, assetInfoExtended }: any) => {
       <h3 className="text-gray-500 pb-1 pt-5">Website and Block Explorer Links</h3>
       <div className="inline-block overflow-auto w-full">
         <div className="flex flex-col space-y-1.5 w-full">
-          {otherLinks.map((link) => {
+          {otherLinks.map((link: any) => {
             const icon = generateIcon(link)
             return (
               <a
