@@ -155,7 +155,7 @@ const NavBar = ({ assetList, assetColors, rgb }: any) => {
             </div>
             {/* Search bar */}
             {assetList && (
-              <div className="w-full mx-auto max-w-screen-sm flex pl-2 pr-2">
+              <div className="w-full mx-auto flex px-2">
                 <div className="flex relative w-full">
                   <input
                     ref={input}
@@ -203,7 +203,7 @@ const NavBar = ({ assetList, assetColors, rgb }: any) => {
                 </div>
               </div>
             )}
-            <div className="flex flex-row items-center justify-between space-x-4">
+            <div className="flex flex-row items-center justify-between space-x-0 sm:space-x-1">
               <Link
                 className="about-link p-1 rounded-md transition-all duration-200"
                 href={`/${assetPlaceholderRandomButton?.toUpperCase()}`}>
@@ -227,7 +227,7 @@ const NavBar = ({ assetList, assetColors, rgb }: any) => {
                   />
                 </svg>
               </Link>
-              <div className="w-auto flex items-center justify-end pr-4 sm:pr-0">
+              <div className="w-auto flex items-center justify-end">
                 <Link
                   className="text-gray-500 font-ath font-light about-link py-1 px-2 rounded-md transition-all"
                   href="/about">
@@ -238,7 +238,6 @@ const NavBar = ({ assetList, assetColors, rgb }: any) => {
           </div>
         </div>
       </div>
-      <div className="mt-0 h-2 w-full backdrop-blur-lg" />
       <style global jsx>{`
         .bg-dynamic {
           background-color: ${assetColors !== undefined
