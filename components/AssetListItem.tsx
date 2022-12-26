@@ -20,8 +20,25 @@ const AssetListItem = ({
 }) => {
   const athTimestamp = parseISO(asset.ath_date)
 
-  const old = (
+  const test = (
     <>
+      <span className="flex flex-row items-center justify-center">
+        <Image alt={`${asset.name} logo`} className="" height={20} src={asset.image} width={20} />{' '}
+        <span className="pl-2 font-bold text-right">
+          {asset.symbol.toUpperCase()}
+          <span className="pl-2 text-gray-400 font-medium">{asset.name}</span>
+        </span>
+      </span>
+    </>
+  )
+
+  return (
+    <Link
+      key={`${asset.id}-${index}`}
+      className={`py-5 group ${
+        index !== 0 ? 'border-t' : ''
+      } border-gray-200 text-lg sm:text-lg text-gray-700 font-semibold flex flex-col sm:flex-row items-start sm:items-center sm:justify-between font-ath`}
+      href={`/${asset.symbol.toUpperCase()}`}>
       <span className="flex flex-row items-center justify-center">
         <Image alt={`${asset.name} logo`} className="" height={20} src={asset.image} width={20} />{' '}
         <span className="pl-2 font-bold text-right">
@@ -43,23 +60,6 @@ const AssetListItem = ({
             <TimeAgo suppressHydrationWarning date={athTimestamp} />
           </span>
         )}
-      </span>
-    </>
-  )
-
-  return (
-    <Link
-      key={`${asset.id}-${index}`}
-      className={`py-5 group ${
-        index !== 0 ? 'border-t' : ''
-      } border-gray-200 text-lg sm:text-lg text-gray-700 font-semibold flex flex-col sm:flex-row items-start sm:items-center sm:justify-between font-ath`}
-      href={`/${asset.symbol.toUpperCase()}`}>
-      <span className="flex flex-row items-center justify-center">
-        <Image alt={`${asset.name} logo`} className="" height={20} src={asset.image} width={20} />{' '}
-        <span className="pl-2 font-bold text-right">
-          {asset.symbol.toUpperCase()}
-          <span className="pl-2 text-gray-400 font-medium">{asset.name}</span>
-        </span>
       </span>
     </Link>
   )
