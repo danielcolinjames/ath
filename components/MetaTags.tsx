@@ -16,7 +16,7 @@ const MetaTags = ({
   url?: string
   pageTitle?: string
   noIndex?: boolean
-  rgb: any
+  rgb?: any
 }) => {
   const metaTitle = title ? title : 'ath.ooo'
   // allow the option to set the <title> tag of a page separately from the one that shows up for its meta tags
