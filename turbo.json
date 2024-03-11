@@ -4,7 +4,7 @@
   "pipeline": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**"]
+      "outputs": ["apps/ath.ooo/.next/**", "!.next/cache/**"]
     },
     "lint": {
       "dependsOn": ["^lint"]

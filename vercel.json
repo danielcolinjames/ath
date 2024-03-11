@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "buildCommand": "next build",
   "builds": [
     {
       "src": "apps/ath.ooo/package.json",
