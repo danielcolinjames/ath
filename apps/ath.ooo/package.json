@@ -1,0 +1,39 @@
+{
+  "name": "@repo/ath.ooo",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint . --max-warnings 0"
+  },
+  "dependencies": {
+    "@repo/ui": "*",
+    "autoprefixer": "^10.4.18",
+    "date-fns": "^3.3.1",
+    "dotenv": "^16.4.5",
+    "hex-to-rgba": "^2.0.1",
+    "lucide-react": "^0.354.0",
+    "next": "^14.1.1",
+    "node-vibrant": "^3.2.1-alpha.1",
+    "postcss": "^8.4.35",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "rgb-hex": "^4.1.0",
+    "tailwindcss": "^3.4.1",
+    "wcag-contrast": "^3.0.0"
+  },
+  "devDependencies": {
+    "@next/eslint-plugin-next": "^14.1.1",
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@types/eslint": "^8.56.5",
+    "@types/node": "^20.11.24",
+    "@types/react": "^18.2.61",
+    "@types/react-dom": "^18.2.19",
+    "@types/wcag-contrast": "^3.0.3",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3"
+  }
+}
