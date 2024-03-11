@@ -1,18 +1,8 @@
-import { getProjectsByTicker } from '../../lib/mongodb'
-import { getImg } from "../../lib/colors";
 import Image from "next/image";
 import { Metadata } from 'next';
-import { fetchFromCoingecko } from '../../lib/coingecko';
 import { formatNumber } from '@repo/utils/numbers'
-import NavBar from '../../components/NavBar';
-import RootLayout from '../layout';
-import page from "next/app";
 import { getAssetDataFromTicker } from '../../lib/utils';
-import TimeAgo from '../../components/TimeAgo';
-import { format, formatDate, formatDistanceToNow } from 'date-fns'
-
-// import { AccentColorProvider } from '../../contexts/AssetColorContext';
-// import { AssetProvider } from '../../contexts/AssetColorContext';
+import { format, formatDistanceToNow } from 'date-fns'
 
 type Props = {
   params: { assetid: string };
@@ -70,14 +60,10 @@ export default async function CryptoAssetPage({
   const formattedAthDate = format(new Date(mainAsset.ath_date), 'MMMM do, yyyy');
 
   return (
-    // <AccentColorProvider value={{ accentColor: mainAsset.accentColor }}>
-
     <div className='flex flex-col w-full px-4 mt-20'>
-      {/* <NavBar accentColor={mainAsset.accentColor} /> */}
       <div className='flex flex-col items-start justify-center p-5'>
         <div className='flex flex-row items-center justify-center'>
           <Image src={mainAsset.image} alt={mainAsset.name} width={75} height={75} className="rounded-full" />
-          {/* <h1 className='text-5xl font-bold'>{assetid.toUpperCase()}</h1> */}
           <p className='text-5xl font-light text-white'>{mainAsset.name}</p>
         </div>
         <p className='text-gray-400 font-light text-lg'>All-time high</p>
@@ -86,9 +72,7 @@ export default async function CryptoAssetPage({
           {formatNumber(mainAsset.ath)}
         </p>
         <p className='text-xl text-gray-400'>
-          {/* <TimeAgo date= */}
           set {timeSinceAth}, on {formattedAthDate}
-          {/* //  /> */}
         </p>
         <p className='text-gray-400 font-light text-lg'>Current price</p>
         <p className='text-7xl font-bold flex items-start justify-start text-white'>
@@ -113,6 +97,5 @@ export default async function CryptoAssetPage({
         </div>
       )}
     </div>
-    // </AccentColorProvider>
   )
 }

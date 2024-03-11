@@ -1,11 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { formatNumber } from '../utils/numbers'
+import { formatNumber } from '@repo/utils/numbers'
 import { parseISO } from 'date-fns'
 import TimeAgo from './TimeAgo'
-import { getImg } from 'pages/api/vibes'
-import { useEffect, useState } from 'react'
-import Vibrant from 'node-vibrant/lib/config'
 
 const AssetListItem = ({
   asset,

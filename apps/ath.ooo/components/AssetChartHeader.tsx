@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { rgbaStringFromRGBObj } from 'utils/colors'
+import { rgbaStringFromRGBObj } from '@repo/utils/colors'
 
 export const AssetChartHeader = ({
   assetData,

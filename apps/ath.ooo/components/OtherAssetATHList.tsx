@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
-import AssetListItem from 'components/AssetListItem'
-import { rgbaStringFromRGBObj } from 'utils/colors'
-import Skeleton, { SkeletonTheme } from 'react-loading-skeleton'
+import AssetListItem from './AssetListItem'
+import { rgbaStringFromRGBObj } from '@repo/utils/colors'
 
 export const OtherAssetATHList = ({ palette }: { palette: any }) => {
   const [market, setMarket] = useState<any>([])
@@ -43,11 +42,12 @@ export const OtherAssetATHList = ({ palette }: { palette: any }) => {
             })}
           </>
         ) : (
-          <SkeletonTheme
-            // color={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085)}
-            highlightColor={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.25)}>
-            <Skeleton count={10} height={97} />
-          </SkeletonTheme>
+          <p>Loading...</p>
+          // <SkeletonTheme
+          //   // color={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.085)}
+          //   highlightColor={rgbaStringFromRGBObj(palette.Vibrant.rgb, 0.25)}>
+          //   <Skeleton count={10} height={97} />
+          // </SkeletonTheme>
         )}
       </div>
     </div>

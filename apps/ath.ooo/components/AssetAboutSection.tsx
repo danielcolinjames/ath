@@ -1,12 +1,12 @@
-import { rgbaStringFromRGBObj } from 'utils/colors'
+import { rgbaStringFromRGBObj } from '@repo/utils/colors'
 import { useState } from 'react'
 import parse from 'html-react-parser'
-import { formatNumber } from 'utils/numbers'
-import LinksSection from 'components/LinksSection'
+import { formatNumber } from '@repo/utils/numbers'
+import LinksSection from './LinksSection'
 import { format, parseISO } from 'date-fns'
-import { formatInTimeZone } from 'utils/timestamps'
+// import { formatInTimeZone } from '@repo/utils/timestamps'
 import Image from 'next/image'
-import TimeAgo from 'components/TimeAgo'
+import TimeAgo from './TimeAgo'
 
 interface AssetAboutSectionProps {
   assetData: any
@@ -145,7 +145,8 @@ export const AssetAboutSection = ({
                   {assetInfo.map((asset: any, index: number) => {
                     const athTimestamp = parseISO(assetInfo[index]?.ath_date)
                     const athDate = format(athTimestamp, 'MMMM do, yyyy')
-                    const athTimestampFormatted = formatInTimeZone(athTimestamp, 'h:mm:ss a', 'UTC')
+                    // const athTimestampFormatted = formatInTimeZone(athTimestamp, 'h:mm:ss a', 'UTC')
+                    const athTimestampFormatted = format(athTimestamp, 'h:mm:ss a')
                     const lastUpdated = parseISO(assetInfo[index].last_updated)
                     if (index !== 0)
                       return (

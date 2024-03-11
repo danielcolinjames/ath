@@ -1,6 +1,6 @@
 import { SocialIcon } from 'react-social-icons'
-import { rgbaStringFromRGBObj } from '../utils/colors'
-import { generateOtherLinks, generateSocialLinks } from '../utils/links'
+import { rgbaStringFromRGBObj } from '@repo/utils/colors'
+import { generateOtherLinks, generateSocialLinks } from '@repo/utils/links'
 
 const removeHttp = (url: string) => {
   // eslint-disable-next-line security/detect-unsafe-regex

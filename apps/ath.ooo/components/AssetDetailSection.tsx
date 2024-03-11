@@ -1,9 +1,9 @@
-import TimeAgo from 'components/TimeAgo'
-import { getPercentChangeColorClassName, rgbaStringFromRGBObj } from 'utils/colors'
-import { formatNumber } from 'utils/numbers'
+import TimeAgo from '@repo/ath.ooo/components/TimeAgo'
+import { getPercentChangeColorClassName, rgbaStringFromRGBObj } from '@repo/utils/colors'
+import { formatNumber } from '@repo/utils/numbers'
 import classNames from 'classnames'
 import { parseISO } from 'date-fns'
-import { formatInTimeZone } from 'utils/timestamps'
+// import { formatInTimeZone } from '@repo/utils/timestamps'
 import Image from 'next/image'
 
 export const AssetDetailSection = ({

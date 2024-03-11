@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
-import { rgbaStringFromRGBObj } from '../utils/colors'
-import { formatNumber } from '../utils/numbers'
+import { rgbaStringFromRGBObj } from '@repo/utils/colors'
+import { formatNumber } from '@repo/utils/numbers'
 import { Chart, registerables } from 'chart.js'
 import { fromUnixTime, format, parseISO, differenceInDays, getUnixTime, sub } from 'date-fns'
 Chart.register(...registerables)

@@ -1,16 +1,9 @@
-import { ImageResponse } from '@vercel/og'
-import { NextRequest } from 'next/server'
+import { ImageResponse } from 'next/og'
 
-export const config = {
-  runtime: 'experimental-edge',
-}
+export const runtime = "edge";
 
-const sb = fetch(new URL('../../assets/Satoshi-Black.otf', import.meta.url)).then((res) =>
-  res.arrayBuffer()
-)
-
-export default async function handler(req: NextRequest) {
-  const { searchParams } = req.nextUrl
+export async function GET(request: Request) {
+  const { searchParams } = new URL(request.url);
 
   const name = searchParams.get('n')
   const ticker = searchParams.get('t')
@@ -22,7 +15,7 @@ export default async function handler(req: NextRequest) {
 
   const whiteText = searchParams.get('w')
 
-  const satoshiBlack = await sb
+  const satoshiBlackFontData = await fetch(new URL('./Satoshi-Black.otf', import.meta.url)).then((res) => res.arrayBuffer())
 
   const textColor = whiteText === '1' ? 'white' : 'black'
 
@@ -127,7 +120,7 @@ export default async function handler(req: NextRequest) {
       fonts: [
         {
           name: 'Satoshi-Black',
-          data: satoshiBlack,
+          data: satoshiBlackFontData,
           style: 'normal',
         },
       ],

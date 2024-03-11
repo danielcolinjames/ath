@@ -15,7 +15,8 @@ export const Layout = ({
 }) => {
   return (
     <div className={`min-h-screen ${className ? className : ''}`}>
-      <NavBar assetColors={assetColors} assetList={assetList} rgb={rgb} />
+      {/* <NavBar assetColors={assetColors} assetList={assetList} rgb={rgb} /> */}
+      <NavBar accentColor="#00FFBA" />
       <div className="mt-14">{children}</div>
     </div>
   )
