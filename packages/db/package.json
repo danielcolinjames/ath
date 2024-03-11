@@ -1,0 +1,13 @@
+{
+  "name": "@repo/db",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "mongodb": "6.4.0"
+  }
+}
