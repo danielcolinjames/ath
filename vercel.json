@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "buildCommand": "next build",
+  "framework": "nextjs",
   "builds": [
     {
       "src": "apps/ath.ooo/package.json",
