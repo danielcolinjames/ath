@@ -56,7 +56,7 @@ export async function GET(request: Request) {
                     marginLeft: -8,
                     marginBottom: -24,
                   }}
-                  tw="font-bold break-all w-full">
+                  tw="font-bold w-full">
                   {ticker}
                 </p>
                 <p style={{ color: textColor }} tw="text-7xl font-bold w-full">
