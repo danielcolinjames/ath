@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "apps/my-next-app/package.json",
+      "use": "@vercel/next",
+      "config": { "outputDirectory": "apps/ath.ooo/.next" }
+    }
+  ]
+}
