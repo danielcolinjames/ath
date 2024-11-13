@@ -22,10 +22,8 @@ export default function RootLayout({
           <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         ) : null}
         {/* to account for navbar */}
-        <NavBar accentColor="#00FFBA" />
-        <div className="flex w-full">
-          {children}
-        </div>
+        {/* <NavBar accentColor="#00FFBA" /> */}
+        <div className="flex w-full">{children}</div>
       </body>
     </html>
   );

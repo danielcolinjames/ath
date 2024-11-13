@@ -5,13 +5,15 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
+    "update": "node apps/ath.ooo/app/api/update/route.ts",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "@repo/eslint-config": "*",
     "@repo/typescript-config": "*",
-    "prettier": "^3.2.5",
-    "turbo": "latest"
+    "prettier": "3.3.1",
+    "turbo": "latest",
+    "typescript": "^5.5.3"
   },
   "engines": {
     "node": ">=18"

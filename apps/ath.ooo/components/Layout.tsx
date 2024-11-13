@@ -1,4 +1,4 @@
-import NavBar from './NavBar'
+import NavBar from "./NavBar";
 
 export const Layout = ({
   children,
@@ -7,17 +7,17 @@ export const Layout = ({
   rgb,
   className,
 }: {
-  children?: any
-  assetList?: any[]
-  assetColors?: any
-  rgb?: any
-  className?: string
+  children?: any;
+  assetList?: any[];
+  assetColors?: any;
+  rgb?: any;
+  className?: string;
 }) => {
   return (
-    <div className={`min-h-screen ${className ? className : ''}`}>
+    <div className={`min-h-screen ${className ? className : ""}`}>
       {/* <NavBar assetColors={assetColors} assetList={assetList} rgb={rgb} /> */}
       <NavBar accentColor="#00FFBA" />
       <div className="mt-14">{children}</div>
     </div>
-  )
-}
+  );
+};

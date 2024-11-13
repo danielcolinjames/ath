@@ -1,27 +1,27 @@
-import { redis } from "./redis"
+import { redis } from "./redis";
 
 const fetch = async (key: string, fetcherFunction: any, expires: number) => {
-  const existing = await get(key)
+  const existing = await get(key);
 
-  if (existing) return existing
+  if (existing) return existing;
 
   // only do the coingecko api call if there isn't a cached list in redis
-  return set(key, fetcherFunction, expires)
-}
+  return set(key, fetcherFunction, expires);
+};
 
 const get = async (key: string) => {
-  const value = await redis.get(key)
-  if (value === null) return null
-  return JSON.parse(value)
-}
+  const value = await redis.get(key);
+  if (value === null) return null;
+  return JSON.parse(value);
+};
 
 const set = async (key: string, fetcherFunction: any, expires: number) => {
-  const value = await fetcherFunction()
+  const value = await fetcherFunction();
 
-  await redis.set(key, JSON.stringify(value), "EX", expires)
-  return value
-}
+  await redis.set(key, JSON.stringify(value), "EX", expires);
+  return value;
+};
 
-const functions = { fetch, set }
+const functions = { fetch, set };
 
-export default functions
+export default functions;

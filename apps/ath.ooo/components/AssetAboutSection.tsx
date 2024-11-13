@@ -1,22 +1,22 @@
-import { rgbaStringFromRGBObj } from '@repo/utils/colors'
-import { useState } from 'react'
-import parse from 'html-react-parser'
-import { formatNumber } from '@repo/utils/numbers'
-import LinksSection from './LinksSection'
-import { format, parseISO } from 'date-fns'
+import { rgbaStringFromRGBObj } from "@repo/utils/colors";
+import { useState } from "react";
+import parse from "html-react-parser";
+import { formatNumber } from "@repo/utils/numbers";
+import LinksSection from "./LinksSection";
+import { format, parseISO } from "date-fns";
 // import { formatInTimeZone } from '@repo/utils/timestamps'
-import Image from 'next/image'
-import TimeAgo from './TimeAgo'
+import Image from "next/image";
+import TimeAgo from "./TimeAgo";
 
 interface AssetAboutSectionProps {
-  assetData: any
-  palette: any
-  assetInfoExtended: any
-  assetColors: any
-  assetColorsExtended: any
-  singleAssetMatch: boolean
-  assetid: string
-  assetInfo: any
+  assetData: any;
+  palette: any;
+  assetInfoExtended: any;
+  assetColors: any;
+  assetColorsExtended: any;
+  singleAssetMatch: boolean;
+  assetid: string;
+  assetInfo: any;
 }
 
 export const AssetAboutSection = ({
@@ -29,26 +29,26 @@ export const AssetAboutSection = ({
   singleAssetMatch,
   assetid,
 }: AssetAboutSectionProps) => {
-  const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false)
+  const [showSymbolSharerAssets, setShowSymbolSharerAssets] = useState(false);
 
-  const descArray = assetInfoExtended.description.en.split('\n')
-  let charCount = 0
+  const descArray = assetInfoExtended.description.en.split("\n");
+  let charCount = 0;
   const descArrayAsHtml = descArray
     .map((p: any) => {
-      charCount += p.length
-      const pWithA = p.replace('a href=', "a class='desc-a' href=")
-      return `<p class='desc-p'>${pWithA}</p>`
+      charCount += p.length;
+      const pWithA = p.replace("a href=", "a class='desc-a' href=");
+      return `<p class='desc-p'>${pWithA}</p>`;
     })
-    .join('')
+    .join("");
 
   const descIsEmpty =
     descArray.findIndex((p: any) => {
-      return p.length === 0
-    }) !== -1
+      return p.length === 0;
+    }) !== -1;
 
   // const [showDescriptionExpandOption, setShowDescriptionExpandOption] =
   // useState(charCount > 500)
-  const [descriptionIsExpanded, setDescriptionIsExpanded] = useState(false)
+  const [descriptionIsExpanded, setDescriptionIsExpanded] = useState(false);
 
   return (
     <>
@@ -57,10 +57,11 @@ export const AssetAboutSection = ({
         style={{
           backgroundImage: `linear-gradient(${rgbaStringFromRGBObj(
             palette.Vibrant.rgb,
-            0.085
+            0.085,
           )}, rgba(255,255,255,0))`,
           // borderBottom: `${assetColors.vibrant} 3px solid`,
-        }}>
+        }}
+      >
         <div className="p-5 mx-auto max-w-4xl">
           <h2 className="text-2xl md:text-3xl font-ath font-black pt-4 pb-2">
             About {assetData.name}
@@ -68,15 +69,18 @@ export const AssetAboutSection = ({
           {!descIsEmpty && (
             <div className="max-w-xl">
               <h3 className="text-gray-500 pb-2">Description</h3>
-              <div className={`${descriptionIsExpanded ? 'h-auto' : 'h-20 overflow-hidden'}`}>
+              <div
+                className={`${descriptionIsExpanded ? "h-auto" : "h-20 overflow-hidden"}`}
+              >
                 {parse(descArrayAsHtml)}
               </div>
               <button
                 className="w-full bg-gray-200 opacity-50 mt-2 text-gray-500 font-ath text-sm px-2 py-2"
                 onClick={() => {
-                  setDescriptionIsExpanded((current) => !current)
-                }}>
-                {descriptionIsExpanded ? 'Show less' : 'Show more'}
+                  setDescriptionIsExpanded((current) => !current);
+                }}
+              >
+                {descriptionIsExpanded ? "Show less" : "Show more"}
               </button>
             </div>
           )}
@@ -84,11 +88,16 @@ export const AssetAboutSection = ({
             <h3 className="text-gray-500 pb-1 pt-5">Market Cap</h3>
             <div className="max-w-xl">
               <p className="font-ath text-xl font-black">
-                {assetData.market_cap === 0 ? '?' : `$${formatNumber(assetData.market_cap)}`}
+                {assetData.market_cap === 0
+                  ? "?"
+                  : `$${formatNumber(assetData.market_cap)}`}
               </p>
             </div>
           </div>
-          <LinksSection assetInfoExtended={assetInfoExtended} palette={palette} />
+          <LinksSection
+            assetInfoExtended={assetInfoExtended}
+            palette={palette}
+          />
         </div>
       </div>
       <div className="w-full bg-white">
@@ -102,7 +111,8 @@ export const AssetAboutSection = ({
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       strokeLinecap="round"
@@ -111,26 +121,29 @@ export const AssetAboutSection = ({
                     />
                   </svg>
                   <p className="font-ath font-light text-lg text-gray-600">
-                    The ticker symbol ”<span className="font-bold">{assetid.toUpperCase()}</span>”
+                    The ticker symbol ”
+                    <span className="font-bold">{assetid.toUpperCase()}</span>”
                     also represents other assets
                   </p>
                 </div>
                 <button
                   className="bg-white px-2 py-1 mx-2 text-gray-800 text-sm font-ath flex flex-row items-center justify-center"
                   onClick={() => {
-                    setShowSymbolSharerAssets(!showSymbolSharerAssets)
-                  }}>
-                  {!showSymbolSharerAssets ? 'Show' : 'Hide'}
+                    setShowSymbolSharerAssets(!showSymbolSharerAssets);
+                  }}
+                >
+                  {!showSymbolSharerAssets ? "Show" : "Hide"}
                   <svg
                     className={`h-3 w-3 ml-2 ${
                       showSymbolSharerAssets
-                        ? 'transform rotate-180 duration-300 transition-all'
-                        : ''
+                        ? "transform rotate-180 duration-300 transition-all"
+                        : ""
                     }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
                     <path
                       d="M19 9l-7 7-7-7"
                       strokeLinecap="round"
@@ -143,11 +156,14 @@ export const AssetAboutSection = ({
               {showSymbolSharerAssets && (
                 <>
                   {assetInfo.map((asset: any, index: number) => {
-                    const athTimestamp = parseISO(assetInfo[index]?.ath_date)
-                    const athDate = format(athTimestamp, 'MMMM do, yyyy')
+                    const athTimestamp = parseISO(assetInfo[index]?.ath_date);
+                    const athDate = format(athTimestamp, "MMMM do, yyyy");
                     // const athTimestampFormatted = formatInTimeZone(athTimestamp, 'h:mm:ss a', 'UTC')
-                    const athTimestampFormatted = format(athTimestamp, 'h:mm:ss a')
-                    const lastUpdated = parseISO(assetInfo[index].last_updated)
+                    const athTimestampFormatted = format(
+                      athTimestamp,
+                      "h:mm:ss a",
+                    );
+                    const lastUpdated = parseISO(assetInfo[index].last_updated);
                     if (index !== 0)
                       return (
                         <div key={`shared-${index}`} className="pt-4">
@@ -170,7 +186,8 @@ export const AssetAboutSection = ({
                             <div
                               className="h-1 w-full -mb-4 mt-2"
                               style={{
-                                backgroundColor: assetColorsExtended[index].vibrant,
+                                backgroundColor:
+                                  assetColorsExtended[index].vibrant,
                               }}
                             />
                             <h3 className="text-2xl md:text-4xl text-black font-ath font-black inline-block mt-4 mb-4">
@@ -180,7 +197,11 @@ export const AssetAboutSection = ({
                             </h3>
                           </div>
                           <p className="font-ath font-light text-lg text-gray-600">
-                            Set <TimeAgo suppressHydrationWarning date={athTimestamp} />
+                            Set{" "}
+                            <TimeAgo
+                              suppressHydrationWarning
+                              date={athTimestamp}
+                            />
                           </p>
                           <p className="font-ath font-light text-xs text-gray-600">
                             on {athDate} at {athTimestampFormatted}
@@ -197,14 +218,18 @@ export const AssetAboutSection = ({
                                 className="font-ath font-light text-xs text-gray-800 leading-none px-2"
                                 href={`https://www.coingecko.com/en/coins/${asset.id}/usd`}
                                 rel="noopener noreferrer"
-                                target="_blank">
-                                Data accurate as of{' '}
-                                <TimeAgo suppressHydrationWarning date={lastUpdated} />
+                                target="_blank"
+                              >
+                                Data accurate as of{" "}
+                                <TimeAgo
+                                  suppressHydrationWarning
+                                  date={lastUpdated}
+                                />
                               </a>
                             </div>
                           </div>
                         </div>
-                      )
+                      );
                   })}
                 </>
               )}
@@ -213,5 +238,5 @@ export const AssetAboutSection = ({
         </div>
       </div>
     </>
-  )
-}
+  );
+};
