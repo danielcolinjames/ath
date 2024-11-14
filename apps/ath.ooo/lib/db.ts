@@ -1,6 +1,6 @@
 // client-side db interactions
 import { getCryptoAsset, updateCryptoAsset, getAllCryptoAssets } from '@repo/db'
-import { fetchFromCoingecko } from './coingecko'
+import { fetchFromCoingecko } from "../lib/coingecko";
 
 export async function getAssetData(ticker: string) {
   try {

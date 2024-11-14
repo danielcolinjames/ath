@@ -66,5 +66,36 @@
   //   "jest.config.js",
   //   "functions"
   // ]
-  "extends": "@repo/typescript-config/base.json"
+  "extends": "./packages/typescript-config/base.json",
+  "compilerOptions": {
+    "baseUrl": ".", // Set the baseUrl to the root of your project
+    "paths": {
+      "@repo/*": [
+        "./packages/*"
+      ],
+      "@packages/*": [
+        "packages/*"
+      ],
+      "@apps/*": [
+        "apps/*"
+      ],
+      "@utils/*": [
+        "packages/utils/*"
+      ]
+    }
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "next.config.mjs",
+    "utils/redis.js"
+  ],
+  "exclude": [
+    "node_modules",
+    "babel.config.js",
+    "metro.config.js",
+    "jest.config.js",
+    "functions"
+  ]
 }

@@ -47,10 +47,10 @@ export const updateAssetDetails = async (id: string) => {
 
   // console.log(coin)
   // console.log(data)
-  console.log(coin)
+  console.log("COIN: ", coin)
   console.log("TESTING!!! ", id)
 
-  if (!coin) {
+  if (!coin || !coin.image || !coin.image.large) {
     return null;
   }
 
@@ -60,7 +60,11 @@ export const updateAssetDetails = async (id: string) => {
 
   console.log(accent)
 
-  const { error: updateError } = await supabase
+  try {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+    const { error: updateError } = await supabase
     .from('crypto_assets')
     .update({
       accent: accent,
@@ -93,5 +97,9 @@ export const updateAssetDetails = async (id: string) => {
   // if (updateError) {
   //   console.error('Error updating asset details:', updateError);
   // }
-  return { ...coin, accent };
+    return { ...coin, accent };
+  } catch (error) {
+    console.error('Error updating asset details:', error);
+    return null;
+  }
 }

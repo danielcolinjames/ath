@@ -3,7 +3,8 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "turbo-dev": "turbo dev",
+    "dev": "yarn workspace @repo/ath.ooo dev",
     "lint": "turbo lint",
     "update": "node apps/ath.ooo/app/api/update/route.ts",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""

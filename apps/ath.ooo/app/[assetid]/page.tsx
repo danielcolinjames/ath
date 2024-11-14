@@ -1,7 +1,6 @@
 "use server";
 import Image from "next/image";
 import { Metadata } from "next";
-import { formatNumber } from "@repo/utils/numbers";
 // import { getAssetDataFromTicker } from "../../lib/utils";
 import { format, formatDistanceToNow } from "date-fns";
 import AssetChart from "../../components/AssetChart";
@@ -9,6 +8,7 @@ import { supabaseClient } from "../../lib/utils";
 import { createClient } from "../../lib/supabase/client";
 import { getList, updateAssetDetails } from "../../lib/coingecko/data";
 import { notFound } from "next/navigation";
+import { formatNumber } from "../../../../packages/utils/numbers";
 
 type Props = {
   params: { assetid: string };
@@ -52,6 +52,17 @@ export default async function CryptoAssetPage({
   const { assetid } = params;
   console.log("assetid", assetid);
 
+  const coingeckoRootUrl = process.env.COINGECKO_ROOT_URL;
+  const coingeckoApiKey = process.env.COINGECKO_API_KEY;
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  // Print environment variables to the console
+  console.log("Coingecko Root URL:", coingeckoRootUrl);
+  console.log("Coingecko API Key:", coingeckoApiKey);
+  console.log("Supabase URL:", supabaseUrl);
+  console.log("Supabase Anon Key:", supabaseAnonKey);
+
   const lowercaseAssetid = assetid.toLowerCase();
   const {
     data: assets,
@@ -81,7 +92,7 @@ export default async function CryptoAssetPage({
 
   const updatedAsset = await updateAssetDetails(asset?.coingecko_id);
 
-  console.log(updatedAsset);
+  // console.log(updatedAsset);
 
   const mainAsset = updatedAsset;
 
@@ -120,7 +131,7 @@ export default async function CryptoAssetPage({
   // );
 
   // const mainAsset = mainAssets?.find((asset: any) => asset.ticker === assetid);
-  console.log(asset);
+  // console.log(asset);
 
   return (
     <div className="flex flex-col w-full">
