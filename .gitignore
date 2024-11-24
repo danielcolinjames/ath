@@ -45,3 +45,12 @@ yarn-error.log*
 **/*.env.production.local
 
 /ref
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+og.ath.ooo
+
+.turbo
+.next
+*/**/node_modules
