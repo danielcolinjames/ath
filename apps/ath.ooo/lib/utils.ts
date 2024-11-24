@@ -2,6 +2,7 @@
 // import { fetchFromCoingecko } from "./coingecko";
 // import { getImg } from "./colors";
 
+import { fetchFromCoingecko } from "./coingecko";
 import { createClient } from "./supabase";
 
 // export type AssetInfo = {
@@ -44,14 +45,20 @@ import { createClient } from "./supabase";
 //   otherAssets: AssetInfo[] | null;
 // };
 
-// export async function getMarketChartDataFromId(assetId: string, athTimeStamp: string) {
-//   const marketChartData = await fetchFromCoingecko(`/coins/${assetId}/market_chart`, {
-//     vs_currency: "usd",
-//     from: athTimeStamp,
-//     to: `${Math.floor(Date.now() / 1000)}`,
-//   });
-//   return marketChartData;
-// }
+export async function getMarketChartDataFromId(
+  assetId: string,
+  athTimeStamp: string,
+) {
+  const marketChartData = await fetchFromCoingecko(
+    `/coins/${assetId}/market_chart`,
+    {
+      vs_currency: "usd",
+      from: athTimeStamp,
+      to: `${Math.floor(Date.now() / 1000)}`,
+    },
+  );
+  return marketChartData;
+}
 
 // export async function getAssetDataFromTicker(
 //   ticker: string,
@@ -91,6 +98,5 @@ import { createClient } from "./supabase";
 
 //   return { mainAsset: assetInfo[0], otherAssets: assetInfo.slice(1) };
 // }
-
 
 export const supabaseClient = createClient();

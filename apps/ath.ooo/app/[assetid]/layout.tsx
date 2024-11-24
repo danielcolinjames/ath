@@ -15,11 +15,13 @@ export default async function Layout({
 
   return (
     <div
-      className="w-full flex flex-col"
+      className="w-full flex flex-col min-h-screen items-center justify-center"
       // style={{ backgroundColor: `${accentColor}00` }}
     >
       {/* <NavBar accentColor={accentColor} ticker={assetid} /> */}
-      <main className="flex flex-col grow mt-14">{children}</main>
+      <main className="flex flex-col grow mt-14 items-center justify-center">
+        {children}
+      </main>
     </div>
   );
 }

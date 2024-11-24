@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Line } from "react-chartjs-2";
-import { formatNumber } from "@repo/utils/numbers";
 import { Chart, registerables } from "chart.js";
 import {
   fromUnixTime,
@@ -13,6 +12,7 @@ import {
 } from "date-fns";
 import hexToRgba from "hex-to-rgba";
 import { getMarketChartDataFromId } from "../lib/utils";
+import { formatNumber } from "../../../packages/utils/numbers";
 Chart.register(...registerables);
 
 interface AssetChartProps {
@@ -42,16 +42,21 @@ const AssetChart = ({
         sub(athDate, { days: daysBetweenNowAndAth + 3 }),
       );
 
-      const marketChartResponse = await fetch(
-        `https://api.coingecko.com/api/v3/coins/${
-          assetData.id
-        }/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
-          Date.now() / 1000,
-        )}`,
+      // const marketChartResponse = await fetch(
+      //   `https://api.coingecko.com/api/v3/coins/${
+      //     assetData.id
+      //   }/market_chart/range?vs_currency=usd&from=${athTimestamp}&to=${Math.floor(
+      //     Date.now() / 1000,
+      //   )}`,
+      // );
+      // const marketChartData = marketChartResponse.ok
+      //   ? await marketChartResponse.json()
+      //   : [];
+
+      const marketChartData = await getMarketChartDataFromId(
+        assetData.id,
+        athDate.toISOString(),
       );
-      const marketChartData = marketChartResponse.ok
-        ? await marketChartResponse.json()
-        : [];
 
       setMarketChart(marketChartData);
       setMarketChartLoading(false);

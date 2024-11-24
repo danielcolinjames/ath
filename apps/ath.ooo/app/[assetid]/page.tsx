@@ -1,14 +1,14 @@
 "use server";
 import Image from "next/image";
 import { Metadata } from "next";
-// import { getAssetDataFromTicker } from "../../lib/utils";
 import { format, formatDistanceToNow } from "date-fns";
 import AssetChart from "../../components/AssetChart";
-import { supabaseClient } from "../../lib/utils";
-import { createClient } from "../../lib/supabase/client";
-import { getList, updateAssetDetails } from "../../lib/coingecko/data";
 import { notFound } from "next/navigation";
 import { formatNumber } from "../../../../packages/utils/numbers";
+import { getAssetDetails } from "../../lib/db";
+import { OtherAssetsSection } from "../../components/OtherAssetsSection";
+
+const fallbackImageUrl = "missing_large.png";
 
 type Props = {
   params: { assetid: string };
@@ -44,153 +44,91 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CryptoAssetPage({
-  params,
-}: {
-  params: { assetid: string };
-}) {
-  const { assetid } = params;
-  console.log("assetid", assetid);
+export default async function AssetPage({ params: { assetid } }: Props) {
+  const response = await getAssetDetails(assetid);
 
-  const coingeckoRootUrl = process.env.COINGECKO_ROOT_URL;
-  const coingeckoApiKey = process.env.COINGECKO_API_KEY;
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  console.log(response);
 
-  // Print environment variables to the console
-  console.log("Coingecko Root URL:", coingeckoRootUrl);
-  console.log("Coingecko API Key:", coingeckoApiKey);
-  console.log("Supabase URL:", supabaseUrl);
-  console.log("Supabase Anon Key:", supabaseAnonKey);
-
-  const lowercaseAssetid = assetid.toLowerCase();
-  const {
-    data: assets,
-    error,
-    count,
-  } = await createClient()
-    .from("crypto_assets")
-    .select("*")
-    .eq("symbol", lowercaseAssetid)
-    .order("market_cap", { ascending: false, nullsFirst: false })
-    .order("name", { ascending: true });
-
-  console.log(`Query result:`, { assets, error, count });
-
-  if (assets?.length === 0) {
-    return <div>No assets found</div>;
-  }
-
-  console.log("HELLO!!!!");
-  const asset = assets?.[0];
-
-  console.log(asset);
-
-  if (!asset?.coingecko_id) {
+  if (!response) {
     return notFound();
   }
 
-  const updatedAsset = await updateAssetDetails(asset?.coingecko_id);
+  const { assets, stale } = response;
 
-  // console.log(updatedAsset);
+  if (!assets || assets.length === 0) {
+    return notFound();
+  }
 
-  const mainAsset = updatedAsset;
-
-  // if (1 > 2) {
-  //   return (
-  //     <div
-  //       className="h-10 w-full"
-  //       style={{ backgroundColor: updatedAsset.accent }}
-  //     >
-  //       <p>{asset.name}</p>
-  //       <p>{updatedAsset.accent}</p>
-  //       <pre>{JSON.stringify(asset, null, 2)}</pre>
-  //       <pre>{JSON.stringify(updatedAsset, null, 2)}</pre>
-  //       {/* <pre>{JSON.stringify(list, null, 2)}</pre>
-  //       <pre>{JSON.stringify(mainAssets, null, 2)}</pre> */}
-  //     </div>
-  //   );
-  // }
-
-  // const { mainAsset, otherAssets } = await getAssetDataFromTicker(assetid);
-
-  // if (!mainAsset) {
-  //   return (
-  //     <div>
-  //       <h1>404: No assets match the ticker {assetid.toUpperCase()}</h1>
-  //     </div>
-  //   );
-  // }
-
-  // const timeSinceAth = formatDistanceToNow(new Date(mainAsset.ath_date), {
-  //   addSuffix: true,
-  // });
-  // const formattedAthDate = format(
-  //   new Date(mainAsset.ath_date),
-  //   "MMMM do, yyyy",
-  // );
-
-  // const mainAsset = mainAssets?.find((asset: any) => asset.ticker === assetid);
-  // console.log(asset);
+  const asset = assets[0];
+  const otherAssets = assets.slice(1);
 
   return (
     <div className="flex flex-col w-full">
       <div className="flex flex-col items-center justify-center gap-10">
-        <div className="flex flex-row items-center justify-center gap-2">
-          <Image
-            src={asset.image}
-            alt={asset.name}
-            width={50}
-            height={50}
-            className="rounded-full"
+        <div
+          className="relative bg-black/40 backdrop-blur-md pl-4 py-4 pr-8 rounded-full overflow-hidden shadow-sm border-2"
+          style={{
+            boxShadow: `0 0 100px -10px ${asset.accent}33`,
+            borderColor: `${asset.accent}22`,
+          }}
+        >
+          {/* Animated glowing circle */}
+          <div
+            className="absolute top-1/2 left-1/2 w-[250px] h-[100px] rounded-full blur-2xl opacity-20 animate-drift"
+            style={{
+              backgroundColor: asset.accent,
+            }}
           />
-          <p className="text-5xl font-light">{mainAsset.name}</p>
+          {/* Content container */}
+          <div className="relative flex flex-row items-center justify-center gap-5">
+            {asset.image && asset.image !== fallbackImageUrl ? (
+              <Image
+                src={asset.image}
+                alt={asset.name}
+                width={96}
+                height={96}
+                className="rounded-full"
+              />
+            ) : (
+              <div className="w-[96px] h-[96px] bg-gray-800 border border-gray-700 rounded-full" />
+            )}
+            <p className="text-6xl font-light">{asset.name}</p>
+          </div>
         </div>
-        <div className="flex flex-row">
-          <div className="flex flex-col">
-            <p className="text-gray-400 font-light text-lg">All-time high</p>
+        <div className="flex flex-col items-center justify-center gap-5">
+          <div className="flex flex-col items-center justify-center">
+            <p className="text-gray-500 font-medium text-base">
+              All-time high price
+            </p>
             <p
               className="text-7xl font-bold flex items-start justify-start"
-              style={{ color: mainAsset.accent }}
+              style={{ color: asset.accent }}
             >
               <span className="text-2xl pr-2 pt-1">$</span>
-              {asset.ath}
+              {formatNumber(asset.ath)}
             </p>
-            <p className="text-xl text-gray-400">
-              {/* set {timeSinceAth}, on {formattedAthDate} */}
+            <p className="text-base text-gray-500 font-medium">
+              on {format(new Date(asset.ath_date), "MMMM do, yyyy")}
             </p>
           </div>
-          <div className="flex flex-col">
-            <p className="text-gray-400 font-light text-lg">Current price</p>
+          <div className="flex flex-col items-center justify-center">
+            <p className="text-gray-500 font-medium text-base">Current price</p>
             <p className="text-7xl font-bold flex items-start justify-start text-white">
               <span className="text-2xl pr-2 pt-1">$</span>
-              {formatNumber(mainAsset.current_price)}
+              {formatNumber(asset.current_price)}
             </p>
           </div>
         </div>
         {/* <AssetChart
-          accentColor={mainAsset.accent}
-          assetData={mainAsset}
+          accentColor={asset.accent}
+          assetData={asset}
           className="z-10"
           wrapperClassName="max-h-[30vh] w-full"
         /> */}
       </div>
-      {/* {otherAssets?.length !== 0 && (
-        <div className='mt-10'>
-          <p className='text-2xl font-light text-gray-400 p-5'>Other assets with the same ticker</p>
-          <div className="grid grid-cols-3">
-            {otherAssets?.map((asset: any, index: any) => {
-              return (
-                <div className='flex flex-col px-5 py-2' key={index}>
-                  <p className='text-2xl font-bold' style={{ color: asset.accentColor }}>{asset.name}</p>
-                  <p className='text-5xl font-bold'>${formatNumber(asset.ath)}</p>
-                  <p className='text-sm font-light'>on {format(new Date(asset.ath_date), 'MMMM do, yyyy')}</p>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-      )} */}
+      {otherAssets?.length !== 0 && (
+        <OtherAssetsSection otherAssets={otherAssets} />
+      )}
     </div>
   );
 }
