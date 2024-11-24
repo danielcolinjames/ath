@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import GoogleAnalytics from "../components/GoogleAnalytics";
 import NavBar from "../components/NavBar";
 
+export const dynamic = "force-dynamic";
+
 // Font files can be colocated inside of `app`
 const satoshiFont = localFont({
   src: "../assets/fonts/Satoshi-Variable.ttf",
