@@ -2,6 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchFromCoingecko } from "../../../lib/coingecko";
 import { createClient } from "../../../lib/supabase/server";
 
+type TickerMap = {
+  [key: string]: string[];
+};
+
+type CoinListItem = {
+  symbol: string;
+  id: string;
+};
+
 export async function GET(request: NextRequest) {
   try {
     console.log("Fetching coin list from CoinGecko...");
@@ -10,16 +19,22 @@ export async function GET(request: NextRequest) {
     console.log(`Fetched ${coinList.length} coins from CoinGecko`);
 
     // group CoinGecko IDs by ticker
-    const tickerMap = coinList.reduce(
-      (acc: { [x: string]: any[] }, coin: { symbol: string; id: any }) => {
+    const tickerMap = (coinList as CoinListItem[]).reduce<TickerMap>(
+      (acc, coin) => {
         const ticker = coin.symbol.toLowerCase();
-        if (!acc[ticker]) acc[ticker] = [];
-        acc[ticker].push(coin.id);
+        if (!acc[ticker]) {
+          acc[ticker] = [];
+        }
+        try {
+          // tell TypeScript "trust me, this exists"
+          acc[ticker]!.push(coin.id);
+        } catch (e) {
+          console.error(`Error pushing ${coin.id} to ${ticker}:`, e);
+        }
         return acc;
       },
-      {},
+      {} as TickerMap,
     );
-
     const supabase = createClient();
 
     console.log(
