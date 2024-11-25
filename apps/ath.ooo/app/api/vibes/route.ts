@@ -1,4 +1,5 @@
 import Vibrant from "node-vibrant";
+import { createClient } from "../../../lib/supabase/server";
 
 export default async function handler(req: any, res: any) {
   const imageUrl = req?.query?.image;
@@ -28,6 +29,21 @@ export default async function handler(req: any, res: any) {
   } else {
     res.statusCode = 404;
   }
+}
+
+export async function POST(request: Request) {
+  const { coingecko_id, accent } = await request.json();
+  const supabase = createClient();
+
+  const { error } = await supabase
+    .from("asset_details")
+    .update({ accent })
+    .eq("coingecko_id", coingecko_id);
+
+  if (error) {
+    return Response.json({ error: error.message }, { status: 500 });
+  }
+  return Response.json({ success: true });
 }
 
 export async function getImg(url: string) {

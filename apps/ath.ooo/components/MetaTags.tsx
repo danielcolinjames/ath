@@ -1,3 +1,5 @@
+"use client";
+
 import Head from "next/head";
 import { useSystemColorMode } from "react-use-system-color-mode";
 
@@ -30,8 +32,12 @@ const MetaTags = ({
   const metaUrl = url ? url : "https://ath.ooo/";
   let r, g, b;
 
-  if (rgb) [r, g, b] = rgb;
+  if (rgb) {
+    ({ r, g, b } = rgb);
+  }
   const systemTheme = useSystemColorMode();
+
+  console.log("MetaTags RGB values:", rgb);
 
   return (
     <>

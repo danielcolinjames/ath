@@ -17,7 +17,9 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "../../packages/**/*.ts",
-    "../../apps/**/*.tsx"
+    "../../apps/**/*.tsx",
+    "app/api/update-asset-mapping/route.ts",
+    "app/api/fetch-top-assets/route.ts"
   ],
   "exclude": [
     "node_modules"

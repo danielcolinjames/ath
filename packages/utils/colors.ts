@@ -1,4 +1,3 @@
-const rgbHex = require("rgb-hex");
 import { hex } from "wcag-contrast";
 
 interface VibrantColor {
@@ -40,12 +39,12 @@ export const getPercentChangeColorClassName = (pc: number) => {
 
 export const getHexFromRGB = (rgbObject: any) => {
   const [r, g, b] = rgbObject;
-  const hex = rgbHex(r, g, b);
+  const hex = rgbToHex(r, g, b);
   return `#${hex}`;
 };
 
 export const rgbToHex = (r: number, g: number, b: number) => {
-  const hex = rgbHex(r, g, b);
+  const hex = convertRgbToHex(r, g, b);
   return `${hex}`;
 };
 
@@ -84,4 +83,34 @@ export function shouldBeWhiteText(
     return true;
   }
   return false;
+}
+
+interface RGB {
+  r: number;
+  g: number;
+  b: number;
+}
+
+export function hexToRgb(hex: string): RGB {
+  // Remove the # if present
+  const cleanHex = hex.replace(/^#/, "");
+
+  // Parse the hex values
+  const r = parseInt(cleanHex.substring(0, 2), 16);
+  const g = parseInt(cleanHex.substring(2, 4), 16);
+  const b = parseInt(cleanHex.substring(4, 6), 16);
+
+  return { r, g, b };
+}
+
+export function convertRgbToHex(r: number, g: number, b: number): string {
+  return (
+    "#" +
+    [r, g, b]
+      .map((x) => {
+        const hex = x.toString(16);
+        return hex.length === 1 ? "0" + hex : hex;
+      })
+      .join("")
+  );
 }

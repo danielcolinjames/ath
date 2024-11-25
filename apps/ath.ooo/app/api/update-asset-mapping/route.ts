@@ -1,6 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
+import "dotenv/config";
+import { NextResponse } from "next/server";
 import { fetchFromCoingecko } from "../../../lib/coingecko";
-import { createClient } from "../../../lib/supabase/server";
+import { createClient } from "../../../lib/supabase/cli";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
@@ -14,7 +15,7 @@ type CoinListItem = {
   id: string;
 };
 
-export async function GET(request: NextRequest) {
+export async function main() {
   try {
     console.log("Fetching coin list from CoinGecko...");
     const coinList = await fetchFromCoingecko("/coins/list", {});
@@ -72,3 +73,5 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+main();

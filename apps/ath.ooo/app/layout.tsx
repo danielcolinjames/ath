@@ -1,7 +1,8 @@
 import "./globals.css";
 import localFont from "next/font/local";
 import GoogleAnalytics from "../components/GoogleAnalytics";
-import NavBar from "../components/NavBar";
+import MetaTags from "../components/MetaTags";
+import { hexToRgb } from "../../../packages/utils/colors";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +13,9 @@ const satoshiFont = localFont({
   variable: "--font-satoshi",
 });
 
+const defaultThemeColor = "#00FFBA";
+const defaultRgb = hexToRgb(defaultThemeColor);
+
 export default function RootLayout({
   children,
 }: {
@@ -19,6 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${satoshiFont.variable} dark`}>
+      <MetaTags rgb={defaultRgb} />
       <body className={satoshiFont.className}>
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
           <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />

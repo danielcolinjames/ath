@@ -6,7 +6,8 @@
     "turbo-dev": "turbo dev",
     "dev": "yarn workspace @repo/ath.ooo dev",
     "lint": "turbo lint",
-    "update": "node apps/ath.ooo/app/api/update/route.ts",
+    "update-top-assets": "tsx apps/ath.ooo/app/api/fetch-top-assets/route.ts",
+    "update-asset-mapping": "tsx apps/ath.ooo/app/api/update-asset-mapping/route.ts",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
@@ -14,10 +15,11 @@
     "@repo/typescript-config": "*",
     "prettier": "3.3.1",
     "turbo": "latest",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "tsx": "^4.7.1"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "packageManager": "yarn@1.22.21",
   "workspaces": [
