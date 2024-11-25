@@ -27,7 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return notFound();
   }
 
-  const rootUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const rootUrl =
+    process.env.NEXT_PUBLIC_ABSOLUTE_URL || "http://localhost:3000";
 
   return {
     title: `${asset.symbol.toUpperCase()} | ath.ooo`,
