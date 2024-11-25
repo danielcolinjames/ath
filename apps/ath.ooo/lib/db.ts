@@ -2,7 +2,7 @@ import { fetchFromCoingecko } from "./coingecko";
 import { getImg } from "./colors";
 import { createClient } from "./supabase/server";
 
-type AssetDetails = {
+export type AssetDetails = {
   coingecko_id: string;
   name: string;
   symbol: string;
@@ -16,7 +16,7 @@ type AssetDetails = {
   accent: string;
 };
 
-type AssetDetailsResponse = {
+export type AssetDetailsResponse = {
   assets: AssetDetails[];
   stale: boolean;
 } | null;
