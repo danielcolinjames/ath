@@ -27,6 +27,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return notFound();
   }
 
+  const rootUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+
   return {
     title: `${asset.symbol.toUpperCase()} | ath.ooo`,
     description: `${asset.symbol.toUpperCase()} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
@@ -42,10 +44,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
     twitter: {
       card: "summary_large_image",
-      title: `${asset.symbol.toUpperCase()} All Time High: $${asset.ath.toLocaleString()}`,
+      title: `ath.ooo/${asset.symbol.toUpperCase()}`,
       description: `${asset.symbol.toUpperCase()} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
       images: [
-        `/api/og?symbol=${asset.symbol}&ath=${asset.ath}&date=${asset.ath_date}&accent=${encodeURIComponent(asset.accent)}&logo=${encodeURIComponent(asset.logo)}`,
+        `${rootUrl}/api/og?symbol=${asset.symbol}&ath=${asset.ath}&date=${asset.ath_date}&accent=${encodeURIComponent(asset.accent)}&logo=${encodeURIComponent(asset.logo)}`,
       ],
     },
   };
