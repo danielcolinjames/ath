@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import GoogleAnalytics from "../components/GoogleAnalytics";
 import MetaTags from "../components/MetaTags";
 import { hexToRgb } from "../../../packages/utils/colors";
+import { Metadata } from "next";
+import { ThemeManager } from "../components/ThemeManager";
 
 export const dynamic = "force-dynamic";
 
@@ -25,6 +27,7 @@ export default function RootLayout({
     <html lang="en" className={`${satoshiFont.variable} dark`}>
       <MetaTags rgb={defaultRgb} />
       <body className={satoshiFont.className}>
+        <ThemeManager />
         {process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS ? (
           <GoogleAnalytics ga_id={process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS} />
         ) : null}
@@ -35,3 +38,15 @@ export default function RootLayout({
     </html>
   );
 }
+
+export const metadata: Metadata = {
+  icons: {
+    icon: [
+      {
+        url: "/favicon.ico",
+        sizes: "32x32",
+      },
+    ],
+  },
+  // ... other metadata
+};
