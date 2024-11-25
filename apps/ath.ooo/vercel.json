@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/update-aths",
-      "schedule": "0 0 * * *"
+      "schedule": "*/10 * * * *"
     }
   ]
 }
