@@ -34,16 +34,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       icon: `/api/favicon?symbol=${params.assetid}&theme=${cookies().get("theme")?.value || "dark"}`,
     },
     openGraph: {
-      title: `${asset.symbol} All Time High: $${asset.ath.toLocaleString()}`,
-      description: `${asset.symbol} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
+      title: `${asset.symbol.toUpperCase()} All Time High: $${asset.ath.toLocaleString()}`,
+      description: `${asset.symbol.toUpperCase()} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
       images: [
         `/api/og?symbol=${asset.symbol}&ath=${asset.ath}&date=${asset.ath_date}&accent=${encodeURIComponent(asset.accent)}&logo=${encodeURIComponent(asset.logo)}`,
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${asset.symbol} All Time High: $${asset.ath.toLocaleString()}`,
-      description: `${asset.symbol} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
+      title: `${asset.symbol.toUpperCase()} All Time High: $${asset.ath.toLocaleString()}`,
+      description: `${asset.symbol.toUpperCase()} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
       images: [
         `/api/og?symbol=${asset.symbol}&ath=${asset.ath}&date=${asset.ath_date}&accent=${encodeURIComponent(asset.accent)}&logo=${encodeURIComponent(asset.logo)}`,
       ],

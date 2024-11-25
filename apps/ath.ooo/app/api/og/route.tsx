@@ -1,5 +1,4 @@
 import { ImageResponse } from "next/og";
-import { loadLocalFont } from "./fonts";
 
 export const runtime = "edge";
 
@@ -55,7 +54,7 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const symbol = searchParams.get("symbol")?.toUpperCase();
   const ath = searchParams.get("ath");
-  const accent = searchParams.get("accent") || "#00FFBA";
+  const accent = searchParams.get("accent");
   const logo = searchParams.get("logo");
 
   console.log("OG Image params:", { symbol, ath, accent, logo });
@@ -65,10 +64,27 @@ export async function GET(request: Request) {
     new URL("../../../assets/fonts/Satoshi-Black.otf", import.meta.url),
   ).then((res) => res.arrayBuffer());
 
-  // Calculate font size based on number length
+  // Format number to handle small decimals
   const athValue = Number(ath || 0);
-  const athString = athValue.toLocaleString();
-  const fontSize = Math.min(180, 1800 / athString.length);
+  let athString = athValue.toString();
+
+  // If it's a small number, use scientific notation for display
+  if (athValue < 0.001) {
+    athString = athValue.toFixed(8);
+  } else if (athValue < 1) {
+    athString = athValue.toFixed(6);
+  } else {
+    athString = athValue.toLocaleString(undefined, {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
+  }
+
+  // Calculate font size based on number length
+  const fontSize = Math.min(180, 1200 / athString.length);
+
+  // Ensure we have a good accent color
+  const accentColor = accent && accent !== "#555" ? accent : "#00FFBA";
 
   return new ImageResponse(
     (
@@ -83,14 +99,14 @@ export async function GET(request: Request) {
           fontFamily: "Satoshi",
           padding: "40px",
           backgroundImage: `
-            radial-gradient(circle at 0% 0%, ${accent}11 0%, transparent 50%),
-            radial-gradient(circle at 100% 0%, ${accent}11 0%, transparent 50%),
-            radial-gradient(circle at 100% 100%, ${accent}11 0%, transparent 50%),
-            radial-gradient(circle at 0% 100%, ${accent}11 0%, transparent 50%),
-            linear-gradient(45deg, transparent 0%, ${accent}05 25%, transparent 50%),
-            linear-gradient(-45deg, transparent 0%, ${accent}05 25%, transparent 50%)
+            radial-gradient(circle at 0% 0%, ${accentColor}11 0%, transparent 50%),
+            radial-gradient(circle at 100% 0%, ${accentColor}11 0%, transparent 50%),
+            radial-gradient(circle at 100% 100%, ${accentColor}11 0%, transparent 50%),
+            radial-gradient(circle at 0% 100%, ${accentColor}11 0%, transparent 50%),
+            linear-gradient(45deg, transparent 0%, ${accentColor}05 25%, transparent 50%),
+            linear-gradient(-45deg, transparent 0%, ${accentColor}05 25%, transparent 50%)
           `,
-          boxShadow: `0 0 150px ${accent}11 inset`,
+          boxShadow: `0 0 150px ${accentColor}11 inset`,
         }}
       >
         {/* ATH Logo */}
@@ -103,7 +119,7 @@ export async function GET(request: Request) {
             opacity: 0.8,
           }}
         >
-          <AthLogo accent={accent} />
+          <AthLogo accent={accentColor} />
         </div>
 
         {/* Asset Info */}
@@ -125,7 +141,7 @@ export async function GET(request: Request) {
                 height: "80px",
                 borderRadius: "40px",
                 background: "rgba(255,255,255,0.05)",
-                boxShadow: `0 0 30px ${accent}22`,
+                boxShadow: `0 0 30px ${accentColor}22`,
                 padding: "4px",
               }}
             >
@@ -158,13 +174,13 @@ export async function GET(request: Request) {
             alignItems: "center",
             gap: "16px",
             padding: "40px 64px",
-            border: `3px solid ${accent}`,
+            border: `3px solid ${accentColor}`,
             borderRadius: "20px",
             background: "rgba(0,0,0,0.4)",
             backdropFilter: "blur(40px)",
             boxShadow: `
-              0 0 30px ${accent}22,
-              0 0 100px ${accent}11 inset
+              0 0 30px ${accentColor}22,
+              0 0 100px ${accentColor}11 inset
             `,
           }}
         >
@@ -184,7 +200,7 @@ export async function GET(request: Request) {
             style={{
               display: "flex",
               fontSize: fontSize,
-              color: accent,
+              color: accentColor,
               fontWeight: 700,
               letterSpacing: "-0.03em",
               lineHeight: 1,

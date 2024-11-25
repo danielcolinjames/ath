@@ -20,7 +20,7 @@ export function OgDebugPanel({ ogUrl }: OgDebugPanelProps) {
 
       {isOpen && (
         <div className="fixed inset-0 bg-black/80 flex items-center justify-center p-4">
-          <div className="bg-black/90 p-6 rounded-xl border border-white/10 w-[90vw] max-h-[90vh] overflow-auto">
+          <div className="bg-black/90 p-6 rounded-xl border border-white/10 w-[70vw] max-h-[90vh] overflow-auto">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-white/80 text-sm font-mono">
                 OG Image Preview
