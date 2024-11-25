@@ -187,14 +187,16 @@ export const AssetDetailSection = ({
                   </div>
                 ) : (
                   <div className="flex flex-col sm:flex-row items-start justify-between">
-                    <div>
-                      <p className="font-ath font-light text-2xl md:text-3xl py-1 text-gray-900">
-                        Set <TimeAgo date={athTimestamp} />
-                      </p>
-                      <p className="font-ath font-light text-sm md:text-md text-gray-600">
-                        on {athDate} at {athTimestampFormatted} UTC
-                      </p>
-                    </div>
+                    {athTimestamp && (
+                      <div>
+                        <p className="font-ath font-light text-2xl md:text-3xl py-1 text-gray-900">
+                          Set <TimeAgo date={athTimestamp} />
+                        </p>
+                        <p className="font-ath font-light text-sm md:text-md text-gray-600">
+                          on {athDate} at {athTimestampFormatted} UTC
+                        </p>
+                      </div>
+                    )}
                     <div
                       className="h-px w-full mt-4 mb-4 block sm:hidden"
                       style={{

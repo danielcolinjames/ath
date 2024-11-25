@@ -3,7 +3,7 @@ import { fetchFromCoingecko } from "../../../lib/coingecko";
 import { differenceInMinutes, parseISO } from "date-fns";
 import { createClient } from "../../../lib/supabase/cli";
 
-async function main() {
+export async function GET() {
   try {
     console.log("Fetching market data from CoinGecko...");
     const marketData = await fetchFromCoingecko("/coins/markets", {
@@ -64,5 +64,3 @@ async function main() {
     console.error("Error:", error);
   }
 }
-
-main();

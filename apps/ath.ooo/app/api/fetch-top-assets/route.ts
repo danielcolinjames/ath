@@ -1,9 +1,9 @@
 import "dotenv/config";
 import { fetchFromCoingecko } from "../../../lib/coingecko";
 import { createClient } from "../../../lib/supabase/cli";
-import { getImg } from "../vibes/route";
+import { getImg } from "../../../lib/colors";
 
-async function main() {
+export async function GET() {
   try {
     console.log("Fetching market data from CoinGecko...");
     let allMarketData: any[] = [];
@@ -83,5 +83,3 @@ async function main() {
     console.error("Error:", error);
   }
 }
-
-main();

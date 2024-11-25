@@ -67,7 +67,7 @@ const AssetListItem = ({
         </span>
         {showTimeSince && (
           <span className="text-gray-400 font-normal">
-            <TimeAgo suppressHydrationWarning date={athTimestamp} />
+            <TimeAgo date={athTimestamp} />
           </span>
         )}
       </span>

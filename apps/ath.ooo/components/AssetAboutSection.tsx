@@ -197,11 +197,7 @@ export const AssetAboutSection = ({
                             </h3>
                           </div>
                           <p className="font-ath font-light text-lg text-gray-600">
-                            Set{" "}
-                            <TimeAgo
-                              suppressHydrationWarning
-                              date={athTimestamp}
-                            />
+                            Set <TimeAgo date={athTimestamp} />
                           </p>
                           <p className="font-ath font-light text-xs text-gray-600">
                             on {athDate} at {athTimestampFormatted}
@@ -221,10 +217,7 @@ export const AssetAboutSection = ({
                                 target="_blank"
                               >
                                 Data accurate as of{" "}
-                                <TimeAgo
-                                  suppressHydrationWarning
-                                  date={lastUpdated}
-                                />
+                                <TimeAgo date={lastUpdated} />
                               </a>
                             </div>
                           </div>

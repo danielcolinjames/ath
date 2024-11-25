@@ -15,7 +15,7 @@ type CoinListItem = {
   id: string;
 };
 
-export async function main() {
+export async function GET() {
   try {
     console.log("Fetching coin list from CoinGecko...");
     const coinList = await fetchFromCoingecko("/coins/list", {});
@@ -73,5 +73,3 @@ export async function main() {
     );
   }
 }
-
-main();

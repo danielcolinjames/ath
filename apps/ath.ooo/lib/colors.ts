@@ -32,17 +32,6 @@ export default async function handler(req: any, res: any) {
   }
 }
 
-export async function getImg(url: string) {
-  try {
-    const img = new Vibrant(url);
-    const colors = await img.getPalette();
-    return colors;
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-  }
-}
-
 interface VibrantColor {
   r?: number;
   g?: number;
@@ -126,4 +115,15 @@ export function shouldBeWhiteText(
     return true;
   }
   return false;
+}
+
+export async function getImg(url: string) {
+  try {
+    const img = new Vibrant(url);
+    const colors = await img.getPalette();
+    return colors;
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error);
+  }
 }
