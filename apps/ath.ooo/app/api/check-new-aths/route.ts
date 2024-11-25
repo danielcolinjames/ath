@@ -2,7 +2,7 @@ import "dotenv/config";
 import { fetchFromCoingecko } from "../../../lib/coingecko";
 import { differenceInMinutes, parseISO } from "date-fns";
 import { createClient } from "../../../lib/supabase/cli";
-
+import { NextResponse } from "next/server";
 export async function GET() {
   try {
     console.log("Fetching market data from CoinGecko...");
@@ -60,7 +60,17 @@ export async function GET() {
     console.log(`Total assets processed: ${marketData.length}`);
     console.log(`Assets updated: ${updatedCount}`);
     console.log(`New ATHs found: ${newAthCount}`);
+    return NextResponse.json({
+      success: true,
+      processed: marketData.length,
+      updated: updatedCount,
+      newATHs: newAthCount,
+    });
   } catch (error) {
     console.error("Error:", error);
+    return NextResponse.json({
+      success: false,
+      error: error,
+    });
   }
 }

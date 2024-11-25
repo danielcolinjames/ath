@@ -2,7 +2,7 @@ import "dotenv/config";
 import { fetchFromCoingecko } from "../../../lib/coingecko";
 import { createClient } from "../../../lib/supabase/cli";
 import { getImg } from "../../../lib/colors";
-
+import { NextResponse } from "next/server";
 export async function GET() {
   try {
     console.log("Fetching market data from CoinGecko...");
@@ -79,7 +79,18 @@ export async function GET() {
     console.log(`Total assets fetched: ${allMarketData.length}`);
     console.log(`Assets updated: ${updatedCount}`);
     console.log(`Errors encountered: ${errorCount}`);
+
+    return NextResponse.json({
+      success: true,
+      processed: allMarketData.length,
+      updated: updatedCount,
+      errors: errorCount,
+    });
   } catch (error) {
     console.error("Error:", error);
+    return NextResponse.json({
+      success: false,
+      error: error,
+    });
   }
 }
