@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/update-asset-mapping",
-      "schedule": "0 * * * *"
+      "schedule": "0 0 * * *"
     }
   ]
 }
