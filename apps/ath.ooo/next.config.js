@@ -7,6 +7,7 @@ module.exports = {
     return config;
   },
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         hostname: "assets.coingecko.com",
