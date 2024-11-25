@@ -28,7 +28,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const rootUrl =
-    process.env.NEXT_PUBLIC_ABSOLUTE_URL || "http://localhost:3000";
+    process.env.NODE_ENV === "development"
+      ? "http://localhost:3000"
+      : "https://ath.ooo";
 
   return {
     title: `${asset.symbol.toUpperCase()} | ath.ooo`,
@@ -40,7 +42,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${asset.symbol.toUpperCase()} All Time High: $${asset.ath.toLocaleString()}`,
       description: `${asset.symbol.toUpperCase()} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
       images: [
-        `/api/og?symbol=${asset.symbol}&ath=${asset.ath}&date=${asset.ath_date}&accent=${encodeURIComponent(asset.accent)}&logo=${encodeURIComponent(asset.logo)}`,
+        `${rootUrl}/api/og?symbol=${asset.symbol}&ath=${asset.ath}&date=${asset.ath_date}&accent=${encodeURIComponent(asset.accent)}&logo=${encodeURIComponent(asset.logo)}`,
       ],
     },
     twitter: {
