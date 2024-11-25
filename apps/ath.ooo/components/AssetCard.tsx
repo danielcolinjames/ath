@@ -1,9 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { formatNumber } from "../../../packages/utils/numbers";
-import { format } from "date-fns";
+import { format, formatDistanceToNow } from "date-fns";
 
 export function AssetCard({ asset }: { asset: any }) {
+  // time ago in plain english
+  const timeAgo = formatDistanceToNow(new Date(asset.ath_date), {
+    addSuffix: true,
+  });
+
   return (
     <Link
       href={`/${asset.symbol}`}
@@ -40,7 +45,8 @@ export function AssetCard({ asset }: { asset: any }) {
               ${formatNumber(asset.ath)}
             </p>
             <p className="text-white/60 text-sm mt-1">
-              {format(new Date(asset.ath_date), "'at' h:mma 'on' MMM do, yyyy")}
+              {timeAgo}{" "}
+              {format(new Date(asset.ath_date), "'at' h:mma 'on' MMM do")}
             </p>
           </div>
         </div>

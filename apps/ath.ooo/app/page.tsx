@@ -1,9 +1,7 @@
 import Image from "next/image";
-import Link from "next/link";
 import { createClient } from "../lib/supabase/server";
 import athLogoWithoutBar from "../public/images/ath-logo-without-bar.svg";
 import athSquareWithoutBar from "../public/images/ath-square-without-bar.svg";
-import { formatNumber } from "../../../packages/utils/numbers";
 import { differenceInMinutes, parseISO } from "date-fns";
 import { AssetCard } from "../components/AssetCard";
 
@@ -50,16 +48,13 @@ async function getRecentATHs() {
         return recencyInMinutes <= 1440;
       })
       .sort((a, b) => {
-        // Sort by how close to ATH first, then by market cap
-        const aPercentFromATH = ((a.current_price - a.ath) / a.ath) * 100;
-        const bPercentFromATH = ((b.current_price - b.ath) / b.ath) * 100;
-        if (Math.abs(aPercentFromATH - bPercentFromATH) < 0.1) {
-          return b.market_cap - a.market_cap;
-        }
-        return Math.abs(aPercentFromATH) - Math.abs(bPercentFromATH);
+        // Sort purely by recency (most recent first)
+        const aDate = parseISO(a.ath_date);
+        const bDate = parseISO(b.ath_date);
+        return bDate.getTime() - aDate.getTime();
       }) || [];
 
-  return recentATHs.slice(0, 12);
+  return recentATHs.slice(0, 50);
 }
 
 export default async function Page() {

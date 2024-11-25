@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useState } from "react";
 import { format } from "date-fns";
-import classNames from "classnames";
 
 const fallbackImageUrl = "missing_large.png";
 
@@ -51,7 +50,7 @@ export const OtherAssetsSection = ({
 
         {/* Preview (shown when collapsed) */}
         {!showAll && otherAssets.length > 0 && (
-          <div className="px-5 flex items-center justify-center w-full gap-2 opacity-40">
+          <div className="px-5 flex flex-col items-center justify-center w-full gap-2 opacity-40">
             {otherAssets.slice(0, 3).map((asset, index) => (
               <div
                 key={index}
@@ -86,7 +85,7 @@ export const OtherAssetsSection = ({
 
         {/* Expanded view */}
         {showAll && (
-          <div className="px-5 grid w-full grid-cols-1 gap-3">
+          <div className="px-5 grid w-full grid-cols-1 gap-5">
             {otherAssets.map((asset, index) => (
               <div
                 key={index}

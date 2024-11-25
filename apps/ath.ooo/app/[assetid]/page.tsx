@@ -76,11 +76,9 @@ export default async function AssetPage({ params: { assetid } }: Props) {
     percentLowerThanATHNumber,
   );
 
-  console.log(colorClassName);
-
   return (
     <div className="flex flex-col w-full">
-      <div className="flex flex-col items-center justify-center gap-10">
+      <div className="flex flex-col items-center justify-center gap-10 pt-20">
         <div
           className="relative bg-black/40 backdrop-blur-md pl-2 md:pl-4 py-2 md:py-4 pr-8 rounded-full overflow-hidden shadow-sm border-2"
           style={{

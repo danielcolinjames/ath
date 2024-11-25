@@ -24,6 +24,14 @@ type AssetDetailsResponse = {
 const ASSET_MAPPING_TABLE = "asset_mapping";
 const ASSET_DETAILS_TABLE = "asset_details";
 
+function sortAssetsByMarketCap(a: AssetDetails, b: AssetDetails) {
+  // Always prioritize assets with non-null market caps
+  if (a.market_cap !== null && b.market_cap === null) return -1;
+  if (a.market_cap === null && b.market_cap !== null) return 1;
+  if (a.market_cap === null && b.market_cap === null) return 0;
+  return b.market_cap - a.market_cap;
+}
+
 export async function getAssetDetails(ticker: string) {
   const supabase = createClient();
 
@@ -106,41 +114,26 @@ export async function getAssetDetails(ticker: string) {
       const { data: freshAssets } = await supabase
         .from(ASSET_DETAILS_TABLE)
         .select("*")
-        .in("coingecko_id", mapping.coingecko_ids)
-        .order("market_cap", { ascending: false }); // sort by marketcap
+        .in("coingecko_id", mapping.coingecko_ids);
+
+      const sortedFreshAssets = freshAssets?.sort(sortAssetsByMarketCap);
 
       return {
-        assets: freshAssets || [],
+        assets: sortedFreshAssets || [],
         stale: false,
       };
     } catch (error) {
       console.error("Error processing assets:", error);
       // fallback to existing assets if available
       return {
-        assets:
-          existingAssetsFromDb?.sort((a, b) => {
-            if (a.market_cap === null && b.market_cap === null) return 0;
-            if (a.market_cap === null) return 1;
-            if (b.market_cap === null) return -1;
-            return b.market_cap - a.market_cap;
-          }) || [],
+        assets: existingAssetsFromDb?.sort(sortAssetsByMarketCap) || [],
         stale: true, // indicate that we failed to update
       };
     }
   }
 
   // if nothing needed updating, return existing assets
-  const assets =
-    existingAssetsFromDb?.sort((a, b) => {
-      // If both market caps are null, maintain original order
-      if (a.market_cap === null && b.market_cap === null) return 0;
-      // If only a's market cap is null, put it last
-      if (a.market_cap === null) return 1;
-      // If only b's market cap is null, put it last
-      if (b.market_cap === null) return -1;
-      // Otherwise sort by market cap descending
-      return b.market_cap - a.market_cap;
-    }) || [];
+  const assets = existingAssetsFromDb?.sort(sortAssetsByMarketCap) || [];
   return {
     assets,
     stale: false,
