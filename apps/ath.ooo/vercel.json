@@ -4,5 +4,6 @@
       "path": "/api/update-asset-mapping",
       "schedule": "0 * * * *"
     }
-  ]
+  ],
+  "buildCommand": "next build"
 }
