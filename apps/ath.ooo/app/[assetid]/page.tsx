@@ -13,6 +13,9 @@ import { cookies } from "next/headers";
 import { OgDebugPanel } from "../../components/OgDebugPanel";
 
 const fallbackImageUrl = "missing_large.png";
+const DEFAULT_ACCENT_COLOR = "#00FFBA";
+const DEFAULT_ROOT_URL = "http://localhost:3000";
+const PROD_ROOT_URL = "https://ath.ooo";
 
 type Props = {
   params: { assetid: string };
@@ -28,9 +31,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const rootUrl =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "https://ath.ooo";
+    process.env.NODE_ENV === "development" ? DEFAULT_ROOT_URL : PROD_ROOT_URL;
+  const ogImageUrl = `${rootUrl}/api/og?symbol=${encodeURIComponent(asset.symbol)}&ath=${encodeURIComponent(asset.ath)}&date=${encodeURIComponent(asset.ath_date)}&accent=${encodeURIComponent(asset.accent || DEFAULT_ACCENT_COLOR)}&logo=${encodeURIComponent(asset.image || "")}`;
 
   return {
     title: `${asset.symbol.toUpperCase()} | ath.ooo`,
@@ -41,17 +43,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     openGraph: {
       title: `${asset.symbol.toUpperCase()} All Time High: $${asset.ath.toLocaleString()}`,
       description: `${asset.symbol.toUpperCase()} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
-      images: [
-        `${rootUrl}/api/og?symbol=${asset.symbol}&ath=${asset.ath}&date=${asset.ath_date}&accent=${encodeURIComponent(asset.accent)}&logo=${encodeURIComponent(asset.logo)}`,
-      ],
+      images: [ogImageUrl],
     },
     twitter: {
       card: "summary_large_image",
       title: `ath.ooo/${asset.symbol.toUpperCase()}`,
       description: `${asset.symbol.toUpperCase()} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
-      images: [
-        `${rootUrl}/api/og?symbol=${asset.symbol}&ath=${asset.ath}&date=${asset.ath_date}&accent=${encodeURIComponent(asset.accent)}&logo=${encodeURIComponent(asset.logo)}`,
-      ],
+      images: [ogImageUrl],
     },
   };
 }
@@ -65,7 +63,7 @@ export default async function AssetPage({ params: { assetid } }: Props) {
     return notFound();
   }
 
-  const { assets, stale } = response;
+  const { assets } = response;
 
   if (!assets || assets.length === 0) {
     return notFound();

@@ -18,7 +18,6 @@ export type AssetDetails = {
 
 export type AssetDetailsResponse = {
   assets: AssetDetails[];
-  stale: boolean;
 } | null;
 
 const ASSET_MAPPING_TABLE = "asset_mapping";
@@ -63,29 +62,19 @@ export async function getAssetDetails(ticker: string) {
     (id: string) => !existingIds.has(id),
   );
 
-  // existing but stale ids to update
-  const staleIds =
-    existingAssetsFromDb
-      ?.filter((asset) => {
-        const lastUpdated = new Date(asset.last_updated);
-        return now.getTime() - lastUpdated.getTime() > 60000; // 1 minute
-      })
-      .map((asset) => asset.coingecko_id) || [];
+  // Try to fetch new data for all IDs, but don't fail if we can't
+  try {
+    const newAssetData = await Promise.all(
+      mapping.coingecko_ids.map((id: string) =>
+        fetchFromCoingecko(`/coins/${id}`, {}),
+      ),
+    );
 
-  // combine both sets of ids that need fetching
-  const allIdsToFetch = [...idsToFetch, ...staleIds];
+    const validAssetData = newAssetData.filter(
+      (data): data is NonNullable<typeof data> => data !== null,
+    );
 
-  // fetch from coingecko
-  if (allIdsToFetch.length > 0) {
-    try {
-      const newAssetData = await Promise.all(
-        allIdsToFetch.map((id) => fetchFromCoingecko(`/coins/${id}`, {})),
-      );
-
-      const validAssetData = newAssetData.filter(
-        (data): data is NonNullable<typeof data> => data !== null,
-      );
-
+    if (validAssetData.length > 0) {
       // transform and insert/update assets
       const assetsToUpsert = await Promise.all(
         validAssetData.map(async (data) => {
@@ -116,26 +105,16 @@ export async function getAssetDetails(ticker: string) {
         .select("*")
         .in("coingecko_id", mapping.coingecko_ids);
 
-      const sortedFreshAssets = freshAssets?.sort(sortAssetsByMarketCap);
-
       return {
-        assets: sortedFreshAssets || [],
-        stale: false,
-      };
-    } catch (error) {
-      console.error("Error processing assets:", error);
-      // fallback to existing assets if available
-      return {
-        assets: existingAssetsFromDb?.sort(sortAssetsByMarketCap) || [],
-        stale: true, // indicate that we failed to update
+        assets: freshAssets?.sort(sortAssetsByMarketCap) || [],
       };
     }
+  } catch (error) {
+    console.error("Error processing assets:", error);
   }
 
-  // if nothing needed updating, return existing assets
-  const assets = existingAssetsFromDb?.sort(sortAssetsByMarketCap) || [];
+  // If we couldn't fetch new data or there was an error, return existing data
   return {
-    assets,
-    stale: false,
+    assets: existingAssetsFromDb?.sort(sortAssetsByMarketCap) || [],
   };
 }

@@ -27,7 +27,7 @@ export default async function Layout({
     return notFound();
   }
 
-  const { assets, stale } = response;
+  const { assets } = response;
 
   const asset = assets[0];
 
