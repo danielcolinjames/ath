@@ -7,6 +7,13 @@ module.exports = {
     return config;
   },
   images: {
-    domains: ["assets.coingecko.com", "coin-images.coingecko.com"],
+    remotePatterns: [
+      {
+        hostname: "assets.coingecko.com",
+      },
+      {
+        hostname: "coin-images.coingecko.com",
+      },
+    ],
   },
 };

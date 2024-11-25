@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { fetchFromCoingecko } from "../../../lib/coingecko";
 import { createClient } from "../../../lib/supabase/server";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
 type TickerMap = {
   [key: string]: string[];
 };
