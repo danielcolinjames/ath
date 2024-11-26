@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: `${asset.symbol.toUpperCase()} | ath.ooo`,
     description: `${asset.symbol.toUpperCase()} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
     icons: {
-      icon: `/api/favicon?symbol=${params.assetid}&theme=${cookies().get("theme")?.value || "dark"}`,
+      icon: `${rootUrl}/api/favicon?symbol=${params.assetid}&theme=${cookies().get("theme")?.value || "dark"}`,
     },
     openGraph: {
       title: `${asset.symbol.toUpperCase()} All Time High: $${asset.ath.toLocaleString()}`,
