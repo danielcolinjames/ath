@@ -34,6 +34,7 @@ function sortAssetsByMarketCap(a: AssetDetails, b: AssetDetails) {
 
 export async function getAssetDetails(ticker: string) {
   const supabase = createClient();
+  const now = new Date();
 
   // get coingecko ids from asset_mapping
   const { data: mapping } = await supabase
