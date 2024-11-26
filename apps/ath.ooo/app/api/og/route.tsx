@@ -52,15 +52,6 @@ const AthLogo = ({ accent }: { accent: string }) => (
 );
 
 export async function GET(request: NextRequest) {
-  const authHeader = request.headers.get("authorization");
-  if (
-    process.env.NODE_ENV === "production" &&
-    authHeader !== `Bearer ${process.env.CRON_SECRET}`
-  ) {
-    return new Response("Unauthorized", {
-      status: 401,
-    });
-  }
   const { searchParams } = new URL(request.url);
   const symbol = searchParams.get("symbol")?.toUpperCase();
   const ath = searchParams.get("ath");
