@@ -1,12 +1,16 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getAssetDetails } from "../../../lib/db";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get("authorization");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
   const { searchParams } = new URL(request.url);
   const symbol = searchParams.get("symbol");
   const theme = searchParams.get("theme") || "dark";
-
-  console.log("Favicon request:", { symbol, theme });
 
   if (!symbol) {
     return new NextResponse("Symbol required", { status: 400 });

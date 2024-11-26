@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
@@ -50,14 +51,18 @@ const AthLogo = ({ accent }: { accent: string }) => (
   </svg>
 );
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get("authorization");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
   const { searchParams } = new URL(request.url);
   const symbol = searchParams.get("symbol")?.toUpperCase();
   const ath = searchParams.get("ath");
   const accent = searchParams.get("accent");
   const logo = searchParams.get("logo");
-
-  console.log("OG Image params:", { symbol, ath, accent, logo });
 
   // Load font
   const satoshiBold = fetch(

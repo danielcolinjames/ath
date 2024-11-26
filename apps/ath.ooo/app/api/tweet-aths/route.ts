@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { TwitterApi } from "twitter-api-v2";
 import { createClient } from "../../../lib/supabase/cli";
 import { differenceInMinutes, parseISO } from "date-fns";
@@ -12,7 +12,13 @@ const client = new TwitterApi({
   accessSecret: process.env.TWITTER_ACCESS_SECRET!,
 });
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get("authorization");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
   try {
     const supabase = createClient();
     let tweetsPosted = 0;

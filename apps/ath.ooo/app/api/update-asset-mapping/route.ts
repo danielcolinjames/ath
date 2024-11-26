@@ -1,5 +1,5 @@
 import "dotenv/config";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { fetchFromCoingecko } from "../../../lib/coingecko";
 import { createClient } from "../../../lib/supabase/cli";
 
@@ -15,7 +15,13 @@ type CoinListItem = {
   id: string;
 };
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get("authorization");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
   try {
     console.log("Fetching coin list from CoinGecko...");
     const coinList = await fetchFromCoingecko("/coins/list", {});

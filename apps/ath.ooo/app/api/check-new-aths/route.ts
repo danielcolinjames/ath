@@ -2,8 +2,15 @@ import "dotenv/config";
 import { fetchFromCoingecko } from "../../../lib/coingecko";
 import { differenceInMinutes, parseISO } from "date-fns";
 import { createClient } from "../../../lib/supabase/cli";
-import { NextResponse } from "next/server";
-export async function GET() {
+import { NextRequest, NextResponse } from "next/server";
+
+export async function GET(request: NextRequest) {
+  const authHeader = request.headers.get("authorization");
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return new Response("Unauthorized", {
+      status: 401,
+    });
+  }
   try {
     console.log("Fetching market data from CoinGecko...");
     const marketData = await fetchFromCoingecko("/coins/markets", {
