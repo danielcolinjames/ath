@@ -72,25 +72,6 @@ export async function GET(request: NextRequest) {
     new URL("../../../assets/fonts/Satoshi-Black.otf", import.meta.url),
   ).then((res) => res.arrayBuffer());
 
-  // Attempt to load the logo image, with fallback
-  let logoImg;
-  if (logo) {
-    try {
-      const response = await fetch(logo);
-      if (response.ok) {
-        logoImg = logo;
-      } else {
-        console.warn(
-          `Failed to load logo from ${logo}, status: ${response.status}`,
-        );
-        logoImg = null;
-      }
-    } catch (error) {
-      console.error(`Error loading logo from ${logo}:`, error);
-      logoImg = null;
-    }
-  }
-
   // Format number to handle small decimals
   const athValue = Number(ath || 0);
   let athString = athValue.toString();
@@ -158,7 +139,7 @@ export async function GET(request: NextRequest) {
             marginBottom: "60px",
           }}
         >
-          {logoImg && (
+          {logo && (
             <div
               style={{
                 display: "flex",
@@ -173,7 +154,7 @@ export async function GET(request: NextRequest) {
               }}
             >
               <img
-                src={logoImg}
+                src={logo}
                 width="80"
                 height="80"
                 style={{
