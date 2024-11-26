@@ -11,6 +11,7 @@ import { getPercentChangeColorClassName } from "../../lib/colors";
 import { AssetStats } from "../../components/AssetStats";
 import { cookies } from "next/headers";
 import { OgDebugPanel } from "../../components/OgDebugPanel";
+import { DynamicFavicon } from "../../components/DynamicFavicon";
 
 const fallbackImageUrl = "missing_large.png";
 const DEFAULT_ACCENT_COLOR = "#00FFBA";
@@ -37,9 +38,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${asset.symbol.toUpperCase()} | ath.ooo`,
     description: `${asset.symbol.toUpperCase()} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
-    icons: {
-      icon: `${rootUrl}/api/favicon?symbol=${params.assetid}&theme=${cookies().get("theme")?.value || "dark"}`,
-    },
     openGraph: {
       title: `${asset.symbol.toUpperCase()} All Time High: $${asset.ath.toLocaleString()}`,
       description: `${asset.symbol.toUpperCase()} reached its all time high of $${asset.ath.toLocaleString()} on ${new Date(asset.ath_date).toLocaleDateString()}`,
@@ -96,6 +94,11 @@ export default async function AssetPage({ params: { assetid } }: Props) {
 
   return (
     <>
+      <DynamicFavicon
+        symbol={asset.symbol}
+        accent={asset.accent}
+        theme={(cookies().get("theme")?.value as "dark" | "light") || "dark"}
+      />
       <div className="flex flex-col w-full">
         <div className="flex flex-col items-center justify-center gap-10 pt-20">
           <div
