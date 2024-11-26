@@ -52,7 +52,6 @@ export async function getAssetDetails(ticker: string) {
     .in("coingecko_id", mapping.coingecko_ids);
 
   // find which ids need to be fetched (either new or stale)
-  const now = new Date();
   const existingIds = new Set(
     existingAssetsFromDb?.map((asset) => asset.coingecko_id) || [],
   );

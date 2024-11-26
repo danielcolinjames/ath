@@ -48,5 +48,8 @@ export const metadata: Metadata = {
       },
     ],
   },
-  // ... other metadata
+  title: "ath.ooo",
+  openGraph: {
+    images: ["https://ath.ooo/logo/2/og.png"],
+  },
 };
